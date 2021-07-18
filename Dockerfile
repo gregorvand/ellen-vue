@@ -1,4 +1,4 @@
-FROM node:14.17.3
+FROM node:14-alpine
 
 # install simple http server for serving static content
 RUN npm install -g http-server
@@ -17,6 +17,8 @@ COPY . .
 
 # build app for production with minification
 RUN npm run build
+
+RUN npm prune --production
 
 EXPOSE 8080
 CMD [ "http-server", "dist" ]
