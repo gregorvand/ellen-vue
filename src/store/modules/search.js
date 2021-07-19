@@ -39,7 +39,7 @@ export const actions = {
     }
 
     return searchClient
-      .post('ellen_companies_dev/_search', searchQuery)
+      .post(`${process.env.VUE_APP_ES_URL}`, searchQuery)
       .then(({ data }) => {
         const results = data.hits['hits'].map((result) => result._source) // map from ES format
         commit('SET_SEARCH_RESULTS', results)
