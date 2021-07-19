@@ -21,9 +21,11 @@ export default {
     }
   },
   created() {
-    axios.get('//localhost:8000/api/dashboard').then(({ data }) => {
-      this.selectedCompanies = data.companies
-    })
+    axios
+      .get(`${process.env.VUE_APP_API_URL}/api/dashboard`)
+      .then(({ data }) => {
+        this.selectedCompanies = data.companies
+      })
   },
 }
 </script>

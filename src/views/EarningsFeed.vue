@@ -23,7 +23,7 @@
 import { mapState } from 'vuex'
 import store from '@/store/store'
 import io from 'socket.io-client'
-const socket = io.connect('http://localhost:8000')
+const socket = io.connect(`${process.env.VUE_APP_API_URL}`)
 
 socket.on('earningsData', (fetchedData) => {
   store.dispatch('earnings/addReportToEarnings', fetchedData)
