@@ -94,7 +94,7 @@ span {
 .company-selector {
   // view specifics
   .dashboard & {
-    width: 500px;
+    width: 100%;
     height: 40px;
     display: flex;
     align-items: center;
@@ -114,7 +114,7 @@ span {
 
 .company-type-label {
   background-color: #efefef;
-  position: absolute;
+  // position: absolute;
   right: 100px;
   width: 50px;
   border-radius: 5px;

@@ -113,6 +113,8 @@ li {
   > div {
     display: flex;
     width: 100%;
+    justify-content: space-around;
+    align-items: center;
   }
 }
 

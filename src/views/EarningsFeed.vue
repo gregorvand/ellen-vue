@@ -1,18 +1,21 @@
 <template>
   <div>
     <h1>its Earnings time..</h1>
-    <BaseTriggerApiButton apiPath="/earnings/yesterday" />
-    <BaseTriggerApiButton apiPath="/earningemail/send" label="Email people" />
+    <BaseTriggerApiButton apiPath="/awaitedearningscalendar" />
+    <BaseTriggerApiButton
+      apiPath="/earningemail/send"
+      label="Email people (manual)"
+    />
 
     <!-- currently does not handle data structure if webhook received after get earnings -->
     <template v-if="liveEarnings !== []">
       <ul
-        class="reverse-order"
+        class="awaited-earnings"
         v-for="earning in reversedEarnings"
         :key="earning.symbol"
       >
-        <li>{{ earning.symbol }}</li>
-        <li>{{ earning.date }}</li>
+        <li>{{ earning.ticker }}</li>
+        <li>expected around: {{ earning.date | readableDate }}</li>
         <li>for Q{{ earning.quarter }}</li>
       </ul>
     </template>
@@ -33,10 +36,25 @@ export default {
   computed: {
     ...mapState('earnings', ['liveEarnings']),
     reversedEarnings() {
-      return this.liveEarnings.slice().reverse()
+      return this.liveEarnings
+    },
+  },
+
+  filters: {
+    readableDate: function (date) {
+      return new Date(date).toDateString()
     },
   },
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.awaited-earnings {
+  display: flex;
+
+  > li {
+    display: flex;
+    margin: 0 5px;
+  }
+}
+</style>

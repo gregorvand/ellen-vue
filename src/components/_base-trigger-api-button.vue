@@ -40,4 +40,9 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+button {
+  width: 200px;
+  margin: 10px auto;
+}
+</style>

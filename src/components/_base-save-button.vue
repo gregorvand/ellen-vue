@@ -40,6 +40,6 @@ export default {
 
 <style lang="scss" scoped>
 button {
-  width: 200px;
+  width: 300px;
 }
 </style>
