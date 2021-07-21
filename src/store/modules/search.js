@@ -3,7 +3,7 @@ export const namespaced = true // ie user/[action]
 
 // Separate axios instance that will not send default auth headers
 const searchClient = axios.create({
-  baseURL: `https://ellen-companies-search-alpha2.es.us-west1.gcp.cloud.es.io:9243`,
+  baseURL: `http://localhost:9200`,
   withCredentials: false, // This is the default
   headers: {
     Accept: 'application/json',
@@ -29,11 +29,9 @@ export const actions = {
       from: 0,
       size: 100,
       query: {
-        fuzzy: {
-          companyName: {
-            fuzziness: '2',
-            value: currentQuery || '',
-          },
+        query_string: {
+          fields: ['companyName', 'ticker'],
+          query: currentQuery || '',
         },
       },
     }
