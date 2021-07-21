@@ -23,7 +23,7 @@ export default {
     triggerAPI() {
       axios({
         method: 'get',
-        url: `//localhost:8000/api${this.apiPath}`,
+        url: `${process.env.VUE_APP_API_URL}/api${this.apiPath}`,
       }).then(({ data }) => {
         if (Array.isArray(data)) {
           store.dispatch('earnings/addReportToEarnings', data)
@@ -40,4 +40,9 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+button {
+  width: 200px;
+  margin: 10px auto;
+}
+</style>

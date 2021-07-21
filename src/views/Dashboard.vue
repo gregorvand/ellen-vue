@@ -21,16 +21,31 @@ export default {
     }
   },
   created() {
-    axios.get('//localhost:8000/api/dashboard').then(({ data }) => {
-      this.selectedCompanies = data.companies
-    })
+    axios
+      .get(`${process.env.VUE_APP_API_URL}/api/dashboard`)
+      .then(({ data }) => {
+        this.selectedCompanies = data.companies
+      })
   },
 }
 </script>
 
 <style scoped>
-ul,
+ul {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 20px;
+  max-width: 500px;
+}
 li {
   list-style: none;
+  display: flex;
+  width: 100%;
 }
 </style>

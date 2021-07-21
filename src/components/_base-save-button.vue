@@ -19,7 +19,7 @@ export default {
     saveCompanies() {
       axios({
         method: 'post',
-        url: '//localhost:8000/api/users/update/companies',
+        url: `${process.env.VUE_APP_API_URL}/api/users/update/companies`,
         data: {
           selectedCompanies:
             this.$store.getters['selectedCompanies/userCompanies'],
@@ -40,6 +40,6 @@ export default {
 
 <style lang="scss" scoped>
 button {
-  width: 200px;
+  width: 300px;
 }
 </style>

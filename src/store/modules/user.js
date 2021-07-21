@@ -23,7 +23,7 @@ export const mutations = {
 export const actions = {
   register({ commit }, credentials) {
     return axios
-      .post('//localhost:8000/api/users', credentials, {
+      .post(`${process.env.VUE_APP_API_URL}/api/users`, credentials, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -34,7 +34,7 @@ export const actions = {
   },
   login({ commit }, credentials) {
     return axios
-      .post('//localhost:8000/api/login', credentials)
+      .post(`${process.env.VUE_APP_API_URL}/api/login`, credentials)
       .then(({ data }) => {
         commit('SET_USER_DATA', data)
       })

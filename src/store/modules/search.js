@@ -1,27 +1,27 @@
-import axios from "axios";
-export const namespaced = true; // ie user/[action]
+import axios from 'axios'
+export const namespaced = true // ie user/[action]
 
 // Separate axios instance that will not send default auth headers
 const searchClient = axios.create({
   baseURL: `https://ellen-companies-search-alpha2.es.us-west1.gcp.cloud.es.io:9243`,
   withCredentials: false, // This is the default
   headers: {
-    Accept: "application/json",
-    "Content-Type": "application/json",
-    Authorization: "Basic ZWxhc3RpYzpMWXpiZFRyQlpzRnhObEZISDRxNlcwYjE=",
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+    Authorization: 'Basic ZWxhc3RpYzpMWXpiZFRyQlpzRnhObEZISDRxNlcwYjE=',
   },
-});
+})
 
 export const state = {
   results: [],
-  currentQuery: "",
-};
+  currentQuery: '',
+}
 
 export const mutations = {
   SET_SEARCH_RESULTS(state, payload) {
-    state.results = payload;
+    state.results = payload
   },
-};
+}
 
 export const actions = {
   doSearchQuery({ commit }, currentQuery) {
@@ -31,18 +31,18 @@ export const actions = {
       query: {
         fuzzy: {
           companyName: {
-            fuzziness: "2",
-            value: currentQuery || "",
+            fuzziness: '2',
+            value: currentQuery || '',
           },
         },
       },
-    };
+    }
 
     return searchClient
-      .post("ellen_companies_dev/_search", searchQuery)
+      .post(`${process.env.VUE_APP_ES_URL}`, searchQuery)
       .then(({ data }) => {
-        const results = data.hits["hits"].map((result) => result._source); // map from ES format
-        commit("SET_SEARCH_RESULTS", results);
-      });
+        const results = data.hits['hits'].map((result) => result._source) // map from ES format
+        commit('SET_SEARCH_RESULTS', results)
+      })
   },
-};
+}
