@@ -16,6 +16,7 @@
         type="text"
         v-model="currentQuery"
         @keyup.esc="clearInput"
+        placeholder="Company name or symbol e.g. 'Alcoa' or 'AA'"
       />
 
       <ul class="companies-results" v-if="results.length > 0">
