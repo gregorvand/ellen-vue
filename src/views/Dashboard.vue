@@ -26,6 +26,7 @@ export default {
       .then(({ data }) => {
         this.selectedCompanies = data.companies
       })
+    this.$store.dispatch('selectedCompanies/clearCompanySelection') // ideally state becomes saved companies
   },
 }
 </script>
