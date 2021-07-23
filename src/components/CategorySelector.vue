@@ -37,11 +37,27 @@ export default {
           'selectedCategories/addCategoryToSelection',
           this.category
         )
+
+        const allCategoryCompanies = this.category.Companies
+        allCategoryCompanies.forEach((company) => {
+          this.$store.dispatch(
+            'selectedCompanies/addCompanyToSelection',
+            company
+          )
+        })
       } else {
         this.$store.dispatch(
           'selectedCategories/removeCategorySelection',
           this.category
         )
+
+        const allCategoryCompanies = this.category.Companies
+        allCategoryCompanies.forEach((company) => {
+          this.$store.dispatch(
+            'selectedCompanies/removeCompanySelection',
+            company
+          )
+        })
       }
     },
   },

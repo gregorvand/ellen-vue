@@ -39,4 +39,8 @@ export const getters = {
   userHasCategory: (state) => (category) => {
     return state.selectedCategories.find((category) => category.id === id)
   },
+  userCategories: (state) => {
+    console.log(state.selectedCategories)
+    return state.selectedCategories
+  },
 }
