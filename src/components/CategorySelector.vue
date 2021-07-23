@@ -1,5 +1,5 @@
 <template>
-  <div class="category-selector">
+  <div class="category-selector" @click="selectCategory">
     <div class="category-selector-label">
       <span>{{ category.name }}</span>
     </div>
@@ -8,7 +8,6 @@
       class="select-category"
       type="checkbox"
       v-model="checked"
-      @click="selectCategory"
     />
   </div>
 </template>
@@ -33,6 +32,7 @@ export default {
   methods: {
     selectCategory() {
       if (!this.checked) {
+        this.checked = true
         this.$store.dispatch(
           'selectedCategories/addCategoryToSelection',
           this.category
@@ -40,12 +40,15 @@ export default {
 
         const allCategoryCompanies = this.category.Companies
         allCategoryCompanies.forEach((company) => {
+          company['addedFromCategory'] = true
+          console.log(company)
           this.$store.dispatch(
             'selectedCompanies/addCompanyToSelection',
             company
           )
         })
       } else {
+        this.checked = false
         this.$store.dispatch(
           'selectedCategories/removeCategorySelection',
           this.category
@@ -85,6 +88,7 @@ export default {
 .select-category {
   height: 1.6em;
   width: 30px;
+  cursor: pointer;
 }
 
 span {
@@ -93,7 +97,12 @@ span {
 }
 
 .category-selector {
-  // view specifics
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 5px 10px;
+  cursor: pointer;
+
   .dashboard & {
     width: 100%;
     height: 40px;
