@@ -5,3 +5,9 @@ export const authComputed = {
     loggedIn: 'user/loggedIn',
   }),
 }
+
+export const allSelectedCompanies = {
+  ...mapGetters({
+    companies: 'user/loggedIn',
+  }),
+}

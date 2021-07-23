@@ -4,7 +4,6 @@ export const namespaced = true // ie user/[action]
 // Separate axios instance that will not send default auth headers
 const searchClient = axios.create({
   baseURL: `${process.env.VUE_APP_ES_SERVER}`,
-  withCredentials: false, // This is the default
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',

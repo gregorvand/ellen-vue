@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   data() {
     return {
@@ -49,6 +50,17 @@ export default {
         .catch((err) => {
           this.error = err.response.data.message
         })
+    },
+  },
+  computed: {
+    ...mapState('selectedCompanies', ['selectedCompanies']),
+    ...mapState('selectedCategories', ['selectedCategories']),
+    allSelectedCompanies() {
+      const categoryCompanies = this.selectedCategories.map(
+        (category) => category.Companies
+      )
+      console.log(categoryCompanies)
+      return [this.selectedCompanies, ...categoryCompanies]
     },
   },
 }

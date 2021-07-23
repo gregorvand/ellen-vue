@@ -1,5 +1,5 @@
 <template>
-  <div class="search-component">
+  <div class="search-component" v-click-outside="clearInput">
     <h4>Your selected companies</h4>
     <section class="selected-companies">
       <ul>
@@ -70,7 +70,6 @@ export default {
 }
 
 .search-component {
-  margin: 20px auto;
   width: 100%;
   max-width: 500px;
   padding: 15px 0;

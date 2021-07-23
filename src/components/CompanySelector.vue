@@ -1,5 +1,5 @@
 <template>
-  <div class="company-selector">
+  <div class="company-selector" :class="isCategoryCompanyClass">
     <div class="company-selector-label">
       <router-link
         v-if="this.$route.name == 'dashboard'"
@@ -13,17 +13,19 @@
       <span v-else>{{ companyName }}</span>
       <span v-if="company.ticker">({{ company.ticker }})</span>
     </div>
-    <input
-      v-if="!disableCheckBox"
-      class="select-company"
-      type="checkbox"
-      v-model="checked"
-      @click="selectCompany"
-    />
 
     <span :class="'company-type-label ' + isPublicCompany">
       {{ isPublicCompany }}
     </span>
+    <div class="checkbox-spacer">
+      <input
+        v-if="!disableCheckBox && allowEdit"
+        class="select-company"
+        type="checkbox"
+        v-model="checked"
+        @click="selectCompany"
+      />
+    </div>
   </div>
 </template>
 
@@ -67,6 +69,10 @@ export default {
         this.company.id
       ),
       isPublicCompany: this.company.ticker ? 'public' : 'private',
+      isCategoryCompanyClass: this.company.addedFromCategory
+        ? 'category-add'
+        : 'individual-add',
+      allowEdit: this.company.addedFromCategory ? false : true,
     }
   },
 
@@ -81,7 +87,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.select-company {
+.select-company,
+.checkbox-spacer {
   height: 1.6em;
   width: 30px;
 }
@@ -93,8 +100,9 @@ span {
 
 .company-selector {
   // view specifics
+
   .dashboard & {
-    width: 100%;
+    width: 500px;
     height: 40px;
     display: flex;
     align-items: center;
@@ -109,6 +117,27 @@ span {
   &-label {
     width: 65%;
     font-size: 13px;
+  }
+
+  &.category-add {
+    opacity: 0.4;
+    position: relative;
+
+    &:hover {
+      &:after {
+        content: 'Companies added by category cannot be individually changed';
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: white;
+        width: 500px;
+        height: 100%;
+        color: black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
   }
 }
 
