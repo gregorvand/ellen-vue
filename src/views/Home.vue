@@ -9,6 +9,7 @@
     </div>
 
     <SearchForm />
+    <CategoryList />
     <BaseSaveButton v-if="loggedIn" />
     <RegisterUser v-if="!loggedIn" v-bind:captureName="false" />
   </div>
@@ -16,8 +17,10 @@
 
 <script>
 import { authComputed } from '@/store/helpers.js'
-import SearchForm from '@/components/SearchForm.vue'
 import RegisterUser from '@/views/RegisterUser.vue'
+
+import SearchForm from '@/components/SearchForm.vue'
+import CategoryList from '@/components/CategoryList.vue'
 
 export default {
   computed: {
@@ -26,6 +29,7 @@ export default {
   components: {
     SearchForm,
     RegisterUser,
+    CategoryList,
   },
 }
 </script>

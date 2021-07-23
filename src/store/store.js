@@ -9,6 +9,7 @@ import * as selectedCompanies from '@/store/modules/selectedCompanies.js'
 import * as userCompany from '@/store/modules/userCompany.js'
 import * as company from '@/store/modules/company.js'
 import * as earnings from '@/store/modules/earnings.js'
+import * as categories from '@/store/modules/categories.js'
 
 Vue.use(Vuex)
 
@@ -22,16 +23,7 @@ export default new Vuex.Store({
     userCompany,
     company,
     earnings,
+    categories,
   },
-  state: {
-    categories: [
-      'sustainability',
-      'nature',
-      'animal welfare',
-      'housing',
-      'education',
-      'food',
-      'community',
-    ],
-  },
+  state: {},
 })
