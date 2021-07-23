@@ -6,23 +6,19 @@
       :key="category.id"
       :category="category"
     >
-      <h3>{{ category.name }}</h3>
-      <ul>
-        <li
-          v-for="company in category.Companies"
-          :key="company.id"
-          :company="company"
-        >
-          {{ company.nameIdentifier }}
-        </li>
-      </ul>
+      <CategorySelector :category="category" />
     </div>
   </div>
 </template>
 
 <script>
+import CategorySelector from '@/components/CategorySelector.vue'
+
 import { mapState } from 'vuex'
 export default {
+  components: {
+    CategorySelector,
+  },
   data() {
     return {
       intro: 'hello',
