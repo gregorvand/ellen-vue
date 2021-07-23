@@ -41,7 +41,6 @@ export default {
         const allCategoryCompanies = this.category.Companies
         allCategoryCompanies.forEach((company) => {
           company['addedFromCategory'] = true
-          console.log(company)
           this.$store.dispatch(
             'selectedCompanies/addCompanyToSelection',
             company

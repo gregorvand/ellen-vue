@@ -59,7 +59,6 @@ export default {
       const categoryCompanies = this.selectedCategories.map(
         (category) => category.Companies
       )
-      console.log(categoryCompanies)
       return [this.selectedCompanies, ...categoryCompanies]
     },
   },
