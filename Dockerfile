@@ -21,4 +21,4 @@ RUN npm run build
 RUN npm prune --production
 
 EXPOSE 8080
-CMD [ "http-server", "dist" ]
+CMD [ "http-server", "dist", "--gzip", "--proxy", "http://localhost:8080?" ]
