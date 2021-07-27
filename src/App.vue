@@ -16,8 +16,8 @@ export default {
     NotificationContainer,
   },
 }
+// comment for deploy
 </script>
-
 <style lang="scss">
 @import './assets/styles/global.scss';
 .page {
