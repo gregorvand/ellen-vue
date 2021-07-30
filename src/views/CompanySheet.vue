@@ -20,17 +20,20 @@
       <span v-if="company.ticker">Getting public data...</span>
       <span v-else>Private company - no data to show</span>
     </div>
+    <DoughnutChart />
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import DoughnutChart from '@/components/Chart'
+
 export default {
-  data: function () {
-    return {
-      loading: true,
-    }
+  name: 'CompanyView',
+  components: {
+    DoughnutChart,
   },
+
   beforeCreate() {
     this.$store.dispatch('company/fetchCompany', this.$route.params.id)
   },
@@ -42,7 +45,7 @@ export default {
   //     )
   //     .finally(() => (this.loading = false))
   // },
-  computed: mapState({
+  computed: mapState({  
     company: (state) => state.company.currentCompany,
     publicData: (state) => state?.company?.publicData[0],
   }),
