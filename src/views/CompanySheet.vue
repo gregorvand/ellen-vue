@@ -20,7 +20,7 @@
       <span v-if="company.ticker">Getting public data...</span>
       <span v-else>Private company - no data to show</span>
     </div>
-    <LineChart />
+    <LineChart :companyId="this.$route.params.id" />
   </div>
 </template>
 

@@ -1,14 +1,17 @@
 <template>
-  <LineChart
-    v-if="orderList.length > 0"
-    :chartData="testData"
-    :options="options"
-  />
-  <div v-else>Loading chart..</div>
+  <div :class="'chart-wrapper'">
+    <LineChart
+      v-if="orderList.length > 0"
+      :chartData="testData"
+      :options="options"
+    />
+    <div v-else>Loading chart..</div>
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, computed } from '@vue/composition-api'
+import { mapState } from 'vuex'
 import { LineChart } from 'vue-chart-3'
 import { Chart, registerables } from 'chart.js'
 import 'chartjs-adapter-date-fns'
@@ -18,19 +21,25 @@ Chart.register(...registerables)
 
 export default defineComponent({
   components: { LineChart },
+  props: {
+    companyId: {
+      required: true,
+    },
+  },
   data: () => {
     return {
       loaded: false,
     }
   },
-  setup() {
+  setup(props) {
     const orderList = ref([]) // vue3 construct reactive var
     onMounted(async () => {
+      console.log(props.companyId)
       const res = await axios({
         method: 'post',
         url: `${process.env.VUE_APP_API_URL}/api/orders`,
         data: {
-          companyId: 5,
+          companyId: props.companyId,
         },
       })
       orderList.value = res.data
@@ -86,5 +95,13 @@ export default defineComponent({
 
     return { testData, options, orderList }
   },
+  computed: {},
 })
 </script>
+
+<style scoped lang="scss">
+.chart-wrapper {
+  width: 100%;
+  max-width: 800px;
+}
+</style>
