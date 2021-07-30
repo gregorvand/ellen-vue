@@ -20,17 +20,20 @@
       <span v-if="company.ticker">Getting public data...</span>
       <span v-else>Private company - no data to show</span>
     </div>
+    <LineChart :companyId="this.$route.params.id" />
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import LineChart from '@/components/Chart'
+
 export default {
-  data: function () {
-    return {
-      loading: true,
-    }
+  name: 'CompanyView',
+  components: {
+    LineChart,
   },
+
   beforeCreate() {
     this.$store.dispatch('company/fetchCompany', this.$route.params.id)
   },
