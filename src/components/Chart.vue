@@ -1,40 +1,47 @@
 <template>
-  <LineChart :chartData="testData" :options="options" />
+  <LineChart
+    v-if="orderList.length > 0"
+    :chartData="testData"
+    :options="options"
+  />
+  <div v-else>Loading chart..</div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api'
+import { defineComponent, onMounted, ref, computed } from '@vue/composition-api'
 import { LineChart } from 'vue-chart-3'
 import { Chart, registerables } from 'chart.js'
 import 'chartjs-adapter-date-fns'
+import axios from 'axios'
 
 Chart.register(...registerables)
 
 export default defineComponent({
   components: { LineChart },
+  data: () => {
+    return {
+      loaded: false,
+    }
+  },
   setup() {
-    const testData = {
+    const orderList = ref([]) // vue3 construct reactive var
+    onMounted(async () => {
+      const res = await axios({
+        method: 'post',
+        url: `${process.env.VUE_APP_API_URL}/api/orders`,
+        data: {
+          companyId: 5,
+        },
+      })
+      orderList.value = res.data
+      console.log(res.data)
+    })
+
+    const testData = computed(() => ({
       datasets: [
         {
           label: 'Orders',
-          data: [
-            {
-              y: '41.30',
-              x: '2018-12-17T20:32:00.000Z',
-            },
-            {
-              y: '40.39',
-              x: '2019-02-26T14:38:00.000Z',
-            },
-            {
-              y: '41.30',
-              x: '2019-04-03T17:42:00.000Z',
-            },
-            {
-              y: '41.23',
-              x: '2019-07-29T10:47:00.000Z',
-            },
-          ],
+          data: orderList.value,
           stepped: true,
           backgroundColor: ['rgba(216, 216, 216, 0.3)'],
           borderColor: ['rgba(0, 0, 0, 0.9)'],
@@ -42,7 +49,7 @@ export default defineComponent({
           borderCapStyle: 'round',
         },
       ],
-    }
+    }))
 
     const options = {
       scales: {
@@ -75,7 +82,9 @@ export default defineComponent({
       aspectRatio: 2,
     }
 
-    return { testData, options }
+    // loaded = true
+
+    return { testData, options, orderList }
   },
 })
 </script>
