@@ -34,7 +34,7 @@ export default defineComponent({
   setup(props) {
     const orderList = ref([]) // vue3 construct reactive var
     onMounted(async () => {
-      console.log(props.companyId)
+      // console.log(props.companyId)
       const res = await axios({
         method: 'post',
         url: `${process.env.VUE_APP_API_URL}/api/orders`,
@@ -43,7 +43,6 @@ export default defineComponent({
         },
       })
       orderList.value = res.data
-      console.log(res.data)
     })
 
     const testData = computed(() => ({
