@@ -1,5 +1,5 @@
 <template>
-  <div :class="'chart-wrapper'">
+  <div :class="'chart-wrapper'" style="width: 100%; overflow-x: auto">
     <LineChart
       v-if="orderList.length > 0"
       :chartData="testData"
@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, computed } from '@vue/composition-api'
-import { mapState } from 'vuex'
+// import { mapState } from 'vuex'
 import { LineChart } from 'vue-chart-3'
 import { Chart, registerables } from 'chart.js'
 import 'chartjs-adapter-date-fns'
@@ -37,7 +37,7 @@ export default defineComponent({
       // console.log(props.companyId)
       const res = await axios({
         method: 'post',
-        url: `${process.env.VUE_APP_API_URL}/api/orders`,
+        url: `${process.env.VUE_APP_API_URL}/api/companies/orders`,
         data: {
           companyId: props.companyId,
         },
@@ -48,18 +48,24 @@ export default defineComponent({
     const testData = computed(() => ({
       datasets: [
         {
-          label: 'Orders',
+          label: 'Avg Orders/day',
           data: orderList.value,
           stepped: true,
           backgroundColor: ['rgba(216, 216, 216, 0.3)'],
           borderColor: ['rgba(0, 0, 0, 0.9)'],
-          borderWidth: 2,
+          borderWidth: 1,
           borderCapStyle: 'round',
         },
       ],
     }))
 
     const options = {
+      elements: {
+        point: {
+          pointStyle: 'dash',
+          borderWidth: 0,
+        },
+      },
       scales: {
         y: [
           {
@@ -71,9 +77,7 @@ export default defineComponent({
         x: {
           type: 'time',
           time: {
-            displayFormats: {
-              quarter: 'MMM YYYY',
-            },
+            unit: 'month',
           },
         },
       },
@@ -102,5 +106,6 @@ export default defineComponent({
 .chart-wrapper {
   width: 100%;
   max-width: 800px;
+  overflow-x: scroll;
 }
 </style>
