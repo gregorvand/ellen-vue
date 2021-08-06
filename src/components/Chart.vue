@@ -6,9 +6,9 @@
       :options="options"
     />
     <div v-else>Loading chart..</div>
-    <button @click="resetOrders">Reset stuff!</button>
-    <button @click="getFromMay">Last 3 months</button>
-    <button @click="resetOrders">Last 6 months</button>
+    <button @click="getMonthDuration(0)">All data</button>
+    <button @click="getMonthDuration(3)">Last 3 months</button>
+    <button @click="getMonthDuration(6)">Last 6 months</button>
   </div>
 </template>
 
@@ -50,15 +50,8 @@ export default defineComponent({
       orderList.value = setValues.data
     })
 
-    function resetOrders() {
-      orderList.value = [
-        { x: '2020-01-01', y: 0 },
-        { x: new Date(), y: 0 },
-      ]
-    }
-
-    async function getFromMay() {
-      const setValues = await getDataPoints(props.companyId, '2020-05-01')
+    async function getMonthDuration(months = false) {
+      const setValues = await getDataPoints(props.companyId, months)
       orderList.value = setValues.data
     }
 
@@ -119,21 +112,20 @@ export default defineComponent({
       testData,
       options,
       orderList,
-      resetOrders,
       getDataPoints,
-      getFromMay,
+      getMonthDuration,
     }
   },
   computed: {},
 })
 
-async function getDataPoints(companyId, date) {
+async function getDataPoints(companyId, months) {
   return await axios({
     method: 'post',
     url: `${process.env.VUE_APP_API_URL}/api/companies/orders`,
     data: {
       companyId: companyId,
-      dateLimit: date,
+      lookbackMonths: months,
     },
   })
 }
