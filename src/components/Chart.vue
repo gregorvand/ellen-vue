@@ -6,6 +6,9 @@
       :options="options"
     />
     <div v-else>Loading chart..</div>
+    <button @click="getMonthDuration(0)">All data</button>
+    <button @click="getMonthDuration(3)">Last 3 months</button>
+    <button @click="getMonthDuration(6)">Last 6 months</button>
   </div>
 </template>
 
@@ -25,6 +28,12 @@ export default defineComponent({
     companyId: {
       required: true,
     },
+    orderCache: {
+      type: Array,
+    },
+    earliestDate: {
+      type: String,
+    },
   },
   data: () => {
     return {
@@ -33,17 +42,18 @@ export default defineComponent({
   },
   setup(props) {
     const orderList = ref([]) // vue3 construct reactive var
+    const earliestDate = ref('')
+
     onMounted(async () => {
       // console.log(props.companyId)
-      const res = await axios({
-        method: 'post',
-        url: `${process.env.VUE_APP_API_URL}/api/companies/orders`,
-        data: {
-          companyId: props.companyId,
-        },
-      })
-      orderList.value = res.data
+      const setValues = await getDataPoints(props.companyId, false)
+      orderList.value = setValues.data
     })
+
+    async function getMonthDuration(months = false) {
+      const setValues = await getDataPoints(props.companyId, months)
+      orderList.value = setValues.data
+    }
 
     const testData = computed(() => ({
       datasets: [
@@ -51,10 +61,12 @@ export default defineComponent({
           label: 'Avg Orders/day',
           data: orderList.value,
           stepped: true,
-          backgroundColor: ['rgba(216, 216, 216, 0.3)'],
+          backgroundColor: ['RGBA(255,209,90,0.22)'],
+          pointBackgroundColor: 'blue',
           borderColor: ['rgba(0, 0, 0, 0.9)'],
           borderWidth: 1,
           borderCapStyle: 'round',
+          fill: true,
         },
       ],
     }))
@@ -96,10 +108,27 @@ export default defineComponent({
 
     // loaded = true
 
-    return { testData, options, orderList }
+    return {
+      testData,
+      options,
+      orderList,
+      getDataPoints,
+      getMonthDuration,
+    }
   },
   computed: {},
 })
+
+async function getDataPoints(companyId, months) {
+  return await axios({
+    method: 'post',
+    url: `${process.env.VUE_APP_API_URL}/api/companies/orders`,
+    data: {
+      companyId: companyId,
+      lookbackMonths: months,
+    },
+  })
+}
 </script>
 
 <style scoped lang="scss">
@@ -107,5 +136,10 @@ export default defineComponent({
   width: 100%;
   max-width: 800px;
   overflow-x: scroll;
+}
+
+button {
+  margin: 10px;
+  padding: 20px;
 }
 </style>
