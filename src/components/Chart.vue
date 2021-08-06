@@ -7,6 +7,8 @@
     />
     <div v-else>Loading chart..</div>
     <button @click="resetOrders">Reset stuff!</button>
+    <button @click="getFromMay">Last 3 months</button>
+    <button @click="resetOrders">Last 6 months</button>
   </div>
 </template>
 
@@ -26,6 +28,12 @@ export default defineComponent({
     companyId: {
       required: true,
     },
+    orderCache: {
+      type: Array,
+    },
+    earliestDate: {
+      type: String,
+    },
   },
   data: () => {
     return {
@@ -34,16 +42,12 @@ export default defineComponent({
   },
   setup(props) {
     const orderList = ref([]) // vue3 construct reactive var
+    const earliestDate = ref('')
+
     onMounted(async () => {
       // console.log(props.companyId)
-      const res = await axios({
-        method: 'post',
-        url: `${process.env.VUE_APP_API_URL}/api/companies/orders`,
-        data: {
-          companyId: props.companyId,
-        },
-      })
-      orderList.value = res.data
+      const setValues = await getDataPoints(props.companyId, false)
+      orderList.value = setValues.data
     })
 
     function resetOrders() {
@@ -51,6 +55,11 @@ export default defineComponent({
         { x: '2020-01-01', y: 0 },
         { x: new Date(), y: 0 },
       ]
+    }
+
+    async function getFromMay() {
+      const setValues = await getDataPoints(props.companyId, '2020-05-01')
+      orderList.value = setValues.data
     }
 
     const testData = computed(() => ({
@@ -106,10 +115,28 @@ export default defineComponent({
 
     // loaded = true
 
-    return { testData, options, orderList, resetOrders }
+    return {
+      testData,
+      options,
+      orderList,
+      resetOrders,
+      getDataPoints,
+      getFromMay,
+    }
   },
   computed: {},
 })
+
+async function getDataPoints(companyId, date) {
+  return await axios({
+    method: 'post',
+    url: `${process.env.VUE_APP_API_URL}/api/companies/orders`,
+    data: {
+      companyId: companyId,
+      dateLimit: date,
+    },
+  })
+}
 </script>
 
 <style scoped lang="scss">
@@ -117,5 +144,10 @@ export default defineComponent({
   width: 100%;
   max-width: 800px;
   overflow-x: scroll;
+}
+
+button {
+  margin: 10px;
+  padding: 20px;
 }
 </style>
