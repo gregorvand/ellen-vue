@@ -6,6 +6,7 @@
       :options="options"
     />
     <div v-else>Loading chart..</div>
+    <button @click="resetOrders">Reset stuff!</button>
   </div>
 </template>
 
@@ -45,16 +46,25 @@ export default defineComponent({
       orderList.value = res.data
     })
 
+    function resetOrders() {
+      orderList.value = [
+        { x: '2020-01-01', y: 0 },
+        { x: new Date(), y: 0 },
+      ]
+    }
+
     const testData = computed(() => ({
       datasets: [
         {
           label: 'Avg Orders/day',
           data: orderList.value,
           stepped: true,
-          backgroundColor: ['rgba(216, 216, 216, 0.3)'],
+          backgroundColor: ['RGBA(255,209,90,0.22)'],
+          pointBackgroundColor: 'blue',
           borderColor: ['rgba(0, 0, 0, 0.9)'],
           borderWidth: 1,
           borderCapStyle: 'round',
+          fill: true,
         },
       ],
     }))
@@ -96,7 +106,7 @@ export default defineComponent({
 
     // loaded = true
 
-    return { testData, options, orderList }
+    return { testData, options, orderList, resetOrders }
   },
   computed: {},
 })
