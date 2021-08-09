@@ -9,8 +9,6 @@
     <button @click="getMonthDuration(0)">All data</button>
     <button @click="getMonthDuration(3)">Last 3 months</button>
     <button @click="getMonthDuration(6)">Last 6 months</button>
-
-    <SearchForm />
   </div>
 </template>
 
@@ -19,14 +17,13 @@ import { defineComponent, onMounted, ref, computed } from '@vue/composition-api'
 // import { mapState } from 'vuex'
 import { LineChart } from 'vue-chart-3'
 import { Chart, registerables } from 'chart.js'
-import SearchForm from './SearchForm.vue'
 import 'chartjs-adapter-date-fns'
 import axios from 'axios'
 
 Chart.register(...registerables)
 
 export default defineComponent({
-  components: { LineChart, SearchForm },
+  components: { LineChart },
   props: {
     companyId: {
       required: true,
@@ -49,6 +46,7 @@ export default defineComponent({
   setup(props) {
     const orderList = ref([]) // vue3 construct reactive var
     const secondOrderList = ref([])
+    // const comparisonCompany = ref([])
 
     onMounted(async () => {
       // console.log(props.companyId)
@@ -57,6 +55,9 @@ export default defineComponent({
 
       const setSecondValues = await getDataPoints('22058', false)
       secondOrderList.value = setSecondValues.data
+
+      const userCompanies = await getUserCompanies()
+      console.log('wow', userCompanies)
     })
 
     async function getMonthDuration(months = false) {
@@ -74,7 +75,6 @@ export default defineComponent({
           data: orderList.value,
           stepped: true,
           backgroundColor: ['RGBA(255,209,90,0.22)'],
-          pointBackgroundColor: 'blue',
           borderColor: ['rgba(196, 196, 196)'],
           borderWidth: 1,
           borderCapStyle: 'round',
@@ -85,7 +85,6 @@ export default defineComponent({
           data: secondOrderList.value,
           stepped: true,
           backgroundColor: ['RGBA(160, 207, 242, 0.1)'],
-          pointBackgroundColor: 'blue',
           borderColor: ['rgba(196, 196, 196, 0.5)'],
           borderWidth: 1,
           borderCapStyle: 'round',
@@ -152,6 +151,10 @@ async function getDataPoints(companyId, months) {
     },
   })
 }
+
+// async function getUserCompanies() {
+//   return axios.get(`${process.env.VUE_APP_API_URL}/api/dashboard`)
+// }
 </script>
 
 <style scoped lang="scss">
