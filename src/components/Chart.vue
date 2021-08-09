@@ -56,8 +56,8 @@ export default defineComponent({
       const setSecondValues = await getDataPoints('22058', false)
       secondOrderList.value = setSecondValues.data
 
-      const userCompanies = await getUserCompanies()
-      console.log('wow', userCompanies)
+      // const userCompanies = await getUserCompanies()
+      // console.log('wow', userCompanies)
     })
 
     async function getMonthDuration(months = false) {
