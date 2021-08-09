@@ -18,9 +18,13 @@
     </template>
     <div v-else>
       <span v-if="company.ticker">Getting public data...</span>
-      <span v-else>Private company - no data to show</span>
+      <span v-else>Private company - see order data below</span>
     </div>
-    <LineChart :companyId="this.$route.params.id" />
+    <LineChart
+      v-if="!company.ticker"
+      :companyId="this.$route.params.id"
+      :companyName="company.nameIdentifier"
+    />
   </div>
 </template>
 
