@@ -1,7 +1,11 @@
 <template>
-  <div :class="'chart-wrapper'" style="width: 100%; overflow-x: auto">
+  <div
+    :class="'chart-wrapper'"
+    style="width: 100%; height: 500px; overflow-x: auto"
+  >
     <LineChart
       v-if="orderList.length > 0"
+      ref="chartRef"
       :chartData="testData"
       :options="options"
     />
@@ -17,10 +21,12 @@ import { defineComponent, onMounted, ref, computed } from '@vue/composition-api'
 // import { mapState } from 'vuex'
 import { LineChart } from 'vue-chart-3'
 import { Chart, registerables } from 'chart.js'
+import zoomPlugin from 'chartjs-plugin-zoom'
+
 import 'chartjs-adapter-date-fns'
 import axios from 'axios'
 
-Chart.register(...registerables)
+Chart.register(...registerables, zoomPlugin)
 
 export default defineComponent({
   components: { LineChart },
@@ -46,6 +52,7 @@ export default defineComponent({
   setup(props) {
     const orderList = ref([]) // vue3 construct reactive var
     const secondOrderList = ref([])
+    const chartRef = ref()
     // const comparisonCompany = ref([])
 
     onMounted(async () => {
@@ -66,7 +73,11 @@ export default defineComponent({
 
       const setSecondValues = await getDataPoints('22058', months)
       secondOrderList.value = setSecondValues.data
+
+      chartRef.value.chartInstance.resetZoom()
     }
+
+    // SETUP data and options
 
     const testData = computed(() => ({
       datasets: [
@@ -93,6 +104,8 @@ export default defineComponent({
       ],
     }))
 
+    const minDate = new Date('2020-01-01')
+    const maxDate = new Date('2020-12-31')
     const options = {
       elements: {
         point: {
@@ -110,8 +123,12 @@ export default defineComponent({
         ],
         x: {
           type: 'time',
+          distribution: 'linear',
           time: {
+            min: minDate,
+            max: maxDate,
             unit: 'month',
+            stepSize: '1',
           },
         },
       },
@@ -126,6 +143,45 @@ export default defineComponent({
       cubicInterpolationMode: 'monotone',
       responsive: true,
       aspectRatio: 2,
+
+      plugins: {
+        zoom: {
+          pan: {
+            enabled: true,
+            mode: 'x',
+            speed: 0.1,
+            threshold: 10,
+            rangeMin: {
+              x: minDate,
+            },
+            rangeMax: {
+              x: maxDate,
+            },
+          },
+          zoom: {
+            wheel: {
+              enabled: true,
+            },
+            pinch: {
+              enabled: true,
+            },
+            // drag: {
+            //   enabled: true,
+            // },
+            mode: 'x',
+            rangeMin: {
+              x: minDate,
+            },
+            rangeMax: {
+              x: maxDate,
+            },
+          },
+          limits: {
+            x: { min: 'original', max: 'original' },
+            y: { min: 'original', max: 'original' },
+          },
+        },
+      },
     }
 
     // loaded = true
@@ -136,6 +192,7 @@ export default defineComponent({
       orderList,
       getDataPoints,
       getMonthDuration,
+      chartRef,
     }
   },
   computed: {},
