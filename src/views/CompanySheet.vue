@@ -4,7 +4,7 @@
       <div class="company-sheet-name">
         <h1>{{ company.nameIdentifier }}</h1>
       </div>
-      <span v-if="company.ticker !== null">Symbol: {{ company.ticker }}</span>
+      <span v-if="company.ticker !== ''">Symbol: {{ company.ticker }}</span>
     </div>
     <template v-if="publicData && company.ticker">
       <div>
@@ -18,13 +18,17 @@
     </template>
     <div v-else>
       <span v-if="company.ticker">Getting public data...</span>
-      <span v-else>Private company - see order data below</span>
     </div>
     <LineChart
       v-if="!company.ticker"
       :companyId="this.$route.params.id"
       :companyName="company.nameIdentifier"
     />
+    <ul>
+      <li>More info...</li>
+      <li>More info...</li>
+      <li>More info...</li>
+    </ul>
   </div>
 </template>
 

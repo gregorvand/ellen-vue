@@ -1,18 +1,19 @@
 <template>
-  <div
-    :class="'chart-wrapper'"
-    style="width: 100%; height: 500px; overflow-x: auto"
-  >
-    <LineChart
-      v-if="orderList.length > 0"
-      ref="chartRef"
-      :chartData="testData"
-      :options="options"
-    />
-    <div v-else>Loading chart..</div>
+  <div :class="'chart-wrapper'">
     <button @click="getMonthDuration(0)">All data</button>
     <button @click="getMonthDuration(3)">Last 3 months</button>
     <button @click="getMonthDuration(6)">Last 6 months</button>
+    <LineChart
+      v-if="orderList.length > 0"
+      ref="chartRef"
+      :chartData="chartData"
+      :options="options"
+      :class="'ellen-chart'"
+    />
+    <div v-else>Loading chart..</div>
+    <div class="scroll-enabler-mobile">
+      <!-- this area is just to enable scroll from underneath the chart -->
+    </div>
   </div>
 </template>
 
@@ -22,6 +23,7 @@ import { defineComponent, onMounted, ref, computed } from '@vue/composition-api'
 import { LineChart } from 'vue-chart-3'
 import { Chart, registerables } from 'chart.js'
 import zoomPlugin from 'chartjs-plugin-zoom'
+// import { CrosshairPlugin } from 'chartjs-plugin-crosshair' - iterferes with scroll/pan
 
 import 'chartjs-adapter-date-fns'
 import axios from 'axios'
@@ -60,9 +62,8 @@ export default defineComponent({
       const setValues = await getDataPoints(props.companyId, false)
       orderList.value = setValues.data
 
-      const setSecondValues = await getDataPoints('22058', false)
+      const setSecondValues = await getDataPoints('22059', false)
       secondOrderList.value = setSecondValues.data
-
       // const userCompanies = await getUserCompanies()
       // console.log('wow', userCompanies)
     })
@@ -71,7 +72,7 @@ export default defineComponent({
       const setValues = await getDataPoints(props.companyId, months)
       orderList.value = setValues.data
 
-      const setSecondValues = await getDataPoints('22058', months)
+      const setSecondValues = await getDataPoints('22059', months)
       secondOrderList.value = setSecondValues.data
 
       chartRef.value.chartInstance.resetZoom()
@@ -79,13 +80,13 @@ export default defineComponent({
 
     // SETUP data and options
 
-    const testData = computed(() => ({
+    const chartData = computed(() => ({
       datasets: [
         {
           label: `Avg Orders/day for ${props.companyName}`,
           data: orderList.value,
           stepped: true,
-          backgroundColor: ['RGBA(255,209,90,0.22)'],
+          backgroundColor: ['rgba(246, 246, 212, 0.38)'],
           borderColor: ['rgba(196, 196, 196)'],
           borderWidth: 1,
           borderCapStyle: 'round',
@@ -95,12 +96,14 @@ export default defineComponent({
           label: 'compare company',
           data: secondOrderList.value,
           stepped: true,
-          backgroundColor: ['RGBA(160, 207, 242, 0.1)'],
+          backgroundColor: '#efefef',
           borderColor: ['rgba(196, 196, 196, 0.5)'],
           borderWidth: 1,
           borderCapStyle: 'round',
           fill: true,
         },
+
+        // chartRef.value.chartInstance.dataSets = datasets),
       ],
     }))
 
@@ -114,13 +117,13 @@ export default defineComponent({
         },
       },
       scales: {
-        y: [
-          {
-            ticks: {
-              beginAtZero: true,
-            },
+        y: {
+          ticks: {
+            beginAtZero: true,
           },
-        ],
+          type: 'logarithmic',
+        },
+
         x: {
           type: 'time',
           distribution: 'linear',
@@ -130,21 +133,22 @@ export default defineComponent({
             unit: 'month',
             stepSize: '1',
           },
+          gridLines: {
+            display: false,
+          },
         },
       },
-      tooltips: {
-        mode: 'index',
+      interaction: {
         intersect: false,
+        mode: 'nearest',
       },
-      hover: {
-        mode: 'index',
-        intersect: false,
-      },
-      cubicInterpolationMode: 'monotone',
       responsive: true,
-      aspectRatio: 2,
+      maintainAspectRatio: false,
 
       plugins: {
+        legend: {
+          position: 'top',
+        },
         zoom: {
           pan: {
             enabled: true,
@@ -181,13 +185,19 @@ export default defineComponent({
             y: { min: 'original', max: 'original' },
           },
         },
+        crosshair: {
+          line: {
+            color: '#bababa', // crosshair line color
+            width: 1, // crosshair line width
+          },
+        },
       },
     }
 
     // loaded = true
 
     return {
-      testData,
+      chartData,
       options,
       orderList,
       getDataPoints,
@@ -217,12 +227,21 @@ async function getDataPoints(companyId, months) {
 <style scoped lang="scss">
 .chart-wrapper {
   width: 100%;
-  max-width: 800px;
-  overflow-x: scroll;
+  position: relative;
+  overflow: hidden;
+  width: 100vw;
 }
 
 button {
   margin: 10px;
   padding: 20px;
+}
+
+.scroll-enabler-mobile {
+  position: absolute;
+  // border: solid red thin;
+  width: 100%;
+  height: 70px;
+  bottom: 0;
 }
 </style>
