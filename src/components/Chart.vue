@@ -94,7 +94,6 @@ export default defineComponent({
     })
 
     async function getCompanyID(id) {
-      console.log('happened')
       compareDataID.value = id
 
       const setSecondValues = await getDataPoints(compareDataID.value, false)
