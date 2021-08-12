@@ -294,4 +294,9 @@ li {
   justify-content: center;
   align-items: center;
 }
+
+button {
+  margin: 10px;
+  padding: 20px;
+}
 </style>
