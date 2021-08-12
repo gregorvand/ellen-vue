@@ -19,7 +19,7 @@ export default {
 // comment for deploy
 </script>
 <style lang="scss">
-@import './assets/styles/global.scss';
+@import './styles/global.scss';
 .page {
   display: flex;
   justify-content: center;

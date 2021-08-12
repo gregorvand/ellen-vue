@@ -11,6 +11,7 @@ import * as company from '@/store/modules/company.js'
 import * as earnings from '@/store/modules/earnings.js'
 import * as categories from '@/store/modules/categories.js'
 import * as selectedCategories from '@/store/modules/selectedCategories.js'
+import * as compareCompany from '@/store/modules/compareCompany.js'
 
 Vue.use(Vuex)
 
@@ -26,6 +27,7 @@ export default new Vuex.Store({
     earnings,
     categories,
     selectedCategories,
+    compareCompany,
   },
   state: {},
 })

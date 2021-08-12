@@ -1,14 +1,5 @@
 <template>
   <div class="search-component" v-click-outside="clearInput">
-    <h4>Your selected companies</h4>
-    <section class="selected-companies">
-      <ul>
-        <li v-for="company in selectedCompanies" :key="company.id">
-          <CompanySelector :company="company" />
-        </li>
-      </ul>
-    </section>
-
     <h2>Search for companies</h2>
     <form class="search-companies-form" @submit.prevent>
       <input
@@ -116,11 +107,5 @@ li {
     justify-content: space-around;
     align-items: center;
   }
-}
-
-.selected-companies {
-  border: solid gray thin;
-  height: 200px;
-  overflow-y: scroll;
 }
 </style>

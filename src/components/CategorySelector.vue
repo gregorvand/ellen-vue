@@ -143,5 +143,14 @@ span {
   &.private {
     background-color: rgb(216, 17, 235);
   }
+
+  li & {
+    list-style: none;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    margin-left: 0;
+    padding: 0;
+  }
 }
 </style>

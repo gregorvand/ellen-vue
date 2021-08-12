@@ -4,7 +4,7 @@
       <div class="company-sheet-name">
         <h1>{{ company.nameIdentifier }}</h1>
       </div>
-      <span v-if="company.ticker !== null">Symbol: {{ company.ticker }}</span>
+      <span v-if="company.ticker !== ''">Symbol: {{ company.ticker }}</span>
     </div>
     <template v-if="publicData && company.ticker">
       <div>
@@ -18,9 +18,12 @@
     </template>
     <div v-else>
       <span v-if="company.ticker">Getting public data...</span>
-      <span v-else>Private company - no data to show</span>
     </div>
-    <LineChart :companyId="this.$route.params.id" />
+    <LineChart
+      v-if="!company.ticker"
+      :companyId="this.$route.params.id"
+      :companyName="company.nameIdentifier"
+    />
   </div>
 </template>
 
@@ -37,14 +40,6 @@ export default {
   beforeCreate() {
     this.$store.dispatch('company/fetchCompany', this.$route.params.id)
   },
-  // mounted() {
-  //   this.$store
-  //     .dispatch(
-  //       'company/fetchPublicCompanyRatios',
-  //       this.$store.getters['company/getCompanyTicker']
-  //     )
-  //     .finally(() => (this.loading = false))
-  // },
   computed: mapState({
     company: (state) => state.company.currentCompany,
     publicData: (state) => state?.company?.publicData[0],

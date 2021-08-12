@@ -22,7 +22,7 @@ export default {
   },
   created() {
     axios
-      .get(`${process.env.VUE_APP_API_URL}/api/dashboard`)
+      .post(`${process.env.VUE_APP_API_URL}/api/dashboard`)
       .then(({ data }) => {
         this.selectedCompanies = data.companies
       })

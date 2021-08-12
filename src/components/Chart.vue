@@ -1,14 +1,35 @@
 <template>
-  <div :class="'chart-wrapper'" style="width: 100%; overflow-x: auto">
-    <LineChart
-      v-if="orderList.length > 0"
-      :chartData="testData"
-      :options="options"
-    />
-    <div v-else>Loading chart..</div>
-    <button @click="getMonthDuration(0)">All data</button>
-    <button @click="getMonthDuration(3)">Last 3 months</button>
-    <button @click="getMonthDuration(6)">Last 6 months</button>
+  <div>
+    <div :class="'chart-wrapper'">
+      <button @click="getMonthDuration(0)">All data</button>
+      <button @click="getMonthDuration(3)">Last 3 months</button>
+      <button @click="getMonthDuration(6)">Last 6 months</button>
+      <LineChart
+        v-if="orderList.length > 0"
+        ref="chartRef"
+        :chartData="chartData"
+        :options="options"
+        :class="'ellen-chart'"
+      />
+      <div v-else>Loading chart..</div>
+      <div class="scroll-enabler-mobile">
+        <!-- this area is just to enable scroll from underneath the chart -->
+      </div>
+    </div>
+
+    <ul>
+      <li
+        v-for="company in selectedCompanies"
+        :key="company.id"
+        @click="getCompanyID(company.id)"
+      >
+        <CompanySelector
+          v-if="company.companyType == 'private'"
+          :company="company"
+        />
+      </li>
+    </ul>
+    {{ compareCompany }}
   </div>
 </template>
 
@@ -17,16 +38,23 @@ import { defineComponent, onMounted, ref, computed } from '@vue/composition-api'
 // import { mapState } from 'vuex'
 import { LineChart } from 'vue-chart-3'
 import { Chart, registerables } from 'chart.js'
+import zoomPlugin from 'chartjs-plugin-zoom'
+// import { CrosshairPlugin } from 'chartjs-plugin-crosshair' - iterferes with scroll/pan
+
 import 'chartjs-adapter-date-fns'
+import CompanySelector from '../components/CompanySelector.vue'
 import axios from 'axios'
 
-Chart.register(...registerables)
+Chart.register(...registerables, zoomPlugin)
 
 export default defineComponent({
-  components: { LineChart },
+  components: { LineChart, CompanySelector },
   props: {
     companyId: {
       required: true,
+    },
+    companyName: {
+      type: String,
     },
     orderCache: {
       type: Array,
@@ -34,43 +62,85 @@ export default defineComponent({
     earliestDate: {
       type: String,
     },
+    compareCompanyID: {
+      type: Number,
+    },
   },
   data: () => {
     return {
       loaded: false,
+      selectedCompanies: [],
     }
   },
+  computed: {
+    compareCompany() {
+      return this.$store.state.compareCompany
+    },
+  },
+
   setup(props) {
     const orderList = ref([]) // vue3 construct reactive var
-    const earliestDate = ref('')
+    const secondOrderList = ref([])
+    const chartRef = ref()
+    const compareDataID = ref(0)
+    // const comparisonCompany = ref([])'
 
     onMounted(async () => {
-      // console.log(props.companyId)
       const setValues = await getDataPoints(props.companyId, false)
       orderList.value = setValues.data
+
+      const setSecondValues = await getDataPoints(compareDataID.value, false)
+      secondOrderList.value = setSecondValues.data
     })
+
+    async function getCompanyID(id) {
+      console.log('happened')
+      compareDataID.value = id
+
+      const setSecondValues = await getDataPoints(compareDataID.value, false)
+      secondOrderList.value = setSecondValues.data
+
+      chartRef.value.chartInstance.resetZoom()
+    }
 
     async function getMonthDuration(months = false) {
       const setValues = await getDataPoints(props.companyId, months)
       orderList.value = setValues.data
+
+      const setSecondValues = await getDataPoints(compareDataID.value, months)
+      secondOrderList.value = setSecondValues.data
+
+      chartRef.value.chartInstance.resetZoom()
     }
 
-    const testData = computed(() => ({
+    // SETUP data and options
+
+    const chartData = computed(() => ({
       datasets: [
         {
-          label: 'Avg Orders/day',
+          label: `Avg Orders/day for ${props.companyName}`,
           data: orderList.value,
           stepped: true,
-          backgroundColor: ['RGBA(255,209,90,0.22)'],
-          pointBackgroundColor: 'blue',
-          borderColor: ['rgba(0, 0, 0, 0.9)'],
-          borderWidth: 1,
+          backgroundColor: ['rgba(255,255,255, 0.2  )'],
+          borderColor: ['rgba(3, 252, 190 )'],
+          borderWidth: 2,
           borderCapStyle: 'round',
           fill: true,
         },
+        {
+          label: 'compare company',
+          data: secondOrderList.value,
+          stepped: true,
+          backgroundColor: '#efefef',
+          borderColor: ['rgba(196, 196, 196, 0.5)'],
+          borderWidth: 2,
+          borderCapStyle: 'round',
+          fill: true,
+        },
+
+        // chartRef.value.chartInstance.dataSets = datasets),
       ],
     }))
-
     const options = {
       elements: {
         point: {
@@ -79,44 +149,87 @@ export default defineComponent({
         },
       },
       scales: {
-        y: [
-          {
-            ticks: {
-              beginAtZero: true,
-            },
+        y: {
+          ticks: {
+            beginAtZero: true,
           },
-        ],
+          type: 'logarithmic',
+        },
+
         x: {
           type: 'time',
+          distribution: 'linear',
           time: {
             unit: 'month',
+            stepSize: '1',
+          },
+          gridLines: {
+            display: false,
           },
         },
       },
-      tooltips: {
-        mode: 'index',
+      interaction: {
         intersect: false,
+        mode: 'nearest',
       },
-      hover: {
-        mode: 'index',
-        intersect: false,
-      },
-      cubicInterpolationMode: 'monotone',
       responsive: true,
-      aspectRatio: 2,
+      maintainAspectRatio: false,
+
+      plugins: {
+        legend: {
+          position: 'top',
+        },
+        zoom: {
+          pan: {
+            enabled: true,
+            mode: 'x',
+            speed: 0.1,
+            threshold: 10,
+          },
+          zoom: {
+            wheel: {
+              enabled: true,
+            },
+            pinch: {
+              enabled: true,
+            },
+            // drag: {
+            //   enabled: true,
+            // },
+            mode: 'x',
+          },
+          limits: {
+            x: { min: 'original', max: 'original' },
+            y: { min: 'original', max: 'original' },
+          },
+        },
+      },
     }
 
     // loaded = true
 
     return {
-      testData,
+      chartData,
       options,
       orderList,
       getDataPoints,
       getMonthDuration,
+      getCompanyID,
+      chartRef,
     }
   },
-  computed: {},
+  created() {
+    axios({
+      method: 'post',
+      url: `${process.env.VUE_APP_API_URL}/api/dashboard`,
+      data: {
+        companyType: 'private',
+      },
+    }).then(({ data }) => {
+      this.selectedCompanies = data.companies
+    })
+    this.$store.dispatch('selectedCompanies/clearCompanySelection') // ideally state becomes saved companies
+  },
 })
 
 async function getDataPoints(companyId, months) {
@@ -129,13 +242,57 @@ async function getDataPoints(companyId, months) {
     },
   })
 }
+
+// async function getUserCompanies() {
+//   return axios.get(`${process.env.VUE_APP_API_URL}/api/dashboard`)
+// }
 </script>
 
 <style scoped lang="scss">
 .chart-wrapper {
   width: 100%;
-  max-width: 800px;
-  overflow-x: scroll;
+  position: relative;
+  overflow: hidden;
+  width: 100vw;
+}
+
+button {
+  margin: 10px;
+  padding: 20px;
+}
+
+.scroll-enabler-mobile {
+  @include breakpoint(small only) {
+    position: absolute;
+    // border: solid red thin;
+    width: 100%;
+    height: 70px;
+    bottom: 0;
+  }
+}
+
+ul,
+li {
+  display: flex;
+}
+
+ul {
+  @include breakpoint(small only) {
+    flex-direction: column;
+  }
+}
+
+li {
+  width: 200px;
+  flex-direction: row;
+}
+
+.company-selector {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 button {

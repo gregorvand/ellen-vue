@@ -7,6 +7,10 @@ body {
   padding: 0em;
   margin: 0em;
   text-align: center;
+
+  * {
+    box-sizing: border-box;
+  }
 }
 
 a:visited {
@@ -82,7 +86,7 @@ body {
 #app {
   box-sizing: border-box;
   width: 100%;
-  padding: 0 20px 20px;
+  // padding: 0 20px 20px;
   margin: 0 auto;
 }
 hr {
