@@ -24,11 +24,6 @@
       :companyId="this.$route.params.id"
       :companyName="company.nameIdentifier"
     />
-    <ul>
-      <li>More info...</li>
-      <li>More info...</li>
-      <li>More info...</li>
-    </ul>
   </div>
 </template>
 
@@ -45,14 +40,6 @@ export default {
   beforeCreate() {
     this.$store.dispatch('company/fetchCompany', this.$route.params.id)
   },
-  // mounted() {
-  //   this.$store
-  //     .dispatch(
-  //       'company/fetchPublicCompanyRatios',
-  //       this.$store.getters['company/getCompanyTicker']
-  //     )
-  //     .finally(() => (this.loading = false))
-  // },
   computed: mapState({
     company: (state) => state.company.currentCompany,
     publicData: (state) => state?.company?.publicData[0],
