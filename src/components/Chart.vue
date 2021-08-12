@@ -121,9 +121,9 @@ export default defineComponent({
           label: `Avg Orders/day for ${props.companyName}`,
           data: orderList.value,
           stepped: true,
-          backgroundColor: ['rgba(246, 246, 212, 0.38)'],
-          borderColor: ['rgba(196, 196, 196)'],
-          borderWidth: 1,
+          backgroundColor: ['rgba(255,255,255, 0.2  )'],
+          borderColor: ['rgba(3, 252, 190 )'],
+          borderWidth: 2,
           borderCapStyle: 'round',
           fill: true,
         },
@@ -133,7 +133,7 @@ export default defineComponent({
           stepped: true,
           backgroundColor: '#efefef',
           borderColor: ['rgba(196, 196, 196, 0.5)'],
-          borderWidth: 1,
+          borderWidth: 2,
           borderCapStyle: 'round',
           fill: true,
         },
@@ -141,9 +141,6 @@ export default defineComponent({
         // chartRef.value.chartInstance.dataSets = datasets),
       ],
     }))
-
-    const minDate = new Date('2020-01-01')
-    const maxDate = new Date('2020-12-31')
     const options = {
       elements: {
         point: {
@@ -163,8 +160,6 @@ export default defineComponent({
           type: 'time',
           distribution: 'linear',
           time: {
-            min: minDate,
-            max: maxDate,
             unit: 'month',
             stepSize: '1',
           },
@@ -190,12 +185,6 @@ export default defineComponent({
             mode: 'x',
             speed: 0.1,
             threshold: 10,
-            rangeMin: {
-              x: minDate,
-            },
-            rangeMax: {
-              x: maxDate,
-            },
           },
           zoom: {
             wheel: {
@@ -208,22 +197,10 @@ export default defineComponent({
             //   enabled: true,
             // },
             mode: 'x',
-            rangeMin: {
-              x: minDate,
-            },
-            rangeMax: {
-              x: maxDate,
-            },
           },
           limits: {
             x: { min: 'original', max: 'original' },
             y: { min: 'original', max: 'original' },
-          },
-        },
-        crosshair: {
-          line: {
-            color: '#bababa', // crosshair line color
-            width: 1, // crosshair line width
           },
         },
       },
