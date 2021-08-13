@@ -161,7 +161,6 @@ export default defineComponent({
           time: {
             unit: 'month',
             stepSize: '1',
-            maxUnit: 5,
           },
           ticks: {
             autoSkip: false,
