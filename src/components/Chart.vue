@@ -161,6 +161,12 @@ export default defineComponent({
           time: {
             unit: 'month',
             stepSize: '1',
+            maxUnit: 5,
+          },
+          ticks: {
+            autoSkip: false,
+            maxRotation: 45,
+            minRotation: 45, // stops jumping on mobile if always set
           },
           gridLines: {
             display: false,
