@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div :class="'chart-wrapper'">
+    <div class="chart-wrapper">
       <button @click="getMonthDuration(0)">All data</button>
       <button @click="getMonthDuration(3)">Last 3 months</button>
       <button @click="getMonthDuration(6)">Last 6 months</button>
@@ -17,19 +17,21 @@
       </div>
     </div>
 
-    <ul>
+    <h3>Compare</h3>
+    <ul class="compare-list">
       <li
         v-for="company in selectedCompanies"
         :key="company.id"
-        @click="getCompanyID(company.id)"
+        @click="getCompareCompanyDetails(company)"
       >
-        <CompanySelector
+        <ChartCompanySelector
+          :class="{ active: compareCompany == company.id }"
           v-if="company.companyType == 'private'"
           :company="company"
+          :current="compareCompany[0]"
         />
       </li>
     </ul>
-    {{ compareCompany }}
   </div>
 </template>
 
@@ -42,13 +44,14 @@ import zoomPlugin from 'chartjs-plugin-zoom'
 // import { CrosshairPlugin } from 'chartjs-plugin-crosshair' - iterferes with scroll/pan
 
 import 'chartjs-adapter-date-fns'
-import CompanySelector from '../components/CompanySelector.vue'
+import ChartCompanySelector from '../components/ChartCompanySelector.vue'
 import axios from 'axios'
+import { mapState } from 'vuex'
 
 Chart.register(...registerables, zoomPlugin)
 
 export default defineComponent({
-  components: { LineChart, CompanySelector },
+  components: { LineChart, ChartCompanySelector },
   props: {
     companyId: {
       required: true,
@@ -62,9 +65,6 @@ export default defineComponent({
     earliestDate: {
       type: String,
     },
-    compareCompanyID: {
-      type: Number,
-    },
   },
   data: () => {
     return {
@@ -73,9 +73,7 @@ export default defineComponent({
     }
   },
   computed: {
-    compareCompany() {
-      return this.$store.state.compareCompany
-    },
+    ...mapState('compareCompany', ['compareCompany']),
   },
 
   setup(props) {
@@ -83,6 +81,7 @@ export default defineComponent({
     const secondOrderList = ref([])
     const chartRef = ref()
     const compareDataID = ref(0)
+    const compareDataName = ref('')
     // const comparisonCompany = ref([])'
 
     onMounted(async () => {
@@ -93,11 +92,13 @@ export default defineComponent({
       secondOrderList.value = setSecondValues.data
     })
 
-    async function getCompanyID(id) {
-      compareDataID.value = id
+    // for comparison data
+    async function getCompareCompanyDetails(company) {
+      compareDataID.value = company.id
 
       const setSecondValues = await getDataPoints(compareDataID.value, false)
       secondOrderList.value = setSecondValues.data
+      compareDataName.value = company.nameIdentifier
 
       chartRef.value.chartInstance.resetZoom()
     }
@@ -113,7 +114,6 @@ export default defineComponent({
     }
 
     // SETUP data and options
-
     const chartData = computed(() => ({
       datasets: [
         {
@@ -121,13 +121,13 @@ export default defineComponent({
           data: orderList.value,
           stepped: true,
           backgroundColor: ['rgba(255,255,255, 0.2  )'],
-          borderColor: ['rgba(3, 252, 190 )'],
+          borderColor: ['rgba(100, 222, 250)'],
           borderWidth: 2,
           borderCapStyle: 'round',
           fill: true,
         },
         {
-          label: 'compare company',
+          label: `${compareDataName.value}`,
           data: secondOrderList.value,
           stepped: true,
           backgroundColor: '#efefef',
@@ -213,7 +213,7 @@ export default defineComponent({
       orderList,
       getDataPoints,
       getMonthDuration,
-      getCompanyID,
+      getCompareCompanyDetails,
       chartRef,
     }
   },
@@ -273,17 +273,15 @@ button {
 ul,
 li {
   display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 
 ul {
+  width: 100%;
   @include breakpoint(small only) {
     flex-direction: column;
   }
-}
-
-li {
-  width: 200px;
-  flex-direction: row;
 }
 
 .company-selector {
