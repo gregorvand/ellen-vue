@@ -37,7 +37,6 @@ export default {
 .category-list {
   border: solid red thin;
   width: 100%;
-  max-width: 500px;
   padding: 20px;
   margin: 20px auto;
   text-align: left;

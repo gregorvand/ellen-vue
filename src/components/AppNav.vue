@@ -83,7 +83,7 @@ export default {
     justify-content: space-between;
     padding: $mobile-padding;
     font-size: 12px;
-    background-color: $color-ellen-gray;
+    background-color: $color-ellen-light-gray;
     padding: 10px;
   }
 }

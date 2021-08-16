@@ -1,13 +1,12 @@
 <template>
   <div class="search-component" v-click-outside="clearInput">
-    <h2>Search for companies</h2>
     <form class="search-companies-form" @submit.prevent>
       <input
         v-on:keyup="searchCompanies"
         type="text"
         v-model="currentQuery"
         @keyup.esc="clearInput"
-        placeholder="Company name or symbol e.g. 'Alcoa' or 'AA'"
+        placeholder="Search for company name or symbol"
       />
 
       <ul class="companies-results" v-if="results.length > 0">
@@ -62,8 +61,34 @@ export default {
 
 .search-component {
   width: 100%;
-  max-width: 500px;
   padding: 15px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+
+  form {
+    margin-bottom: 0 !important;
+    width: 100%;
+  }
+
+  input {
+    text-align: center;
+    padding-bottom: 5px !important;
+    margin: 0 15px;
+    border-radius: $border-radius;
+    @extend %heading-font-family;
+    color: $color-ellen-dark;
+    font-size: rem-calc(16px);
+
+    &::placeholder {
+      @extend %heading-font-family;
+      color: $color-ellen-dark-gray;
+      font-size: rem-calc(12px);
+      text-align: center;
+      padding-bottom: 5px;
+    }
+  }
 }
 
 .companies-results {
