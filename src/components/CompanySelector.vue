@@ -108,6 +108,8 @@ span {
     display: flex;
     align-items: center;
     margin-bottom: 5px;
+    width: 100%;
+    max-width: 500px;
 
     &-label {
       width: 100%;

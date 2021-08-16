@@ -20,15 +20,18 @@
     </section>
 
     <section class="subnav">
-      <router-link v-if="!loggedIn" to="/login" class="button">
+      <router-link v-if="!loggedIn" to="/login" class="login-link">
         Login
       </router-link>
-      <router-link v-else :to="{ name: 'dashboard' }">My Companies</router-link>
-      <!-- <button v-else type="button" class="logoutButton" @click="logout">
-        Logout
-      </button> -->
+
+      <div v-if="!loggedIn">:: Space for promo ::</div>
+
+      <router-link v-if="loggedIn" :to="{ name: 'dashboard' }"
+        >My Companies</router-link
+      >
       <span v-if="loggedIn">{{ user.user.email }}</span>
     </section>
+    <div v-if="loggedIn" class="logoutButton" @click="logout">Logout</div>
   </div>
 </template>
 
@@ -84,7 +87,8 @@ export default {
     padding: $mobile-padding;
     font-size: 12px;
     background-color: $color-ellen-light-gray;
-    padding: 10px;
+    padding: 5px 15px;
+    align-items: center;
   }
 }
 .nav-welcome {

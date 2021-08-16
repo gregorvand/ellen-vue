@@ -4,12 +4,6 @@
       <strong>ELLEN</strong> provides unrivalled retail insights, tools, and
       automatic updates to benchmark your business against market leaders
     </p>
-    <div v-if="!loggedIn">
-      For dashboard access please
-      <router-link to="/login"> Login </router-link>
-      or
-      <router-link to="/register"> Register </router-link>
-    </div>
 
     <section class="home-components">
       <SearchForm />
@@ -17,6 +11,13 @@
       <CategoryList />
       <BaseSaveButton v-if="loggedIn" />
       <RegisterUser v-if="!loggedIn" v-bind:captureName="false" />
+
+      <div v-if="!loggedIn">
+        For dashboard access please
+        <router-link to="/login"> Login </router-link>
+        or
+        <router-link to="/register"> Register </router-link>
+      </div>
     </section>
   </div>
 </template>
@@ -52,6 +53,7 @@ export default {
   justify-items: center;
   align-items: center;
   width: 100%;
+  max-width: 600px;
 
   > *,
   form input {
