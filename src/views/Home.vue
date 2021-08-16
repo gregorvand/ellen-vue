@@ -1,19 +1,23 @@
 <template>
   <div class="home">
-    <h1>Ellen Insights v2</h1>
-    <div v-if="!loggedIn">
-      For dashboard access please
-      <router-link to="/login"> Login </router-link>
-      or
-      <router-link to="/register"> Register </router-link>
-    </div>
+    <p class="home-intro">
+      <strong>ELLEN</strong> provides unrivalled retail insights, tools, and
+      automatic updates to benchmark your business against market leaders
+    </p>
 
     <section class="home-components">
-      <SelectedCompanies />
       <SearchForm />
+      <SelectedCompanies />
       <CategoryList />
       <BaseSaveButton v-if="loggedIn" />
       <RegisterUser v-if="!loggedIn" v-bind:captureName="false" />
+
+      <div v-if="!loggedIn">
+        For dashboard access please
+        <router-link to="/login"> Login </router-link>
+        or
+        <router-link to="/register"> Register </router-link>
+      </div>
     </section>
   </div>
 </template>
@@ -39,17 +43,31 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .home-components {
   display: flex;
   flex-direction: column;
-  max-width: 500px;
   justify-items: center;
   display: flex;
   flex-direction: column;
-  max-width: 500px;
   justify-items: center;
   align-items: center;
   width: 100%;
+  max-width: 600px;
+
+  > *,
+  form input {
+    border-radius: $border-radius;
+  }
+}
+
+.search-component {
+  background-color: $color-ellen-brand;
+  padding: 0 $mobile-padding;
+}
+
+.home-intro {
+  padding-top: 10px;
+  line-height: 1;
 }
 </style>

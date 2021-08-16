@@ -104,11 +104,12 @@ span {
   // view specifics
 
   .dashboard & {
-    width: 500px;
     height: 40px;
     display: flex;
     align-items: center;
     margin-bottom: 5px;
+    width: 100%;
+    max-width: 500px;
 
     &-label {
       width: 100%;
@@ -132,7 +133,6 @@ span {
         top: 0;
         left: 0;
         background-color: white;
-        width: 500px;
         height: 100%;
         color: black;
         display: flex;

@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;600&display=swap');
+
+%body-font-family {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+}
+
+%heading-font-family {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+}
+
+body, p {
+  @extend %body-font-family;
+}
+  
+h1, h2, h3, h4 {
+  @extend %heading-font-family;
+}
+
+h1 {
+  font-size: rem-calc(18px);
+
+  @include breakpoint(large up) {
+    font-family: rem-calc(32px);
+  }
+}

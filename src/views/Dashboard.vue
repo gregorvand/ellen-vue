@@ -42,7 +42,6 @@ ul {
   align-items: center;
   justify-content: center;
   padding: 0 20px;
-  max-width: 500px;
 }
 li {
   list-style: none;
