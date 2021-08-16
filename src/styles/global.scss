@@ -1,5 +1,17 @@
+// colours
+
+$color-ellen-dark: #373737;
+$color-ellen-brand: #FFF6A8;
+$color-ellen-gray: #F9F9F9;
+$color-white: #ffffff;
+
+// global variables
+$mobile-padding: 15px;
+
+// fonts
+@import './fonts';
+
 body {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -52,7 +64,6 @@ input {
   height: 2.6em;
   padding: 0.5em;
   margin-bottom: 1em;
-  font: 1em 'Avenir', Helvetica, sans-serif;
 }
 
 h1 {
@@ -72,17 +83,6 @@ nav {
   }
 }
 
-html {
-  -webkit-text-size-adjust: 100%;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-body {
-  margin: 0;
-  font-family: 'Open Sans', sans-serif;
-  font-size: 16px;
-  line-height: 1.5;
-}
 #app {
   box-sizing: border-box;
   width: 100%;
@@ -111,12 +111,11 @@ h5,
 h6 {
   display: flex;
   align-items: center;
-  font-family: 'Montserrat', sans-serif;
   line-height: 1;
 }
 h1 {
-  font-size: 50px;
-  font-weight: 700;
+  font-size: 24px;
+  font-weight: 600;
 }
 h2 {
   font-size: 38px;
@@ -148,9 +147,6 @@ small {
 .eyebrow {
   font-size: 20px;
 }
-.-text-primary {
-  color: #39b982;
-}
 .-text-base {
   color: #000;
 }
@@ -174,10 +170,6 @@ small {
   font-size: 13px;
   font-weight: 400;
   line-height: 26px;
-}
-.badge.-fill-gradient {
-  background: linear-gradient(to right, #16c0b0, #84cf6a);
-  color: #fff;
 }
 button,
 label,

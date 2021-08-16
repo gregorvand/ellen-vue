@@ -22,7 +22,7 @@
       <li
         v-for="company in selectedCompanies"
         :key="company.id"
-        @click="getCompareCompanyDetails(company)"
+        @click="getCompareCompanyDetails(company, 0)"
       >
         <ChartCompanySelector
           :class="{ active: compareCompany == company.id }"
@@ -93,14 +93,12 @@ export default defineComponent({
     })
 
     // for comparison data
-    async function getCompareCompanyDetails(company) {
+    async function getCompareCompanyDetails(company, months) {
       compareDataID.value = company.id
 
-      const setSecondValues = await getDataPoints(compareDataID.value, false)
+      const setSecondValues = await getDataPoints(compareDataID.value, months)
       secondOrderList.value = setSecondValues.data
       compareDataName.value = company.nameIdentifier
-
-      chartRef.value.chartInstance.resetZoom()
     }
 
     async function getMonthDuration(months = false) {

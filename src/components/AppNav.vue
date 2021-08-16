@@ -1,19 +1,34 @@
 <template>
-  <div id="nav">
-    <router-link to="/"> Home </router-link>
+  <div class="nav-header">
+    <section class="topnav">
+      <router-link to="/">
+        <img
+          src="@/assets/ELLENv2logo.svg"
+          class="logo"
+          alt="welcome to ELLEN insights"
+        />
+      </router-link>
+      <h1>
+        INSIGHTS. <br />
+        BENCHMARKING.
+      </h1>
+      <!-- <router-link to="/"> Home </router-link>
     <template v-if="loggedIn">
       <router-link :to="{ name: 'dashboard' }"> Dashboard </router-link>
       <router-link :to="{ name: 'earnings' }"> Earnings </router-link>
-    </template>
+    </template> -->
+    </section>
 
-    <br />
-    <span v-if="loggedIn">{{ user.user.email }}</span>
-    <router-link v-if="!loggedIn" to="/login" class="button">
-      Login
-    </router-link>
-    <button v-else type="button" class="logoutButton" @click="logout">
-      Logout
-    </button>
+    <section class="subnav">
+      <router-link v-if="!loggedIn" to="/login" class="button">
+        Login
+      </router-link>
+      <router-link v-else :to="{ name: 'dashboard' }">My Companies</router-link>
+      <!-- <button v-else type="button" class="logoutButton" @click="logout">
+        Logout
+      </button> -->
+      <span v-if="loggedIn">{{ user.user.email }}</span>
+    </section>
   </div>
 </template>
 
@@ -35,12 +50,42 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#nav {
+.nav-header {
   display: flex;
   align-items: center;
-  min-height: 50px;
-  padding: 0.2em 1em;
-  background: linear-gradient(to right, #16c0b0, #84cf6a);
+  justify-content: flex-start;
+
+  .topnav {
+    width: 100%;
+    background-color: $color-ellen-dark;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    min-height: 70px;
+    display: flex;
+
+    img.logo {
+      max-width: 25vw;
+      display: flex;
+    }
+    h1 {
+      font-size: rem-calc(18px);
+      display: flex;
+      color: white;
+      text-align: left;
+      margin: 0;
+    }
+  }
+
+  .subnav {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    padding: $mobile-padding;
+    font-size: 12px;
+    background-color: $color-ellen-gray;
+    padding: 10px;
+  }
 }
 .nav-welcome {
   margin-left: auto;
@@ -54,20 +99,6 @@ a {
   text-decoration: none;
   border-top: 2px solid transparent;
   border-bottom: 2px solid transparent;
-}
-.router-link-exact-active {
-  color: white;
-  border-bottom: 2px solid #fff;
-}
-button,
-.button {
-  margin-left: auto;
-  background: white;
-  text-decoration: none;
-  color: #2c3e50;
-  &.router-link-active {
-    color: #2c3e50;
-  }
 }
 .logoutButton {
   cursor: pointer;
