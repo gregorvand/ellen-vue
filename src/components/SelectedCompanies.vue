@@ -41,9 +41,7 @@ export default {
   updated: function () {
     try {
       this.$refs.scrollingEl.scrollTop = this.$refs.scrollingEl.scrollHeight
-    } catch (e) {
-      console.error('removed all companies') // TODO: analytics: add this event (user decided to remove all companies from their list)
-    }
+    } catch (e) {}
   },
 }
 </script>
