@@ -93,6 +93,7 @@ export default {
 span {
   display: flex;
   width: 100%;
+  margin-right: 5px;
 }
 
 .category-selector {
@@ -101,6 +102,7 @@ span {
   justify-content: space-between;
   padding: 5px 10px;
   cursor: pointer;
+  align-items: center;
 
   .dashboard & {
     width: 100%;

@@ -3,24 +3,27 @@
     <h4>Your selected companies</h4>
     <ul class="selected-companies-key">
       <li>
-        <span class="key">P</span> ELLEN’s inrivalled sales insights, updated
-        weekly
+        <span class="key key-private">A</span> ELLEN’s inrivalled sales
+        insights, updated weekly
       </li>
       <li>
-        <span class="key">B</span> Automated alerts and updates for public
-        company information
+        <span class="key key-public">P</span> Automated alerts and updates for
+        public company information
       </li>
     </ul>
     <div class="selected-companies">
       <ul
         v-if="selectedCompanies.length > 0"
         class="selected-companies-listing"
+        ref="scrollingEl"
       >
         <li v-for="company in selectedCompanies" :key="company.id">
           <CompanySelector :company="company" />
         </li>
       </ul>
-      <p v-else>Search and select companies above</p>
+      <p class="selected-companies-blank-prompt" v-else>
+        Search and select companies above
+      </p>
     </div>
   </div>
 </template>
@@ -34,6 +37,13 @@ export default {
   },
   computed: {
     ...mapState('selectedCompanies', ['selectedCompanies']),
+  },
+  updated: function () {
+    try {
+      this.$refs.scrollingEl.scrollTop = this.$refs.scrollingEl.scrollHeight
+    } catch (e) {
+      console.log('removed all companies') // TODO: analytics: add this event (user decided to remove all companies from their list)
+    }
   },
 }
 </script>
@@ -49,6 +59,14 @@ export default {
 
   @include breakpoint(large up) {
     flex-direction: row;
+  }
+
+  &-blank-prompt {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0.5;
   }
 }
 
@@ -83,7 +101,7 @@ ul.selected-companies-key {
   width: 100%;
 
   li {
-    font-size: rem-calc(11px);
+    font-size: $small-label-font-size;
     text-align: left;
     width: 100%;
     justify-content: flex-start;
@@ -102,6 +120,14 @@ ul.selected-companies-key {
       color: white;
       font-weight: 600;
       margin-right: 5px;
+
+      &-public {
+        background-color: $color-ellen-brand-dark;
+      }
+      &-private {
+        background-color: $color-ellen-brand-bright;
+        color: $color-black;
+      }
     }
   }
 }
