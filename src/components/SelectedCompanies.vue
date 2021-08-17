@@ -89,9 +89,17 @@ ul {
   justify-content: flex-start;
 }
 
-ul.selected-companies-listing > li {
-  border-bottom: solid $color-ellen-dark-gray thin;
-  padding-bottom: 5px;
+ul.selected-companies-listing {
+  margin: 0;
+  > li {
+    border-bottom: solid $color-ellen-dark-gray thin;
+
+    margin: 0;
+
+    > div {
+      height: 62px;
+    }
+  }
 }
 
 ul.selected-companies-key {
