@@ -11,11 +11,16 @@
         <span>{{ companyName }}</span>
       </router-link>
       <span v-else>{{ companyName }}</span>
-      <span v-if="company.ticker">({{ company.ticker }})</span>
+      <span class="ticker-label" v-if="company.ticker"
+        >({{ company.ticker }})</span
+      >
     </div>
 
     <span :class="'company-type-label ' + isPublicCompany">
-      {{ isPublicCompany }}
+      {{ companyType }}
+    </span>
+    <span class="price">
+      {{ price }}
     </span>
     <div class="checkbox-spacer">
       <input
@@ -75,6 +80,7 @@ export default {
         ? 'category-add'
         : 'individual-add',
       allowEdit: this.company.addedFromCategory ? false : true,
+      price: this.company.ticker ? 'FREE' : '$20',
     }
   },
 
@@ -83,6 +89,10 @@ export default {
       return this.company.companyName
         ? this.company.companyName // elastic search
         : this.company.nameIdentifier // ellen DB
+    },
+
+    companyType() {
+      return this.company.companyType == 'public' ? 'p' : 'a'
     },
   },
 }
@@ -98,6 +108,16 @@ export default {
 span {
   display: flex;
   width: 100%;
+
+  &.ticker-label {
+    margin-bottom: -5px;
+    font-size: 10px;
+  }
+
+  &.price {
+    width: 30px;
+    font-size: 12px;
+  }
 }
 
 .company-selector {
@@ -123,14 +143,15 @@ span {
   }
 
   &.category-add {
-    opacity: 0.4;
+    opacity: 0.6;
     position: relative;
 
     &:hover {
       &:after {
+        font-size: $small-label-font-size;
         content: 'Companies added by category cannot be individually changed';
         position: absolute;
-        top: 0;
+        top: 2px;
         left: 0;
         background-color: white;
         height: 100%;
@@ -146,8 +167,8 @@ span {
 .company-type-label {
   background-color: #efefef;
   // position: absolute;
-  right: 100px;
-  width: 50px;
+  right: 20px;
+  width: 20px;
   border-radius: 5px;
   color: white;
   text-align: center;
@@ -156,14 +177,16 @@ span {
   justify-content: center;
   font-size: 10px;
   text-transform: uppercase;
-  padding: 5px;
+  padding: 2.5px;
+  font-weight: 600;
 
   &.public {
-    background-color: blue;
+    background-color: $color-ellen-brand-dark;
   }
 
   &.private {
-    background-color: rgb(216, 17, 235);
+    color: $color-black;
+    background-color: $color-ellen-brand-bright;
   }
 }
 </style>

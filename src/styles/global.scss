@@ -1,10 +1,12 @@
 // colours
-
+$color-white: #ffffff;
+$color-black: #000000;
 $color-ellen-dark: #373737;
 $color-ellen-brand: #FFF6A8;
 $color-ellen-light-gray: #F9F9F9;
 $color-ellen-dark-gray: #C0B8B8;
-$color-white: #ffffff;
+$color-ellen-brand-bright: #FAFF00;
+$color-ellen-brand-dark: #0d139c;
 
 // global variables
 $mobile-padding: 15px;
@@ -174,8 +176,6 @@ small {
   line-height: 26px;
 }
 button,
-label,
-input,
 optgroup,
 select,
 textarea {
@@ -245,8 +245,9 @@ textarea {
 [type='text'],
 [type='number'],
 [type='search'],
+[type='email']
 [type='password'] {
-  height: 52px;
+  height: 42px;
   width: 100%;
   padding: 0 10px;
   font-size: 20px;

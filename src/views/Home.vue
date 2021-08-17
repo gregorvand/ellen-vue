@@ -10,14 +10,9 @@
       <SelectedCompanies />
       <CategoryList />
       <BaseSaveButton v-if="loggedIn" />
-      <RegisterUser v-if="!loggedIn" v-bind:captureName="false" />
 
-      <div v-if="!loggedIn">
-        For dashboard access please
-        <router-link to="/login"> Login </router-link>
-        or
-        <router-link to="/register"> Register </router-link>
-      </div>
+      <p v-if="!loggedIn">Now we just need a couple of details</p>
+      <RegisterUser v-if="!loggedIn" v-bind:captureName="false" />
     </section>
   </div>
 </template>
@@ -69,5 +64,11 @@ export default {
 .home-intro {
   padding-top: 10px;
   line-height: 1;
+}
+
+.register-form-wrapper {
+  width: 100%;
+  padding: $mobile-padding;
+  background-color: $color-ellen-light-gray;
 }
 </style>
