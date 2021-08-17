@@ -42,6 +42,7 @@ export default {
 <style lang="scss" scoped>
 p {
   font-size: $small-label-font-size;
+  padding: 0 15px;
 }
 .category-list {
   width: 100%;

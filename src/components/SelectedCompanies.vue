@@ -54,13 +54,19 @@ export default {
   border: solid $color-ellen-light-gray thin;
   height: 200px;
   flex-direction: column;
+  position: relative;
+
+  &-wrapper {
+    width: 100%;
+  }
 
   @include breakpoint(large up) {
     flex-direction: row;
   }
 
   &-blank-prompt {
-    height: 100%;
+    height: 85%;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -113,7 +119,10 @@ ul.selected-companies-key {
     justify-content: flex-start;
     margin: 0;
     margin-bottom: 5px;
-    padding: 0 15px;
+
+    @include breakpoint(small only) {
+      padding: 0 $mobile-padding;
+    }
 
     .key {
       width: 16px;
