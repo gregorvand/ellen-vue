@@ -88,6 +88,7 @@ export default {
   height: 1.6em;
   width: 30px;
   cursor: pointer;
+  margin: 0;
 }
 
 span {
