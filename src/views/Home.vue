@@ -48,7 +48,7 @@ export default {
   justify-items: center;
   align-items: center;
   width: 100%;
-  max-width: 600px;
+  max-width: 700px;
 
   > *,
   form input {
