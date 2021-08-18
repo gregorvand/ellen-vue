@@ -1,7 +1,12 @@
 footer {
   background-color: $color-ellen-dark;
+  width: 100%;
+  display: flex;
+  margin-top: auto;
+
   img {
-    max-width: 25vw;
+    max-width: 100px;
+    max-height: 100%;
   }
   color: $color-white;
   display: flex;
