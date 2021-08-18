@@ -1,9 +1,11 @@
 <template>
   <div>
     <div class="chart-wrapper">
-      <button @click="getMonthDuration(0)">All data</button>
-      <button @click="getMonthDuration(3)">Last 3 months</button>
-      <button @click="getMonthDuration(6)">Last 6 months</button>
+      <div class="chart-timeframe-selector">
+        <button @click="getMonthDuration(0)">All data</button>
+        <button @click="getMonthDuration(3)">Last 3 months</button>
+        <button @click="getMonthDuration(6)">Last 6 months</button>
+      </div>
       <LineChart
         v-if="orderList.length > 0"
         ref="chartRef"
@@ -261,6 +263,13 @@ async function getDataPoints(companyId, months) {
 button {
   margin: 10px;
   padding: 20px;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.chart-timeframe-selector {
+  display: flex;
+  justify-content: center;
 }
 
 .scroll-enabler-mobile {
