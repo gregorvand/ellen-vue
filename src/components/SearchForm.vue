@@ -74,8 +74,8 @@ export default {
 
   input {
     text-align: center;
-    padding-bottom: 5px !important;
     margin: 0 15px;
+    height: 50px;
     border-radius: $border-radius;
     @extend %heading-font-family;
     color: $color-ellen-dark;
@@ -84,9 +84,9 @@ export default {
     &::placeholder {
       @extend %heading-font-family;
       color: $color-ellen-dark-gray;
-      font-size: rem-calc(12px);
+      font-size: rem-calc(13px);
       text-align: center;
-      padding-bottom: 5px;
+      padding-bottom: 0px;
     }
   }
 }

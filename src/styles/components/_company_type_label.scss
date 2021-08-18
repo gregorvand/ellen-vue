@@ -1,0 +1,15 @@
+%company-type-label {
+  $size: 20px;
+  height: $size;
+  width: $size;
+  color: white;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $small-label-font-size;
+  text-transform: uppercase;
+  padding: 2.5px;
+  font-weight: 600;
+
+}

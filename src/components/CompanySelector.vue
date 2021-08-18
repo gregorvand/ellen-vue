@@ -165,20 +165,7 @@ span {
 }
 
 .company-type-label {
-  background-color: #efefef;
-  // position: absolute;
-  right: 20px;
-  width: 20px;
-  border-radius: 5px;
-  color: white;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 10px;
-  text-transform: uppercase;
-  padding: 2.5px;
-  font-weight: 600;
+  @extend %company-type-label;
 
   &.public {
     background-color: $color-ellen-brand-dark;

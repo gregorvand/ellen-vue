@@ -125,16 +125,8 @@ ul.selected-companies-key {
     }
 
     .key {
-      width: 16px;
-      height: 16px;
-      background-color: red;
-      align-items: center;
-      justify-content: center;
-      display: flex;
-      line-height: 12px;
-      color: white;
-      font-weight: 600;
-      margin-right: 5px;
+      @extend %company-type-label;
+      margin-right: 10px;
 
       &-public {
         background-color: $color-ellen-brand-dark;
