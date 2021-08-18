@@ -1,0 +1,16 @@
+button, .button, .btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 5em;
+  height: 2em;
+  min-width: 100px;
+  margin: 0.5em;
+  outline: none;
+  border: solid $color-black 2px;
+  background-color: $color-ellen-brand;
+  color: $color-black;
+  border-radius: $border-radius;
+  @extend %heading-font-family;
+  font-size: rem-calc(16px);
+}

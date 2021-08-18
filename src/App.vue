@@ -3,6 +3,14 @@
     <AppNav />
     <NotificationContainer />
     <router-view :key="$route.fullPath" />
+    <footer>
+      <img
+        src="@/assets/ELLENv2logo.svg"
+        class="logo"
+        alt="welcome to ELLEN insights"
+      />
+      About | Terms | Privacy
+    </footer>
   </div>
 </template>
 
