@@ -56,7 +56,8 @@ export default {
 
   &.active {
     text-decoration: underline;
-    background: coral;
+    background: $color-ellen-brand-dark;
+    color: $color-white;
   }
 }
 </style>
