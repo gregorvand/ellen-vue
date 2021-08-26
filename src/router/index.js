@@ -10,11 +10,22 @@ import RegisterUser from '@/views/RegisterUser.vue'
 import LoginUser from '@/views/LoginUser.vue'
 import CompanySheet from '@/views/CompanySheet.vue'
 import EarningsFeed from '@/views/EarningsFeed.vue'
+import Payments from '@/views/Payments.vue'
 
 import Vue2TouchEvents from 'vue2-touch-events'
 
 Vue.use(VueRouter)
 Vue.use(Vue2TouchEvents)
+
+// Stripe set up
+import { StripePlugin } from '@vue-stripe/vue-stripe'
+const options = {
+  pk: process.env.VUE_APP_STRIPE_PUBLISHABLE_KEY,
+}
+
+console.log(process.env.VUE_APP_STRIPE_PUBLISHABLE_KEY)
+
+Vue.use(StripePlugin, options)
 
 const routes = [
   {
@@ -63,6 +74,12 @@ const routes = [
     path: '/earnings',
     name: 'earnings',
     component: EarningsFeed,
+  },
+  {
+    path: '/payments',
+    name: 'payments',
+    component: Payments,
+    meta: { requiresAuth: true },
   },
 ]
 

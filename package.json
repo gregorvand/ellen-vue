@@ -11,6 +11,7 @@
     "node": "14.17.3"
   },
   "dependencies": {
+    "@vue-stripe/vue-stripe": "^4.2.5",
     "@vue/cli": "^4.5.13",
     "@vue/composition-api": "^1.0.4",
     "axios": "^0.21.1",
