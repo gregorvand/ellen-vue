@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="form-container">
     <label>Card Number</label>
-    <div id="card-number"></div>
+    <div id="card-number" class="card-number"></div>
     <label>Card Expiry</label>
     <div id="card-expiry"></div>
     <label>Card CVC</label>
@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   data() {
     return {
@@ -28,26 +29,33 @@ export default {
   },
   mounted() {
     // Style Object documentation here: https://stripe.com/docs/js/appendix/style
-    const style = {
-      base: {
-        color: 'black',
-        fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-        fontSmoothing: 'antialiased',
-        fontSize: '14px',
-        '::placeholder': {
-          color: '#aab7c4',
+
+    this.cardNumber = this.stripeElements.create('cardNumber', {
+      style: {
+        base: {
+          iconColor: '#c4f0ff',
+          color: '#000000',
+          fontWeight: '500',
+          fontFamily: 'Roboto, Open Sans, Segoe UI, sans-serif',
+          fontSize: '16px',
+          fontSmoothing: 'antialiased',
+          ':-webkit-autofill': {
+            color: '#fce883',
+          },
+          '::placeholder': {
+            color: '#87BBFD',
+          },
+        },
+        invalid: {
+          iconColor: '#FFC7EE',
+          color: '#FFC7EE',
         },
       },
-      invalid: {
-        color: '#fa755a',
-        iconColor: '#fa755a',
-      },
-    }
-    this.cardNumber = this.stripeElements.create('cardNumber', { style })
+    })
     this.cardNumber.mount('#card-number')
-    this.cardExpiry = this.stripeElements.create('cardExpiry', { style })
+    this.cardExpiry = this.stripeElements.create('cardExpiry')
     this.cardExpiry.mount('#card-expiry')
-    this.cardCvc = this.stripeElements.create('cardCvc', { style })
+    this.cardCvc = this.stripeElements.create('cardCvc')
     this.cardCvc.mount('#card-cvc')
   },
   beforeDestroy() {
@@ -66,21 +74,35 @@ export default {
       console.log(token)
       // handle the token
       // send it to your server
+      axios({
+        method: 'post',
+        url: `${process.env.VUE_APP_API_URL}/create-payment-intent`,
+        data: token,
+      }).then((res) => {
+        console.log(res)
+        this.$stripe
+          .confirmCardPayment(res.data.clientSecret, {
+            payment_method: {
+              card: this.cardNumber,
+            },
+          })
+          .then(function (result) {
+            console.log('woo', result)
+          })
+      })
     },
   },
 }
 </script>
 
-<style scoped>
-#custom-button {
-  height: 30px;
-  outline: 1px solid grey;
-  background-color: green;
-  padding: 5px;
-  color: white;
-}
+<style scoped lang="scss">
+.form-container > div {
+  color: black !important;
+  width: 200px;
+  border: solid black thin;
 
-#card-error {
-  color: red;
+  input {
+    color: black !important;
+  }
 }
 </style>
