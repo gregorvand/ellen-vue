@@ -3,7 +3,7 @@
     <div class="chart-wrapper">
       <div class="chart-timeframe-selector">
         <button @click="getMonthDuration(0)">All data</button>
-        <button @click="getMonthDuration(3)">Last 3 months</button>
+        <button @click="getMonthDuration(1)">Latest 1 month</button>
         <button @click="getMonthDuration(6)">Last 6 months</button>
       </div>
       <LineChart
@@ -121,7 +121,7 @@ export default defineComponent({
           data: orderList.value,
           stepped: true,
           backgroundColor: ['rgba(255,255,255, 0.2  )'],
-          borderColor: ['rgba(100, 222, 250)'],
+          borderColor: ['rgba(50,50,50)'],
           borderWidth: 2,
           borderCapStyle: 'round',
           fill: true,
@@ -152,14 +152,14 @@ export default defineComponent({
           ticks: {
             beginAtZero: true,
           },
-          type: 'logarithmic',
+          type: 'linear',
         },
 
         x: {
           type: 'time',
           distribution: 'linear',
           time: {
-            unit: 'month',
+            unit: 'day',
             stepSize: '1',
           },
           ticks: {
