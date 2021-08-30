@@ -13,6 +13,7 @@
 
 <script>
 import axios from 'axios'
+import { mapState } from 'vuex'
 export default {
   data() {
     return {
@@ -26,6 +27,7 @@ export default {
     stripeElements() {
       return this.$stripe.elements()
     },
+    ...mapState(['user']),
   },
   mounted() {
     // Style Object documentation here: https://stripe.com/docs/js/appendix/style
@@ -84,10 +86,17 @@ export default {
           .confirmCardPayment(res.data.clientSecret, {
             payment_method: {
               card: this.cardNumber,
+              billing_details: {
+                email: this.user.user.email,
+              },
             },
+            receipt_email: 'gregor+receipt@ellen.me',
           })
           .then(function (result) {
             console.log('woo', result)
+            console.log(
+              'now is when to fire stripe webhook with transaction data'
+            )
           })
       })
     },
