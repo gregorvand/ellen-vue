@@ -10,7 +10,6 @@ import RegisterUser from '@/views/RegisterUser.vue'
 import LoginUser from '@/views/LoginUser.vue'
 import CompanySheet from '@/views/CompanySheet.vue'
 import EarningsFeed from '@/views/EarningsFeed.vue'
-import Payments from '@/views/Payments.vue'
 
 import Vue2TouchEvents from 'vue2-touch-events'
 
@@ -75,14 +74,14 @@ const routes = [
     path: '/earnings',
     name: 'earnings',
     component: EarningsFeed,
-    meta: { requiresAuth: true }, 
-  },
-  {
-    path: '/payments',
-    name: 'payments',
-    component: Payments,
     meta: { requiresAuth: true },
   },
+  // {
+  //   path: '/payments',
+  //   name: 'payments',
+  //   component: Payments,
+  //   meta: { requiresAuth: true },
+  // },
 ]
 
 const router = new VueRouter({

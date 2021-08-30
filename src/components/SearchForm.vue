@@ -74,7 +74,6 @@ export default {
 
   input {
     text-align: center;
-    margin: 0 15px;
     height: 50px;
     border-radius: $border-radius;
     @extend %heading-font-family;

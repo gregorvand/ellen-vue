@@ -1,24 +1,6 @@
 <template>
   <div class="register-form-wrapper">
     <form @submit.prevent="register">
-      <label for="fname"> First Name </label>
-      <input
-        v-model="fname"
-        type="text"
-        name="fname"
-        value
-        placeholder="First Name"
-      />
-
-      <label for="lname"> Last Name </label>
-      <input
-        v-model="lname"
-        type="text"
-        name="lname"
-        value
-        placeholder="Last Name"
-      />
-
       <label for="email"> Email </label>
       <input
         v-model="email"
@@ -32,7 +14,7 @@
       <input
         v-model="password"
         type="password"
-        name
+        name="password"
         value
         placeholder="Choose password (minimum 8 characters)"
       />
@@ -111,6 +93,8 @@ input {
   @extend %body-font-family;
   line-height: 1;
   height: 42px;
+  display: flex;
+  width: 100%;
 
   &::placeholder {
     @extend %heading-font-family;

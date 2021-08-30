@@ -1,5 +1,12 @@
 <template>
   <div class="form-container">
+    <label>Number of credits</label>
+    <input
+      v-model="chargeAmount"
+      id="credits"
+      type="text"
+      placeholder="choose credits"
+    />
     <label>Card Number</label>
     <div id="card-number" class="card-number"></div>
     <label>Card Expiry</label>
@@ -7,7 +14,7 @@
     <label>Card CVC</label>
     <div id="card-cvc"></div>
     <div id="card-error"></div>
-    <button id="custom-button" @click="createToken">Generate Token</button>
+    <button id="custom-button" @click="chargeCard">Pay</button>
   </div>
 </template>
 
@@ -21,6 +28,7 @@ export default {
       cardNumber: null,
       cardExpiry: null,
       cardCvc: null,
+      chargeAmount: 0,
     }
   },
   computed: {
@@ -66,7 +74,7 @@ export default {
     this.cardCvc.destroy()
   },
   methods: {
-    async createToken() {
+    async chargeCard() {
       const { token, error } = await this.$stripe.createToken(this.cardNumber)
       if (error) {
         // handle error here
@@ -76,29 +84,48 @@ export default {
       console.log(token)
       // handle the token
       // send it to your server
-      axios({
+      const createIntent = await axios({
         method: 'post',
         url: `${process.env.VUE_APP_API_URL}/create-payment-intent`,
-        data: token,
-      }).then((res) => {
-        console.log(res)
-        this.$stripe
-          .confirmCardPayment(res.data.clientSecret, {
-            payment_method: {
-              card: this.cardNumber,
-              billing_details: {
-                email: this.user.user.email,
-              },
-            },
-            receipt_email: 'gregor+receipt@ellen.me',
-          })
-          .then(function (result) {
-            console.log('woo', result)
-            console.log(
-              'now is when to fire stripe webhook with transaction data'
-            )
-          })
+        data: { token: token },
       })
+
+      console.log(createIntent)
+      const makeCharge = await this.$stripe.confirmCardPayment(
+        createIntent.data.clientSecret,
+        {
+          payment_method: {
+            card: this.cardNumber,
+            billing_details: {
+              email: this.user.user.email,
+            },
+          },
+          receipt_email: 'gregor+receipt@ellen.me',
+        }
+      )
+
+      if (makeCharge.error) {
+        const notification = {
+          type: 'error',
+          message: `Oh no, we were not able to process the payment for this reason: ${makeCharge.error.message}`,
+        }
+        this.$store.dispatch('notification/add', notification, {
+          root: true,
+        })
+      } else {
+        // console.log('woo', makeCharge)
+        const notification = {
+          type: 'success',
+          message:
+            'Great, we just added credits to your account, they should show up shortly',
+        }
+        this.$store.dispatch('notification/add', notification, {
+          root: true,
+        })
+        this.cardNumber.clear()
+        this.cardExpiry.clear()
+        this.cardCvc.clear()
+      }
     },
   },
 }

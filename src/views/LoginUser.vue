@@ -48,5 +48,9 @@ export default {
 <style lang="scss" scoped>
 form {
   width: 300px;
+
+  input {
+    width: 100%;
+  }
 }
 </style>
