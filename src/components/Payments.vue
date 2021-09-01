@@ -1,12 +1,37 @@
 <template>
   <div class="form-container">
-    <label>Number of credits</label>
     <input
-      v-model="chargeAmount"
-      id="credits"
-      type="text"
-      placeholder="choose credits"
+      type="radio"
+      id="credits-plan-1"
+      value="10"
+      v-model="chargeCredits"
     />
+    <label for="credits-plan-1">10</label>
+    <br />
+    <input
+      type="radio"
+      id="credits-plan-2"
+      value="20"
+      v-model="chargeCredits"
+    />
+    <label for="credits-plan-2">20</label>
+    <br />
+    <input
+      type="radio"
+      id="credits-plan-3"
+      value="50"
+      v-model="chargeCredits"
+    />
+    <label for="credits-plan-3">50</label>
+    <br />
+    <input
+      type="radio"
+      id="credits-plan-4"
+      value="100"
+      v-model="chargeCredits"
+    />
+    <label for="credits-plan-4">100</label>
+    <br />
     <label>Card Number</label>
     <div id="card-number" class="card-number"></div>
     <label>Card Expiry</label>
@@ -28,7 +53,7 @@ export default {
       cardNumber: null,
       cardExpiry: null,
       cardCvc: null,
-      chargeAmount: 0,
+      chargeCredits: 0,
     }
   },
   computed: {
@@ -87,10 +112,12 @@ export default {
       const createIntent = await axios({
         method: 'post',
         url: `${process.env.VUE_APP_API_URL}/create-payment-intent`,
-        data: { token: token },
+        data: {
+          token: token,
+          chargeAmount: parseInt(this.chargeCredits),
+        },
       })
 
-      console.log(createIntent)
       const makeCharge = await this.$stripe.confirmCardPayment(
         createIntent.data.clientSecret,
         {
