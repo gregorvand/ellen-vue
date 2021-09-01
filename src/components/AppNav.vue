@@ -30,6 +30,7 @@
         >My Companies</router-link
       >
       <span v-if="loggedIn">{{ user.user.email }}</span>
+      <span>{{ credits.displayCreditBalance }}</span>
     </section>
     <div v-if="loggedIn" class="logoutButton" @click="logout">Logout</div>
   </div>
@@ -41,13 +42,16 @@ import { mapState } from 'vuex'
 export default {
   computed: {
     ...authComputed,
-    ...mapState(['user']),
+    ...mapState(['user', 'credits']),
   },
 
   methods: {
     logout() {
       this.$store.dispatch('user/logout')
     },
+  },
+  created() {
+    this.$store.dispatch('credits/fetchBalance')
   },
 }
 </script>
