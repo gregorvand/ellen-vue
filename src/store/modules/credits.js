@@ -3,12 +3,12 @@ import axios from 'axios'
 export const namespaced = true
 
 export const state = () => ({
-  displayCreditBalance: 'myvalue',
+  displayCreditBalance: 0,
 })
 
 export const getters = {
   currentCredits: (state) => {
-    return state.displayCredits
+    return state.displayCreditBalance
   },
 }
 
@@ -23,7 +23,10 @@ export const actions = {
     axios
       .get(`${process.env.VUE_APP_API_URL}/api/user/credit-balance`)
       .then((balance) => {
-        commit('SET_BALANCE', balance.data[0].credit_balance || 0)
+        commit('SET_BALANCE', balance?.data[0]?.credit_balance || 0)
       })
+  },
+  setBalance({ commit }, balance) {
+    commit('SET_BALANCE', balance)
   },
 }

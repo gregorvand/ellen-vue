@@ -45,7 +45,7 @@
 
 <script>
 import axios from 'axios'
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 export default {
   data() {
     return {
@@ -60,7 +60,8 @@ export default {
     stripeElements() {
       return this.$stripe.elements()
     },
-    ...mapState(['user']),
+    ...mapState(['user', 'credits']),
+    ...mapGetters('credits', ['currentCredits']),
   },
   mounted() {
     // Style Object documentation here: https://stripe.com/docs/js/appendix/style
@@ -140,7 +141,6 @@ export default {
           root: true,
         })
       } else {
-        // console.log('woo', makeCharge)
         const notification = {
           type: 'success',
           message:
@@ -149,6 +149,11 @@ export default {
         this.$store.dispatch('notification/add', notification, {
           root: true,
         })
+        let currentBalance = this.$store.getters['credits/currentCredits']
+        currentBalance = parseInt(currentBalance) + parseInt(this.chargeCredits)
+        console.log(currentBalance)
+        this.$store.dispatch('credits/setBalance', currentBalance)
+
         this.cardNumber.clear()
         this.cardExpiry.clear()
         this.cardCvc.clear()
