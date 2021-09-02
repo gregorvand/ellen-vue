@@ -26,7 +26,9 @@ export const actions = {
         commit('SET_BALANCE', balance?.data[0]?.credit_balance || 0)
       })
       .catch((err) => {
-        console.log(`could not fetch credit balance (server response: ${err})`)
+        console.warning(
+          `could not fetch credit balance (server response: ${err})`
+        )
       })
   },
   setBalance({ commit }, balance) {
