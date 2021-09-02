@@ -107,7 +107,6 @@ export default {
         document.getElementById('card-error').innerHTML = error.message
         return
       }
-      console.log(token)
       // handle the token
       // send it to your server
       const createIntent = await axios({
@@ -151,7 +150,6 @@ export default {
         })
         let currentBalance = this.$store.getters['credits/currentCredits']
         currentBalance = parseInt(currentBalance) + parseInt(this.chargeCredits)
-        console.log(currentBalance)
         this.$store.dispatch('credits/setBalance', currentBalance)
 
         this.cardNumber.clear()
