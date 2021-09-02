@@ -29,8 +29,14 @@
       <router-link v-if="loggedIn" :to="{ name: 'dashboard' }"
         >My Companies</router-link
       >
-      <span v-if="loggedIn">{{ user.user.email }}</span>
-      <span>{{ credits.displayCreditBalance }}</span>
+
+      <div class="user-details" v-if="loggedIn">
+        <span>{{ user.user.email }}</span>
+        <span
+          ><strong>Balance:&nbsp;</strong>
+          {{ credits.displayCreditBalance }}</span
+        >
+      </div>
     </section>
     <div v-if="loggedIn" class="logoutButton" @click="logout">Logout</div>
   </div>
@@ -93,6 +99,16 @@ export default {
     background-color: $color-ellen-light-gray;
     padding: 5px 15px;
     align-items: center;
+  }
+
+  .user-details {
+    display: flex;
+    flex-direction: column;
+
+    span {
+      display: flex;
+      margin-left: 10px;
+    }
   }
 }
 .nav-welcome {
