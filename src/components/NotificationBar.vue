@@ -46,6 +46,7 @@ export default {
 
   &.-text-error {
     background-color: yellow;
+    color: $color-black;
   }
 }
 </style>

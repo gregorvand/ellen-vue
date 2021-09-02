@@ -6,6 +6,7 @@
         <CompanySelector :company="company" v-bind:disableCheckBox="true" />
       </li>
     </ul>
+    <Payments />
   </div>
 </template>
 
@@ -13,8 +14,9 @@
 import axios from 'axios'
 // import { mapState } from 'vuex'
 import CompanySelector from '../components/CompanySelector'
+import Payments from '../components/Payments'
 export default {
-  components: { CompanySelector },
+  components: { CompanySelector, Payments },
   data() {
     return {
       selectedCompanies: [],

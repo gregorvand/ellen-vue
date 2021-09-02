@@ -16,6 +16,16 @@ import Vue2TouchEvents from 'vue2-touch-events'
 Vue.use(VueRouter)
 Vue.use(Vue2TouchEvents)
 
+// Stripe set up
+import { StripePlugin } from '@vue-stripe/vue-stripe'
+const options = {
+  pk: process.env.VUE_APP_STRIPE_PUBLISHABLE_KEY,
+}
+
+console.log(process.env.VUE_APP_STRIPE_PUBLISHABLE_KEY)
+
+Vue.use(StripePlugin, options)
+
 const routes = [
   {
     path: '/',
@@ -58,12 +68,20 @@ const routes = [
     path: '/company/:id',
     name: 'company',
     component: CompanySheet,
+    meta: { requiresAuth: true },
   },
   {
     path: '/earnings',
     name: 'earnings',
     component: EarningsFeed,
+    meta: { requiresAuth: true },
   },
+  // {
+  //   path: '/payments',
+  //   name: 'payments',
+  //   component: Payments,
+  //   meta: { requiresAuth: true },
+  // },
 ]
 
 const router = new VueRouter({

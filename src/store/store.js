@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import * as user from '@/store/modules/user.js'
-import * as event from '@/store/modules/events.js'
 import * as notification from '@/store/modules/notification.js'
 import * as search from '@/store/modules/search.js'
 import * as selectedCompanies from '@/store/modules/selectedCompanies.js'
@@ -12,13 +11,13 @@ import * as earnings from '@/store/modules/earnings.js'
 import * as categories from '@/store/modules/categories.js'
 import * as selectedCategories from '@/store/modules/selectedCategories.js'
 import * as compareCompany from '@/store/modules/compareCompany.js'
+import * as credits from '@/store/modules/credits.js'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
     user,
-    event,
     notification,
     search,
     selectedCompanies,
@@ -28,6 +27,7 @@ export default new Vuex.Store({
     categories,
     selectedCategories,
     compareCompany,
+    credits,
   },
   state: {},
 })

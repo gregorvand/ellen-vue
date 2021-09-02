@@ -28,7 +28,10 @@ import store from '@/store/store'
 import io from 'socket.io-client'
 const socket = io.connect(`${process.env.VUE_APP_API_URL}`)
 
+console.log(socket)
+
 socket.on('earningsData', (fetchedData) => {
+  console.log('socket!')
   store.dispatch('earnings/addReportToEarnings', fetchedData)
 })
 
