@@ -57,7 +57,9 @@ export default {
     },
   },
   created() {
-    this.$store.dispatch('credits/fetchBalance')
+    if (this.loggedIn) {
+      this.$store.dispatch('credits/fetchBalance')
+    }
   },
 }
 </script>
