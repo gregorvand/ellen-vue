@@ -22,8 +22,6 @@ const options = {
   pk: process.env.VUE_APP_STRIPE_PUBLISHABLE_KEY,
 }
 
-console.log(process.env.VUE_APP_STRIPE_PUBLISHABLE_KEY)
-
 Vue.use(StripePlugin, options)
 
 const routes = [
