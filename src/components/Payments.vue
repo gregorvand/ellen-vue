@@ -29,6 +29,7 @@
       >
         <span v-if="chargeCredits == 0">Select Credits</span>
         <span v-else>Pay ${{ chargeCredits * 30 }}</span>
+        <!-- TODO: API-based real-time cost of tokens !-->
       </button>
     </div>
     <div v-if="isProcessing" class="loading-coin">
