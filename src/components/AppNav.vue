@@ -62,7 +62,7 @@ export default {
       this.$store.dispatch('user/logout')
     },
   },
-  created() {
+  mounted() {
     if (this.loggedIn) {
       this.$store.dispatch('credits/fetchBalance')
     }
