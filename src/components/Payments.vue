@@ -1,26 +1,36 @@
 <template>
   <div class="form-container">
-    <div v-for="valueAmount in creditValues" :key="'radio-' + valueAmount.id">
-      <input
-        type="radio"
-        :value="valueAmount.value"
-        :id="'credit-selector-' + valueAmount.id"
-        v-model="chargeCredits"
-      />
-      <label :for="'credit-selector-' + valueAmount.id">{{
-        valueAmount.value
-      }}</label>
+    <div class="credit-selection">
+      <div v-for="valueAmount in creditValues" :key="'radio-' + valueAmount.id">
+        <input
+          type="radio"
+          :value="valueAmount.value"
+          :id="'credit-selector-' + valueAmount.id"
+          v-model="chargeCredits"
+        />
+        <label :for="'credit-selector-' + valueAmount.id">{{
+          valueAmount.value
+        }}</label>
+      </div>
     </div>
 
     <br />
-    <label>Card Number</label>
-    <div id="card-number" class="card-number"></div>
-    <label>Card Expiry</label>
-    <div id="card-expiry"></div>
-    <label>Card CVC</label>
-    <div id="card-cvc"></div>
-    <div id="card-error"></div>
-    <button id="custom-button" @click="chargeCard">Pay</button>
+    <div class="summary">Credits to purchase: {{ chargeCredits }} <br /></div>
+    <div class="stripe-card-form">
+      <div class="card-inputs">
+        <label>Card Number</label>
+        <div id="card" class="card"></div>
+        <span id="card-error">{{ cardError }}</span>
+      </div>
+      <button
+        id="custom-button"
+        @click="chargeCard"
+        :disabled="chargeCredits == 0"
+      >
+        <span v-if="chargeCredits == 0">Select Credits</span>
+        <span v-else>Pay ${{ chargeCredits * 30 }}</span>
+      </button>
+    </div>
     <div v-if="isProcessing" class="loading-coin">
       <strong>Processing payment</strong>
       <img
@@ -39,9 +49,7 @@ export default {
   data() {
     return {
       token: null,
-      cardNumber: null,
-      cardExpiry: null,
-      cardCvc: null,
+      card: null,
       chargeCredits: 0,
       creditValues: [
         // these will eventually come from API
@@ -50,6 +58,7 @@ export default {
         { id: 3, value: 50 },
         { id: 4, value: 100 },
       ],
+      cardError: '',
       isProcessing: false,
     }
   },
@@ -63,15 +72,17 @@ export default {
   mounted() {
     // Style Object documentation here: https://stripe.com/docs/js/appendix/style
 
-    this.cardNumber = this.stripeElements.create('cardNumber', {
+    this.card = this.stripeElements.create('card', {
+      iconStyle: 'solid',
       style: {
         base: {
           iconColor: '#c4f0ff',
-          color: '#000000',
-          fontWeight: '500',
+          color: '#05769C',
+          fontWeight: 500,
           fontFamily: 'Roboto, Open Sans, Segoe UI, sans-serif',
           fontSize: '16px',
           fontSmoothing: 'antialiased',
+
           ':-webkit-autofill': {
             color: '#fce883',
           },
@@ -85,26 +96,20 @@ export default {
         },
       },
     })
-    this.cardNumber.mount('#card-number')
-    this.cardExpiry = this.stripeElements.create('cardExpiry')
-    this.cardExpiry.mount('#card-expiry')
-    this.cardCvc = this.stripeElements.create('cardCvc')
-    this.cardCvc.mount('#card-cvc')
+    this.card.mount('#card')
   },
   beforeDestroy() {
-    this.cardNumber.destroy()
-    this.cardExpiry.destroy()
-    this.cardCvc.destroy()
+    this.card.destroy()
   },
   methods: {
     async chargeCard() {
-      this.isProcessing = true
-      const { token, error } = await this.$stripe.createToken(this.cardNumber)
+      const { token, error } = await this.$stripe.createToken(this.card)
       if (error) {
         // handle error here
-        document.getElementById('card-error').innerHTML = error.message
+        this.cardError = error.message
         return
       }
+      this.isProcessing = true
       // handle the token
       // send it to your server
       const createIntent = await axios({
@@ -120,7 +125,7 @@ export default {
         createIntent.data.clientSecret,
         {
           payment_method: {
-            card: this.cardNumber,
+            card: this.card,
             billing_details: {
               email: this.user.user.email,
             },
@@ -152,9 +157,9 @@ export default {
         currentBalance = parseInt(currentBalance) + parseInt(this.chargeCredits)
         this.$store.dispatch('credits/setBalance', currentBalance)
 
-        this.cardNumber.clear()
-        this.cardExpiry.clear()
-        this.cardCvc.clear()
+        this.card.clear()
+        this.cardError = ''
+        this.chargeCredits = 0
       }
     },
   },
@@ -164,13 +169,67 @@ export default {
 <style scoped lang="scss">
 .form-container {
   position: relative;
+  width: 100%;
+  max-width: 500px;
+
+  .credit-selection {
+    display: flex;
+    width: 100%;
+    > div {
+      display: flex;
+      flex-basis: 45%;
+    }
+  }
+
   > div {
     color: black !important;
-    width: 200px;
 
     input {
       color: black !important;
     }
+
+    input[type='radio'] {
+      display: none;
+
+      &:checked {
+        + label {
+          background-color: $color-ellen-brand;
+        }
+      }
+    }
+  }
+}
+
+.credit-selection {
+  label {
+    cursor: pointer;
+    display: flex;
+    border: solid $color-black 2px;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 2px;
+    border-radius: 5px;
+
+    &:hover {
+      background-color: $color-ellen-brand;
+    }
+  }
+}
+
+.summary {
+  text-align: left;
+}
+
+.stripe-card-form {
+  background-color: #fbfbfb;
+  padding: 10px;
+  border-radius: $border-radius;
+  width: 100%;
+
+  button {
+    width: 100%;
+    max-width: 100%;
   }
 }
 
