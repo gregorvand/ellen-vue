@@ -1,11 +1,13 @@
 <template>
   <div>
     <h1>Dashboard</h1>
-    <ul>
+    <ul class="followed-companies">
+      <h2>Followed companies</h2>
       <li v-for="company in selectedCompanies" :key="company.id">
         <CompanySelector :company="company" v-bind:disableCheckBox="true" />
       </li>
     </ul>
+    <h2>Buy credits</h2>
     <Payments />
   </div>
 </template>
@@ -33,7 +35,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 ul {
   width: 100%;
   padding: 0;
@@ -42,8 +44,12 @@ ul {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   padding: 0 20px;
+  height: 250px;
+  overflow-y: scroll;
+  max-width: 500px;
+  border: solid $color-black thin;
 }
 li {
   list-style: none;
