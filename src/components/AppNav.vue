@@ -32,10 +32,16 @@
 
       <div class="user-details" v-if="loggedIn">
         <span>{{ user.user.email }}</span>
-        <span
-          ><strong>Balance:&nbsp;</strong>
-          {{ credits.displayCreditBalance }}</span
-        >
+        <div class="balance-details">
+          <span class="balance-details-prefix">Balance:</span>
+          <span v-if="credits.displayCreditBalance === null">
+            <img
+              src="@/assets/coin_gif.gif"
+              class="coin"
+              alt="welcome to ELLEN insights"
+          /></span>
+          <span v-else> {{ credits.displayCreditBalance }}</span>
+        </div>
       </div>
     </section>
     <div v-if="loggedIn" class="logoutButton" @click="logout">Logout</div>
@@ -106,6 +112,23 @@ export default {
   .user-details {
     display: flex;
     flex-direction: column;
+
+    .balance-details {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      height: 30px;
+
+      &-prefix {
+        font-weight: 600;
+      }
+
+      img {
+        width: 20px;
+        object-fit: cover;
+        height: 22px;
+      }
+    }
 
     span {
       display: flex;
