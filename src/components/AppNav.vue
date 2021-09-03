@@ -53,9 +53,6 @@ import { authComputed } from '@/store/helpers.js'
 import { mapState } from 'vuex'
 export default {
   computed: {
-    creditIsLoading() {
-      return this.$store.credit.displayCreditBalance === null
-    },
     ...authComputed,
     ...mapState(['user', 'credits']),
   },
