@@ -25,5 +25,6 @@ export default {
   width: 100%;
   left: 0;
   color: white;
+  z-index: 100;
 }
 </style>
