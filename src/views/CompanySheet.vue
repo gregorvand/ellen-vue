@@ -29,7 +29,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import LineChart from '@/components/Chart'
+import LineChart from '@/components/ChartV2'
 
 export default {
   name: 'CompanyView',
