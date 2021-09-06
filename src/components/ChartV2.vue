@@ -3,7 +3,9 @@
     <div class="chart-wrapper">
       <div class="chart-timeframe-selector">
         <!-- eventually we want a store of valid months that will generate the buttons -->
-        <DateSelector :date="{ id: '01012021', date: '01/01/2021' }" />
+        <DateSelector :date="{ id: '01122020', date: '12/01/2020' }" />
+        <br />
+        <DateSelector :date="{ id: '01112020', date: '11/01/2020' }" />
       </div>
       <LineChart
         v-if="orderList.length > 0"
