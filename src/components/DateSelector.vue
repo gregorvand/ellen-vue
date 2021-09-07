@@ -16,6 +16,7 @@
 
 <script>
 import dayjs from 'dayjs'
+import { mapState } from 'vuex'
 export default {
   props: {
     date: {
@@ -31,10 +32,10 @@ export default {
       if (!this.checked) {
         let dateForStore = dayjs(this.date.date).toISOString()
         this.dateObject.date = dateForStore
-        this.$store.dispatch(
-          'selectedDataSets/addDateToSelection',
-          this.dateObject
-        )
+        this.$store.dispatch('selectedDataSets/addDateToSelection', {
+          date: this.dateObject,
+          company: this.company.currentCompany.id,
+        })
       } else {
         this.$store.dispatch(
           'selectedDataSets/removeDateSelection',
@@ -50,7 +51,14 @@ export default {
         this.date.id
       ),
       dateObject: this.date,
+      id: this.assignID,
     }
+  },
+  computed: {
+    assignID() {
+      return Math.random(10)
+    },
+    ...mapState(['company']),
   },
 }
 </script>

@@ -34,9 +34,10 @@ export const mutations = {
 }
 
 export const actions = {
-  addDateToSelection({ commit, dispatch }, date) {
+  addDateToSelection({ commit, dispatch }, { date, company }) {
+    console.log(company)
     commit('PUSH_DATE', date)
-    dispatch('getAndStoreDataSet', { ...date })
+    dispatch('getAndStoreDataSet', { ...date, company })
     // trigger same DataSet to be retrieved and added
   },
   removeDateSelection({ commit }, date) {
@@ -45,15 +46,16 @@ export const actions = {
     // avoid extra API calls by keeping in store but deactivating
   },
 
-  async getAndStoreDataSet({ commit }, date) {
+  async getAndStoreDataSet({ commit }, { date, company }) {
     // Push to dataset
     // generate Start and end date
-    const date1 = date.date
+    console.log(date, company)
+    const date1 = date
     const date2 = dayjs(date1).endOf('month').toISOString()
-    console.log(date1, date2)
+    // context.getters('company/getCompanyId')
 
     // API call for dataset
-    const dataset = await getDataPoints(22055, date1, date2)
+    const dataset = await getDataPoints(company, date1, date2)
     const plotData = dataset.data
     const dataMonth = plotData[plotData.length - 1].x
 
@@ -66,6 +68,7 @@ export const actions = {
       borderWidth: 2,
       borderCapStyle: 'round',
       fill: true,
+      // id: companyId+MMYYYY
     }
 
     commit('PUSH_DATASET', chartDataObject)

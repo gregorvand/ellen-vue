@@ -57,4 +57,8 @@ export const getters = {
   getCompanyTicker: (state) => {
     return state.currentCompany.ticker
   },
+
+  getCompanyId: (state) => {
+    return state.currentCompany.id
+  },
 }
