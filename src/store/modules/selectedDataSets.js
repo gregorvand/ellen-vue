@@ -54,8 +54,21 @@ export const actions = {
 
     // API call for dataset
     const dataset = await getDataPoints(22055, date1, date2)
+    const plotData = dataset.data
+    const dataMonth = plotData[plotData.length - 1].x
 
-    commit('PUSH_DATASET', dataset)
+    const chartDataObject = {
+      label: dayjs(dataMonth).format('MM/YYYY'),
+      data: plotData,
+      stepped: true,
+      backgroundColor: ['rgba(255,255,255, 0.2  )'],
+      borderColor: ['rgba(50,50,50)'],
+      borderWidth: 2,
+      borderCapStyle: 'round',
+      fill: true,
+    }
+
+    commit('PUSH_DATASET', chartDataObject)
   },
 }
 

@@ -3,9 +3,10 @@
     <div class="chart-wrapper">
       <div class="chart-timeframe-selector">
         <!-- eventually we want a store of valid months that will generate the buttons -->
-        <DateSelector :date="{ id: '01122020', date: '12/01/2020' }" />
-        <br />
+        <DateSelector :date="{ id: '01112020', date: '09/01/2020' }" />
+        <DateSelector :date="{ id: '01112020', date: '10/01/2020' }" />
         <DateSelector :date="{ id: '01112020', date: '11/01/2020' }" />
+        <DateSelector :date="{ id: '01122020', date: '12/01/2020' }" />
       </div>
       <LineChart
         v-if="orderList.length > 0"
@@ -39,7 +40,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, computed } from '@vue/composition-api'
+import {
+  defineComponent,
+  onMounted,
+  ref,
+  computed,
+  inject,
+} from '@vue/composition-api'
 // import { mapState } from 'vuex'
 import { LineChart } from 'vue-chart-3'
 import { Chart, registerables } from 'chart.js'
@@ -85,29 +92,22 @@ export default defineComponent({
   },
 
   setup(props) {
+    const store = inject('vuex-store')
     const orderList = ref([]) // vue3 construct reactive var
     const chartRef = ref()
+    const dataSetsRef = ref([])
+    dataSetsRef.value = store.state.selectedDataSets.currentDataSets // ignore TS error
+
+    // SETUP data and options
+    const chartData = computed(() => ({
+      datasets: dataSetsRef.value,
+    }))
 
     onMounted(async () => {
       const setValues = await getDataPoints(props.companyId, false)
       orderList.value = setValues.data
     })
 
-    // SETUP data and options
-    const chartData = computed(() => ({
-      datasets: [
-        {
-          label: `Avg Orders/day for ${props.companyName}`,
-          data: orderList.value,
-          stepped: true,
-          backgroundColor: ['rgba(255,255,255, 0.2  )'],
-          borderColor: ['rgba(50,50,50)'],
-          borderWidth: 2,
-          borderCapStyle: 'round',
-          fill: true,
-        },
-      ],
-    }))
     const options = {
       elements: {
         point: {
@@ -186,6 +186,7 @@ export default defineComponent({
       orderList,
       getDataPoints,
       chartRef,
+      dataSetsRef,
     }
   },
   created() {
