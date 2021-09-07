@@ -78,12 +78,15 @@ export default defineComponent({
   },
   computed: {
     ...mapState('compareCompany', ['compareCompany']),
+    ...mapState('selectedDataSets', ['currentDataSets']),
+    dataSetData() {
+      return this.currentDataSets.map((dataset) => dataset.data)
+    },
   },
 
   setup(props) {
     const orderList = ref([]) // vue3 construct reactive var
     const chartRef = ref()
-    // const comparisonCompany = ref([])'
 
     onMounted(async () => {
       const setValues = await getDataPoints(props.companyId, false)
