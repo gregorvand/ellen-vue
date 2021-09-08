@@ -3,28 +3,25 @@ import dayjs from 'dayjs'
 import axios from 'axios'
 
 export const state = () => ({
-  companyId: 0,
-  selectedDates: [],
+  currentDates: [],
   currentDataSets: [],
+  selectedDateIDs: [],
 })
 
 export const getters = {
   userHasSelectedDates: (state) => (id) => {
-    return state.selectedDates.find((date) => date.id === id)
+    console.log(state.selectedDateIDs[0], id)
+    return state.selectedDateIDs.find((selectedDates) => selectedDates === id)
   },
 }
 
 export const mutations = {
-  PUSH_DATE(state, date) {
-    state.selectedDates.push(date)
+  PUSH_DATE(state, dateId) {
+    state.selectedDateIDs.push(dateId)
   },
   REMOVE_DATE(state, dateToRemove) {
-    state.selectedDates = state.selectedDates.filter(
+    state.selectedDates = state.currentDates.filter(
       (date) => date.id !== dateToRemove.id
-    )
-    localStorage.setItem(
-      'selectedCompanies',
-      JSON.stringify(state.selectedCompanies)
     )
   },
 
@@ -34,10 +31,10 @@ export const mutations = {
 }
 
 export const actions = {
-  addDateToSelection({ commit, dispatch }, { date, company }) {
-    console.log(company)
-    commit('PUSH_DATE', date)
-    dispatch('getAndStoreDataSet', { ...date, company })
+  addDateToSelection({ commit, dispatch }, { date, company, id }) {
+    console.log(company, id)
+    commit('PUSH_DATE', id)
+    dispatch('getAndStoreDataSet', { ...date, company, id })
     // trigger same DataSet to be retrieved and added
   },
   removeDateSelection({ commit }, date) {
@@ -46,13 +43,12 @@ export const actions = {
     // avoid extra API calls by keeping in store but deactivating
   },
 
-  async getAndStoreDataSet({ commit }, { date, company }) {
+  async getAndStoreDataSet({ commit }, { date, company, dateId }) {
     // Push to dataset
     // generate Start and end date
-    console.log(date, company)
+    console.log(date, company, dateId)
     const date1 = date
     const date2 = dayjs(date1).endOf('month').toISOString()
-    // context.getters('company/getCompanyId')
 
     // API call for dataset
     const dataset = await getDataPoints(company, date1, date2)
@@ -68,7 +64,7 @@ export const actions = {
       borderWidth: 2,
       borderCapStyle: 'round',
       fill: true,
-      // id: companyId+MMYYYY
+      id: dateId,
     }
 
     commit('PUSH_DATASET', chartDataObject)

@@ -30,11 +30,13 @@ export default {
       // convert date format
       // pass to store
       if (!this.checked) {
+        console.log('yo', this.assignID)
         let dateForStore = dayjs(this.date.date).toISOString()
         this.dateObject.date = dateForStore
         this.$store.dispatch('selectedDataSets/addDateToSelection', {
           date: this.dateObject,
           company: this.company.currentCompany.id,
+          id: this.assignID,
         })
       } else {
         this.$store.dispatch(
@@ -47,16 +49,26 @@ export default {
   data() {
     return {
       // if user has already selected this company, will return true, else false
-      checked: this.$store.getters['selectedDataSets/userHasSelectedDates'](
-        this.date.id
-      ),
       dateObject: this.date,
-      id: this.assignID,
+
+      yo: this.assignID,
     }
   },
   computed: {
     assignID() {
-      return Math.random(10)
+      return `${this.company.currentCompany.id}${dayjs(this.date.date).format(
+        'MMDDYYYY'
+      )}`
+    },
+    checked: {
+      get() {
+        return this.$store.getters['selectedDataSets/userHasSelectedDates'](
+          this.assignID
+        )
+      },
+      set() {
+        return 'false'
+      },
     },
     ...mapState(['company']),
   },
