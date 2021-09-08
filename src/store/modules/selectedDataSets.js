@@ -10,7 +10,6 @@ export const state = () => ({
 
 export const getters = {
   userHasSelectedDates: (state) => (id) => {
-    console.log(state.selectedDateIDs[0], id)
     return state.selectedDateIDs.find((selectedDates) => selectedDates === id)
   },
 }
@@ -32,7 +31,6 @@ export const mutations = {
 
 export const actions = {
   addDateToSelection({ commit, dispatch }, { date, company, id }) {
-    console.log(company, id)
     commit('PUSH_DATE', id)
     dispatch('getAndStoreDataSet', { ...date, company, id })
     // trigger same DataSet to be retrieved and added
@@ -43,17 +41,17 @@ export const actions = {
     // avoid extra API calls by keeping in store but deactivating
   },
 
-  async getAndStoreDataSet({ commit }, { date, company, dateId }) {
+  async getAndStoreDataSet({ commit }, payload) {
     // Push to dataset
     // generate Start and end date
-    console.log(date, company, dateId)
+    const { date, company, id } = payload
     const date1 = date
     const date2 = dayjs(date1).endOf('month').toISOString()
 
     // API call for dataset
     const dataset = await getDataPoints(company, date1, date2)
     const plotData = dataset.data
-    const dataMonth = plotData[plotData.length - 1].x
+    const dataMonth = plotData[plotData.length - 1].x // determine month/yr for label from final datapoint
 
     const chartDataObject = {
       label: dayjs(dataMonth).format('MM/YYYY'),
@@ -64,10 +62,17 @@ export const actions = {
       borderWidth: 2,
       borderCapStyle: 'round',
       fill: true,
-      id: dateId,
+      id: id,
     }
 
-    commit('PUSH_DATASET', chartDataObject)
+    const metaData = {
+      companyId: company,
+      activated: true,
+    }
+
+    const fullChartData = { chartData: chartDataObject, metaData: metaData }
+
+    commit('PUSH_DATASET', fullChartData)
   },
 }
 

@@ -96,11 +96,15 @@ export default defineComponent({
     const orderList = ref([]) // vue3 construct reactive var
     const chartRef = ref()
     const dataSetsRef = ref([])
-    dataSetsRef.value = store.state.selectedDataSets.currentDataSets // ignore TS error
+    dataSetsRef.value = store.state.selectedDataSets.currentDataSets
+
+    console.log(
+      store.state.selectedDataSets.currentDataSets.map((data) => data.chartData)
+    )
 
     // SETUP data and options
     const chartData = computed(() => ({
-      datasets: dataSetsRef.value,
+      datasets: dataSetsRef.value.map((data) => data.chartData),
     }))
 
     onMounted(async () => {
