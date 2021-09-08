@@ -4,7 +4,7 @@
       <div class="company-sheet-name">
         <h1>{{ company.nameIdentifier }}</h1>
       </div>
-      <span v-if="company.ticker !== ''">Symbol: {{ company.ticker }}</span>
+      <span v-if="company.ticker">Symbol: {{ company.ticker }}</span>
     </div>
     <template v-if="publicData && company.ticker">
       <div>
@@ -49,7 +49,7 @@ export default {
 
 <style lang="scss" scoped>
 h1 {
-  margin: 20px;
+  margin: 5px;
   font-size: 20px;
 }
 </style>

@@ -1,8 +1,12 @@
 <template>
   <div>
     <div class="chart-wrapper">
+      Select months to show
       <div class="chart-timeframe-selector">
         <!-- eventually we want a store of valid months that will generate the buttons -->
+        <DateSelector :date="{ date: '06/01/2020' }" />
+        <DateSelector :date="{ date: '07/01/2020' }" />
+        <DateSelector :date="{ date: '08/01/2020' }" />
         <DateSelector :date="{ date: '09/01/2020' }" />
         <DateSelector :date="{ date: '10/01/2020' }" />
         <DateSelector :date="{ date: '11/01/2020' }" />
@@ -20,22 +24,6 @@
         <!-- this area is just to enable scroll from underneath the chart -->
       </div>
     </div>
-
-    <h3>Compare</h3>
-    <ul class="compare-list">
-      <li
-        v-for="company in selectedCompanies"
-        :key="company.id"
-        @click="getCompareCompanyDetails(company, 0)"
-      >
-        <ChartCompanySelector
-          :class="{ active: compareCompany == company.id }"
-          v-if="company.companyType == 'private'"
-          :company="company"
-          :current="compareCompany[0]"
-        />
-      </li>
-    </ul>
   </div>
 </template>
 
@@ -54,7 +42,6 @@ import zoomPlugin from 'chartjs-plugin-zoom'
 // import { CrosshairPlugin } from 'chartjs-plugin-crosshair' - iterferes with scroll/pan
 
 import 'chartjs-adapter-date-fns'
-import ChartCompanySelector from './ChartCompanySelector.vue'
 import DateSelector from './DateSelector.vue'
 import axios from 'axios'
 import { mapState } from 'vuex'
@@ -62,7 +49,7 @@ import { mapState } from 'vuex'
 Chart.register(...registerables, zoomPlugin)
 
 export default defineComponent({
-  components: { LineChart, ChartCompanySelector, DateSelector },
+  components: { LineChart, DateSelector },
   props: {
     companyId: {
       required: true,
@@ -152,7 +139,7 @@ export default defineComponent({
 
       plugins: {
         legend: {
-          position: 'top',
+          display: false,
         },
         zoom: {
           pan: {
@@ -235,7 +222,14 @@ button {
 
 .chart-timeframe-selector {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
+  width: 100%;
+  overflow: scroll;
+  padding: 10px;
+
+  @include breakpoint(medium up) {
+    justify-content: center;
+  }
 }
 
 .scroll-enabler-mobile {
