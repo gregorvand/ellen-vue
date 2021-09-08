@@ -71,7 +71,6 @@ export default defineComponent({
     }
   },
   computed: {
-    ...mapState('compareCompany', ['compareCompany']),
     ...mapState('selectedDataSets', ['currentDataSets']),
     dataSetData() {
       return this.currentDataSets.map((dataset) => dataset.data)
