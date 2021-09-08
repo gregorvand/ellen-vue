@@ -2,11 +2,15 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store/store'
+import CompositionAPI from '@vue/composition-api'
+import { provide } from '@vue/composition-api'
 
 // Globally register all `_base`-prefixed components
 import '@/components/_globals'
 
 Vue.config.productionTip = false
+Vue.use(CompositionAPI)
+
 Vue.directive('click-outside', {
   bind: function (el, binding, vnode) {
     el.clickOutsideEvent = function (event) {
@@ -24,6 +28,9 @@ Vue.directive('click-outside', {
 })
 
 new Vue({
+  setup() {
+    provide('vuex-store', store)
+  },
   router,
   store,
   created() {
