@@ -96,15 +96,14 @@ export default defineComponent({
     const orderList = ref([]) // vue3 construct reactive var
     const chartRef = ref()
     const dataSetsRef = ref([])
+    const filtereddataSetRef = ref([])
     dataSetsRef.value = store.state.selectedDataSets.currentDataSets
-
-    console.log(
-      store.state.selectedDataSets.currentDataSets.map((data) => data.chartData)
-    )
 
     // SETUP data and options
     const chartData = computed(() => ({
-      datasets: dataSetsRef.value.map((data) => data.chartData),
+      datasets: dataSetsRef.value
+        .filter((data) => data.metaData.companyId == props.companyId) // for current Chart, only use data if Company ID matches dataset in store
+        .map((data) => data.chartData), // use chartData part of object
     }))
 
     onMounted(async () => {

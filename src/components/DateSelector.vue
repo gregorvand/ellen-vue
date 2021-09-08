@@ -30,7 +30,6 @@ export default {
       // convert date format
       // pass to store
       if (!this.checked) {
-        console.log('yo', this.assignID)
         let dateForStore = dayjs(this.date.date).toISOString()
         this.dateObject.date = dateForStore
         this.$store.dispatch('selectedDataSets/addDateToSelection', {
