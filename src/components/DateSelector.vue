@@ -40,7 +40,11 @@ export default {
       } else {
         this.$store.dispatch(
           'selectedDataSets/removeDateSelection',
-          this.dateObject
+          this.assignID
+        )
+        this.$store.dispatch(
+          'selectedDataSets/deactivateDataSet',
+          this.assignID
         )
       }
     },
@@ -49,8 +53,6 @@ export default {
     return {
       // if user has already selected this company, will return true, else false
       dateObject: this.date,
-
-      yo: this.assignID,
     }
   },
   computed: {
