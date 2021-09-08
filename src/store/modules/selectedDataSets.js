@@ -58,8 +58,6 @@ export const actions = {
     const date2 = dayjs(date1).endOf('month').toISOString()
 
     // check if we already have this dataset in the store using payload.id
-    console.log(state.currentDataSets)
-    console.log(id)
     const checkDatasetExists = state.currentDataSets.find(
       (dataset) => dataset.chartData.id == id
     )
