@@ -4,13 +4,11 @@
       Select months to show
       <div class="chart-timeframe-selector">
         <!-- eventually we want a store of valid months that will generate the buttons -->
-        <DateSelector :date="{ date: '06/01/2020' }" />
-        <DateSelector :date="{ date: '07/01/2020' }" />
-        <DateSelector :date="{ date: '08/01/2020' }" />
-        <DateSelector :date="{ date: '09/01/2020' }" />
-        <DateSelector :date="{ date: '10/01/2020' }" />
-        <DateSelector :date="{ date: '11/01/2020' }" />
-        <DateSelector :date="{ date: '12/01/2020' }" />
+        <DateSelector
+          v-for="month in monthsAvailable"
+          :date="{ date: month }"
+          :key="month.month"
+        />
       </div>
       <LineChart
         v-if="orderList.length > 0"
@@ -68,6 +66,7 @@ export default defineComponent({
     return {
       loaded: false,
       selectedCompanies: [],
+      monthsAvailable: [],
     }
   },
   computed: {
@@ -187,7 +186,18 @@ export default defineComponent({
       },
     }).then(({ data }) => {
       this.selectedCompanies = data.companies
-    })
+    }),
+      axios({
+        method: 'post',
+        url: `${process.env.VUE_APP_API_URL}/api/orders/dates-available`,
+        data: {
+          companyId: this.companyId,
+          year: '2020',
+        },
+      }).then(({ data }) => {
+        console.log(data)
+        this.monthsAvailable = data
+      })
     this.$store.dispatch('selectedCompanies/clearCompanySelection') // ideally state becomes saved companies
   },
 })
