@@ -26,14 +26,6 @@ export default {
     },
   },
   data() {
-    // console.log(
-    //   dayjs()
-    //     .set('date', 1)
-    //     .set('month', this.date.date.month)
-    //     .set('year', '2020')
-    //     .toISOString()
-    // )
-    // console.log(this.thisMonth)
     return {
       // if user has already selected this company, will return true, else false
       dateObject: {
@@ -78,7 +70,6 @@ export default {
       // convert date format
       // pass to store
       const dateToStore = dayjs(this.dateObject.date).toISOString()
-      console.log(dateToStore)
       if (!this.checked) {
         this.$store.dispatch('selectedDataSets/addDateToSelection', {
           date: { date: dateToStore },
