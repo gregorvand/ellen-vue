@@ -1,13 +1,24 @@
 <template>
   <div>
+    <div>Select year</div>
+    <ul class="year-select">
+      <li
+        v-for="year in yearsChoice"
+        :key="year"
+        @click="getAvailableDates(year)"
+        :class="{ active: selectedYear == year }"
+      >
+        {{ year }}
+      </li>
+    </ul>
     <div class="chart-wrapper">
       Select months to show
       <div class="chart-timeframe-selector">
         <!-- eventually we want a store of valid months that will generate the buttons -->
         <DateSelector
           v-for="month in monthsAvailable"
-          :date="{ date: month }"
-          :key="month.month"
+          :date="{ date: month, year: selectedYear }"
+          :key="month.month + selectedYear"
         />
       </div>
       <LineChart
@@ -43,6 +54,7 @@ import 'chartjs-adapter-date-fns'
 import DateSelector from './DateSelector.vue'
 import axios from 'axios'
 import { mapState } from 'vuex'
+import dayjs from 'dayjs'
 
 Chart.register(...registerables, zoomPlugin)
 
@@ -67,6 +79,8 @@ export default defineComponent({
       loaded: false,
       selectedCompanies: [],
       monthsAvailable: [],
+      selectedYear: dayjs().year(),
+      yearsChoice: [2017, 2018, 2019, 2020, 2021],
     }
   },
   computed: {
@@ -187,18 +201,23 @@ export default defineComponent({
     }).then(({ data }) => {
       this.selectedCompanies = data.companies
     }),
+      this.getAvailableDates()
+    this.$store.dispatch('selectedCompanies/clearCompanySelection') // ideally state becomes saved companies
+  },
+  methods: {
+    getAvailableDates(year = dayjs().year()) {
+      this.selectedYear = year
       axios({
         method: 'post',
         url: `${process.env.VUE_APP_API_URL}/api/orders/dates-available`,
         data: {
           companyId: this.companyId,
-          year: '2020',
+          year: year,
         },
       }).then(({ data }) => {
-        console.log(data)
         this.monthsAvailable = data
       })
-    this.$store.dispatch('selectedCompanies/clearCompanySelection') // ideally state becomes saved companies
+    },
   },
 })
 
@@ -262,6 +281,29 @@ ul {
   width: 100%;
   @include breakpoint(small only) {
     flex-direction: column;
+  }
+}
+
+ul.year-select {
+  margin: 10px auto;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  > li {
+    @extend %heading-font-family;
+    font-size: 11px;
+    margin: 0 5px;
+    cursor: pointer;
+
+    &:hover {
+      color: $color-ellen-dark;
+    }
+
+    &.active {
+      text-decoration: underline;
+      color: $color-ellen-dark;
+    }
   }
 }
 

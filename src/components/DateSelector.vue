@@ -32,7 +32,7 @@ export default {
         date: dayjs()
           .set('date', 1)
           .set('month', this.date.date.month - 1)
-          .set('year', '2020'),
+          .set('year', this.date.year),
       },
     }
   },
@@ -46,7 +46,7 @@ export default {
       return dayjs()
         .set('date', 1)
         .set('month', this.date.date.month)
-        .set('year', '2020')
+        .set('year', this.date.year)
         .format('DD/MM/YYYY')
     },
     readableDate() {
