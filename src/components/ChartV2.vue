@@ -17,6 +17,7 @@
         <div
           v-if="monthsAvailable[0] != 'loading'"
           class="months-available-wrapper"
+          :class="{ active: monthsAvailable.length > 0 }"
         >
           <!-- eventually we want a store of valid months that will generate the buttons -->
           <DateSelector
@@ -253,19 +254,6 @@ async function getDataPoints(companyId, months) {
   width: 100vw;
 }
 
-.months-available-wrapper {
-  height: 50px;
-  display: flex;
-  justify-content: flex-start;
-  width: 100%;
-  overflow: scroll;
-  padding: 10px;
-
-  @include breakpoint(medium up) {
-    justify-content: center;
-  }
-}
-
 button {
   margin: 10px;
   padding: 20px;
@@ -276,10 +264,31 @@ button {
 .chart-timeframe-selector {
   display: flex;
   width: 100%;
+  overflow: hidden;
 
   .data-not-available {
     font-size: 11px;
     color: $color-ellen-dark;
+  }
+}
+
+.months-available-wrapper {
+  height: 50px;
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  overflow: scroll;
+  padding: 10px;
+  // border: solid black thin;
+  align-items: center;
+  transform: translateY(0);
+
+  &.active {
+    animation: data-enter-up 1s forwards;
+  }
+
+  @include breakpoint(medium up) {
+    justify-content: center;
   }
 }
 
@@ -341,5 +350,15 @@ ul.year-select {
 button {
   margin: 10px;
   padding: 20px;
+}
+
+// animations
+@keyframes data-enter-up {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
 }
 </style>
