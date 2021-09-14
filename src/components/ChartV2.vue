@@ -269,6 +269,7 @@ button {
   .data-not-available {
     font-size: 11px;
     color: $color-ellen-dark;
+    width: 100%;
   }
 }
 
@@ -277,7 +278,8 @@ button {
   display: flex;
   justify-content: flex-start;
   width: 100%;
-  overflow: scroll;
+  overflow-x: scroll;
+  overflow-y: hidden;
   padding: 10px;
   // border: solid black thin;
   align-items: center;
