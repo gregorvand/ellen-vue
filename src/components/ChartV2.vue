@@ -276,7 +276,7 @@ button {
 .months-available-wrapper {
   height: 50px;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   width: 100%;
   overflow-x: scroll;
   overflow-y: hidden;
@@ -287,10 +287,11 @@ button {
 
   &.active {
     animation: data-enter-up 1s forwards;
-  }
+    justify-content: flex-start;
 
-  @include breakpoint(medium up) {
-    justify-content: center;
+    @include breakpoint(medium up) {
+      justify-content: center;
+    }
   }
 }
 
