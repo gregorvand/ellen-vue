@@ -14,12 +14,24 @@
     <div class="chart-wrapper">
       Select months to show
       <div class="chart-timeframe-selector">
-        <!-- eventually we want a store of valid months that will generate the buttons -->
-        <DateSelector
-          v-for="month in monthsAvailable"
-          :date="{ date: month, year: selectedYear }"
-          :key="month.month + selectedYear"
-        />
+        <div
+          v-if="monthsAvailable[0] != 'loading'"
+          class="months-available-wrapper"
+          :class="{ active: monthsAvailable.length > 0 }"
+        >
+          <!-- eventually we want a store of valid months that will generate the buttons -->
+          <DateSelector
+            v-for="month in monthsAvailable"
+            :date="{ date: month, year: selectedYear }"
+            :key="month.month + selectedYear"
+          />
+          <span class="data-not-available" v-if="monthsAvailable.length == 0"
+            >No data for this year available</span
+          >
+        </div>
+        <div v-else class="months-available-wrapper">
+          <BaseLoadingSpinner />
+        </div>
       </div>
       <LineChart
         v-if="orderList.length > 0"
@@ -206,6 +218,7 @@ export default defineComponent({
   },
   methods: {
     getAvailableDates(year = dayjs().year()) {
+      this.monthsAvailable = ['loading'] // clear month UI
       this.selectedYear = year
       axios({
         method: 'post',
@@ -250,10 +263,31 @@ button {
 
 .chart-timeframe-selector {
   display: flex;
+  width: 100%;
+  overflow: hidden;
+
+  .data-not-available {
+    font-size: 11px;
+    color: $color-ellen-dark;
+    width: 100%;
+  }
+}
+
+.months-available-wrapper {
+  height: 50px;
+  display: flex;
   justify-content: flex-start;
   width: 100%;
-  overflow: scroll;
+  overflow-x: scroll;
+  overflow-y: hidden;
   padding: 10px;
+  // border: solid black thin;
+  align-items: center;
+  transform: translateY(0);
+
+  &.active {
+    animation: data-enter-up 1s forwards;
+  }
 
   @include breakpoint(medium up) {
     justify-content: center;
@@ -318,5 +352,15 @@ ul.year-select {
 button {
   margin: 10px;
   padding: 20px;
+}
+
+// animations
+@keyframes data-enter-up {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
 }
 </style>
