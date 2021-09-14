@@ -14,14 +14,6 @@
     <div class="chart-wrapper">
       Select months to show
       <div class="chart-timeframe-selector">
-        <<<<<<< HEAD
-        <!-- eventually we want a store of valid months that will generate the buttons -->
-        <DateSelector
-          v-for="month in monthsAvailable"
-          :date="{ date: month, year: selectedYear }"
-          :key="month.month + selectedYear"
-        />
-        =======
         <div
           v-if="monthsAvailable[0] != 'loading'"
           class="months-available-wrapper"
@@ -40,7 +32,6 @@
         <div v-else class="months-available-wrapper">
           <BaseLoadingSpinner />
         </div>
-        >>>>>>> feature/ch149/ability-to-display-which-timeframes-are-available
       </div>
       <LineChart
         v-if="orderList.length > 0"
