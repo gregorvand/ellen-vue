@@ -24,6 +24,7 @@
             v-for="month in monthsAvailable"
             :date="{ date: month, year: selectedYear }"
             :key="month.month + selectedYear"
+            :monthsAccessible="monthsAccess"
           />
           <span class="data-not-available" v-if="monthsAvailable.length == 0"
             >No data for this year available</span
@@ -91,6 +92,7 @@ export default defineComponent({
       loaded: false,
       selectedCompanies: [],
       monthsAvailable: [],
+      monthsAccess: [],
       selectedYear: dayjs().year(),
       yearsChoice: [2017, 2018, 2019, 2020, 2021],
     }
@@ -212,24 +214,37 @@ export default defineComponent({
       },
     }).then(({ data }) => {
       this.selectedCompanies = data.companies
-    }),
-      this.getAvailableDates()
+    })
+
+    this.getAccessibleDatasets()
+    this.getAvailableDates()
     this.$store.dispatch('selectedCompanies/clearCompanySelection') // ideally state becomes saved companies
   },
   methods: {
-    getAvailableDates(year = dayjs().year()) {
+    async getAvailableDates(year = dayjs().year()) {
       this.monthsAvailable = ['loading'] // clear month UI
       this.selectedYear = year
-      axios({
+      let monthData = await axios({
         method: 'post',
         url: `${process.env.VUE_APP_API_URL}/api/orders/dates-available`,
         data: {
           companyId: this.companyId,
           year: year,
         },
-      }).then(({ data }) => {
-        this.monthsAvailable = data
       })
+      this.monthsAvailable = monthData.data
+    },
+
+    async getAccessibleDatasets() {
+      let monthAccess = await axios({
+        method: 'get',
+        url: `${process.env.VUE_APP_API_URL}/api/dataset-access/company-by-user`,
+        params: {
+          companyId: this.companyId,
+          userId: 192,
+        },
+      })
+      this.monthsAccess = monthAccess.data.map((data) => data.datasetId)
     },
   },
 })
