@@ -1,38 +1,11 @@
 <template>
   <div>
-    <div>Select year</div>
-    <ul class="year-select">
-      <li
-        v-for="year in yearsChoice"
-        :key="year"
-        @click="getAvailableDates(year)"
-        :class="{ active: selectedYear == year }"
-      >
-        {{ year }}
-      </li>
-    </ul>
     <div class="chart-wrapper">
-      Select months to show
-      <div class="chart-timeframe-selector">
-        <div
-          v-if="monthsAvailable[0] != 'loading'"
-          class="months-available-wrapper"
-          :class="{ active: monthsAvailable.length > 0 }"
-        >
-          <!-- eventually we want a store of valid months that will generate the buttons -->
-          <DateSelector
-            v-for="month in monthsAvailable"
-            :date="{ date: month, year: selectedYear }"
-            :key="month.month + selectedYear"
-          />
-          <span class="data-not-available" v-if="monthsAvailable.length == 0"
-            >No data for this year available</span
-          >
-        </div>
-        <div v-else class="months-available-wrapper">
-          <BaseLoadingSpinner />
-        </div>
-      </div>
+      Select months to show already purchased
+      <TimeFrameSelector :hasAccess="hasAccess" />
+
+      Select months to purchase
+      <TimeFrameSelector :hasAccess="[]" />
       <LineChart
         v-if="orderList.length > 0"
         ref="chartRef"
@@ -63,15 +36,14 @@ import zoomPlugin from 'chartjs-plugin-zoom'
 // import { CrosshairPlugin } from 'chartjs-plugin-crosshair' - iterferes with scroll/pan
 
 import 'chartjs-adapter-date-fns'
-import DateSelector from './DateSelector.vue'
+import TimeFrameSelector from './TimeFrameSelector.vue'
 import axios from 'axios'
 import { mapState } from 'vuex'
-import dayjs from 'dayjs'
 
 Chart.register(...registerables, zoomPlugin)
 
 export default defineComponent({
-  components: { LineChart, DateSelector },
+  components: { LineChart, TimeFrameSelector },
   props: {
     companyId: {
       required: true,
@@ -91,8 +63,7 @@ export default defineComponent({
       loaded: false,
       selectedCompanies: [],
       monthsAvailable: [],
-      selectedYear: dayjs().year(),
-      yearsChoice: [2017, 2018, 2019, 2020, 2021],
+      hasAccess: [],
     }
   },
   computed: {
@@ -212,24 +183,23 @@ export default defineComponent({
       },
     }).then(({ data }) => {
       this.selectedCompanies = data.companies
-    }),
-      this.getAvailableDates()
+    })
     this.$store.dispatch('selectedCompanies/clearCompanySelection') // ideally state becomes saved companies
   },
+  mounted() {
+    this.getAccessibleDatasets()
+  },
   methods: {
-    getAvailableDates(year = dayjs().year()) {
-      this.monthsAvailable = ['loading'] // clear month UI
-      this.selectedYear = year
-      axios({
-        method: 'post',
-        url: `${process.env.VUE_APP_API_URL}/api/orders/dates-available`,
-        data: {
+    async getAccessibleDatasets() {
+      let monthAccess = await axios({
+        method: 'get',
+        url: `${process.env.VUE_APP_API_URL}/api/dataset-access/company-by-user`,
+        params: {
           companyId: this.companyId,
-          year: year,
+          userId: 192,
         },
-      }).then(({ data }) => {
-        this.monthsAvailable = data
       })
+      this.hasAccess = monthAccess.data.map((data) => data.datasetId)
     },
   },
 })
@@ -261,40 +231,6 @@ button {
   line-height: 1;
 }
 
-.chart-timeframe-selector {
-  display: flex;
-  width: 100%;
-  overflow: hidden;
-
-  .data-not-available {
-    font-size: 11px;
-    color: $color-ellen-dark;
-    width: 100%;
-  }
-}
-
-.months-available-wrapper {
-  height: 50px;
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  overflow-x: scroll;
-  overflow-y: hidden;
-  padding: 10px;
-  // border: solid black thin;
-  align-items: center;
-  transform: translateY(0);
-
-  &.active {
-    animation: data-enter-up 1s forwards;
-    justify-content: flex-start;
-
-    @include breakpoint(medium up) {
-      justify-content: center;
-    }
-  }
-}
-
 .scroll-enabler-mobile {
   @include breakpoint(small only) {
     position: absolute;
@@ -302,43 +238,6 @@ button {
     width: 100%;
     height: 70px;
     bottom: 0;
-  }
-}
-
-ul,
-li {
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-}
-
-ul {
-  width: 100%;
-  @include breakpoint(small only) {
-    flex-direction: column;
-  }
-}
-
-ul.year-select {
-  margin: 10px auto;
-  padding: 0;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  > li {
-    @extend %heading-font-family;
-    font-size: 11px;
-    margin: 0 5px;
-    cursor: pointer;
-
-    &:hover {
-      color: $color-ellen-dark;
-    }
-
-    &.active {
-      text-decoration: underline;
-      color: $color-ellen-dark;
-    }
   }
 }
 
