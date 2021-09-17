@@ -82,7 +82,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     padding: 10px;
-    min-height: 70px;
+    height: 70px;
     display: flex;
 
     img.logo {
@@ -101,6 +101,7 @@ export default {
   .subnav {
     display: flex;
     width: 100%;
+    height: 60px;
     justify-content: space-between;
     padding: $mobile-padding;
     font-size: 12px;

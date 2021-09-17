@@ -60,7 +60,7 @@ export default {
   },
   created() {
     this.$store.watch((state) => {
-      if (state.company.currentCompany) {
+      if (state.company.currentCompany.id) {
         this.getAvailableDates()
       }
     })
