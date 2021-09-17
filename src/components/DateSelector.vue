@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="date-selector-wrapper" :class="{ visible: accessibleMonth }">
     <div class="date-selector" :class="{ accessible: accessibleMonth }">
       <div class="checkbox-spacer">
         <input
@@ -25,7 +25,7 @@ export default {
       type: Object,
       default: () => ({}),
     },
-    monthsAccessible: {
+    monthIsAccessble: {
       type: Array,
     },
   },
@@ -57,7 +57,7 @@ export default {
       return this.dateObject.date.format('MMM')
     },
     accessibleMonth() {
-      return this.monthsAccessible.includes(this.assignID)
+      return this.monthIsAccessble.includes(this.assignID)
     },
     checked: {
       get() {
@@ -103,6 +103,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.date-selector-wrapper {
+  display: none;
+  &.visible {
+    display: flex;
+  }
+}
 .date-selector {
   margin: 0 5px;
   opacity: 0.3;
