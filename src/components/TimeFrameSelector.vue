@@ -23,6 +23,7 @@
           :date="{ date: month, year: selectedYear }"
           :key="month.month + selectedYear"
           :monthIsAccessble="hasAccess"
+          :purchaseMode="purchaseMode"
         />
         <span class="data-not-available" v-if="monthsAvailable.length == 0"
           >No data for this year available</span
@@ -46,6 +47,9 @@ export default {
   props: {
     hasAccess: {
       type: Array,
+    },
+    purchaseMode: {
+      type: Boolean,
     },
   },
   data: function () {

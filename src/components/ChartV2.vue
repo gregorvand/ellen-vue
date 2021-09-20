@@ -5,7 +5,9 @@
       <TimeFrameSelector :hasAccess="hasAccess" />
 
       Select months to purchase
-      <TimeFrameSelector :hasAccess="[]" />
+      <div class="purchase-wrapper">
+        <TimeFrameSelector :purchaseMode="true" :hasAccess="hasAccess" />
+      </div>
       <LineChart
         v-if="orderList.length > 0"
         ref="chartRef"
