@@ -1,9 +1,14 @@
 <template>
-  <div class="date-selector-wrapper" :class="{ visible: accessibleMonth }">
-    <div class="date-selector" :class="{ accessible: accessibleMonth }">
+  <div
+    class="date-selector-wrapper"
+    :class="{
+      selectable: accessibleMonth && !purchaseMode,
+      purchasable: !accessibleMonth && purchaseMode,
+    }"
+  >
+    <div class="date-selector">
       <div class="checkbox-spacer">
         <input
-          v-if="accessibleMonth"
           :id="assignID"
           class="select-company"
           type="checkbox"
@@ -19,6 +24,8 @@
 <script>
 import dayjs from 'dayjs'
 import { mapState } from 'vuex'
+import axios from 'axios'
+
 export default {
   props: {
     date: {
@@ -27,6 +34,9 @@ export default {
     },
     monthIsAccessble: {
       type: Array,
+    },
+    purchaseMode: {
+      type: Boolean,
     },
   },
   data() {
@@ -55,6 +65,9 @@ export default {
     },
     readableDate() {
       return this.dateObject.date.format('MMM')
+    },
+    longerReadableDate() {
+      return this.dateObject.date.format('MMMM')
     },
     accessibleMonth() {
       return this.monthIsAccessble.includes(this.assignID)
@@ -95,7 +108,39 @@ export default {
           )
         }
       } else {
-        console.log('no access yet')
+        console.log('no access yet.. purchasing')
+
+        // purchase with credits
+        axios({
+          method: 'post',
+          url: `${process.env.VUE_APP_API_URL}/api/dataset-access/charge`,
+          data: {
+            companyId: this.company.currentCompany.id,
+            datasetId: this.assignID,
+          },
+        })
+          .then((data) => {
+            console.log('woo purchased', data)
+            const notification = {
+              type: 'success',
+              message: `Great, you can now access ${this.longerReadableDate}`,
+            }
+            this.$store.dispatch('notification/add', notification, {
+              root: true,
+            })
+          })
+          .catch((error) => {
+            console.log(error.response.status)
+            if (error.response.status == 433) {
+              const notification = {
+                type: 'error',
+                message: `Oh no, we were not able to process this, you do not have enough credits`,
+              }
+              this.$store.dispatch('notification/add', notification, {
+                root: true,
+              })
+            }
+          })
       }
     },
   },
@@ -105,17 +150,20 @@ export default {
 <style lang="scss" scoped>
 .date-selector-wrapper {
   display: none;
-  &.visible {
+
+  &.selectable {
     display: flex;
+  }
+
+  .purchase-wrapper & {
+    &.purchasable {
+      display: flex;
+    }
   }
 }
 .date-selector {
   margin: 0 5px;
-  opacity: 0.3;
 
-  &.accessible {
-    opacity: 1;
-  }
   input {
     display: none;
 
@@ -139,6 +187,14 @@ export default {
     background-color: #6ed6b7;
     color: $color-white;
     border: solid $color-ellen-dark 2px;
+  }
+}
+
+.purchase-wrapper {
+  .date-selector-wrapper.purchasable {
+    input + label {
+      border-color: red;
+    }
   }
 }
 </style>
