@@ -11,19 +11,41 @@
         {{ year }}
       </li>
     </ul>
+    <h3>Timeframe</h3>
     <div class="chart-timeframe-selector">
       <div
         v-if="monthsAvailable[0] != 'loading'"
         class="months-available-wrapper"
         :class="{ active: monthsAvailable.length > 0 }"
       >
-        <!-- eventually we want a store of valid months that will generate the buttons -->
         <DateSelector
-          v-for="month in monthsAvailable"
+          v-for="month in purchasedMonths"
           :date="{ date: month, year: selectedYear }"
-          :key="month.month + selectedYear"
+          :key="`${month.id}`"
           :monthIsAccessble="hasAccess"
-          :purchaseMode="purchaseMode"
+        />
+        <span class="data-not-available" v-if="purchasedMonths.length == 0"
+          >No purchased months</span
+        >
+      </div>
+      <div v-else class="months-available-wrapper">
+        <BaseLoadingSpinner />
+      </div>
+    </div>
+
+    <h3>Purchase additional months</h3>
+    <div class="chart-timeframe-selector">
+      <div
+        v-if="monthsAvailable[0] != 'loading'"
+        class="months-available-wrapper"
+        :class="{ active: monthsAvailable.length > 0 }"
+      >
+        <DateSelector
+          v-for="month in lockedMonths"
+          :date="{ date: month, year: selectedYear }"
+          :key="`${month.id}`"
+          :monthIsAccessble="hasAccess"
+          :purchaseMode="true"
         />
         <span class="data-not-available" v-if="monthsAvailable.length == 0"
           >No data for this year available</span
@@ -60,6 +82,16 @@ export default {
     }
   },
   computed: {
+    purchasedMonths() {
+      return this.monthsAvailable.filter((month) =>
+        this.hasAccess.includes(month.id)
+      )
+    },
+    lockedMonths() {
+      return this.monthsAvailable.filter(
+        (month) => !this.hasAccess.includes(month.id)
+      )
+    },
     ...mapState('company', ['currentCompany']),
   },
   created() {
@@ -75,6 +107,7 @@ export default {
       // TODO: remove 2020 after dev
       this.monthsAvailable = ['loading'] // clear month UI
       this.selectedYear = year
+
       let monthData = await axios({
         method: 'post',
         url: `${process.env.VUE_APP_API_URL}/api/orders/dates-available`,
@@ -83,12 +116,31 @@ export default {
           year: year,
         },
       })
-      this.monthsAvailable = monthData.data
-    },
-  },
-  watch: {
-    '$store.company.currentCompany.id': function (x, y) {
-      console.log(x, y)
+
+      monthData.data.forEach((element) => {
+        console.log(element)
+      })
+
+      // TODO: move to general helper
+      // this pads out a number with 0 if only one digit
+      function n(num, len = 2) {
+        return `${num}`.padStart(len, '0')
+      }
+
+      const monthsAvailableExtended = monthData.data.map((aMonth) => ({
+        month: aMonth.month,
+        count: aMonth.count,
+        id: `${this.$store.state.company.currentCompany.id}${n(
+          aMonth.month
+        )}01${this.selectedYear}`,
+      })) // TODO: generate this and assignID from the same function
+
+      // console.log('monthdata', monthData)
+      // console.log('monthsAvailable', this.monthsAvailable)
+      // console.log('access', this.hasAccess)
+      // console.log('extended', monthsAvailableExtended)
+
+      this.monthsAvailable = monthsAvailableExtended
     },
   },
 }

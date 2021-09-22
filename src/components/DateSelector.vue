@@ -7,7 +7,12 @@
     }"
   >
     <div class="date-selector">
-      <div class="checkbox-spacer">
+      <div class="checkbox-spacer" v-if="purchaseMode">
+        <label :for="assignID" @click="updateRequestedDates">{{
+          readableDate
+        }}</label>
+      </div>
+      <div class="checkbox-spacer" v-else>
         <input
           :id="assignID"
           class="select-company"
@@ -75,11 +80,11 @@ export default {
     checked: {
       get() {
         return this.$store.getters['selectedDataSets/userHasSelectedDates'](
-          this.assignID
+          this.assignID || false
         )
       },
       set() {
-        return 'false'
+        return false
       },
     },
     ...mapState(['company']),
@@ -128,13 +133,14 @@ export default {
             this.$store.dispatch('notification/add', notification, {
               root: true,
             })
+            this.$parent.$emit('data-subscribed')
           })
           .catch((error) => {
             console.log(error.response.status)
             if (error.response.status == 433) {
               const notification = {
                 type: 'error',
-                message: `Oh no, we were not able to process this, you do not have enough credits`,
+                message: `Oh no, we were not able to add ${this.longerReadableDate}, you do not have enough credits`,
               }
               this.$store.dispatch('notification/add', notification, {
                 root: true,
@@ -149,17 +155,17 @@ export default {
 
 <style lang="scss" scoped>
 .date-selector-wrapper {
-  display: none;
+  // display: none;
 
-  &.selectable {
-    display: flex;
-  }
+  // &.selectable {
+  //   display: flex;
+  // }
 
-  .purchase-wrapper & {
-    &.purchasable {
-      display: flex;
-    }
-  }
+  // .purchase-wrapper & {
+  //   &.purchasable {
+  //     display: flex;
+  //   }
+  // }
 }
 .date-selector {
   margin: 0 5px;
@@ -167,20 +173,20 @@ export default {
   input {
     display: none;
 
-    + label {
-      @extend .btn;
-      min-width: 50px;
-      width: auto;
-      user-select: none;
-      background-color: $color-white;
-      color: $color-ellen-dark;
-      border-color: $color-ellen-dark;
-      margin: 0 5px;
-    }
-
     &:hover + label {
       background-color: $color-ellen-brand-bright;
     }
+  }
+
+  label {
+    @extend .btn;
+    min-width: 50px;
+    width: auto;
+    user-select: none;
+    background-color: $color-white;
+    color: $color-ellen-dark;
+    border-color: $color-ellen-dark;
+    margin: 0 5px;
   }
 
   input:checked + label {

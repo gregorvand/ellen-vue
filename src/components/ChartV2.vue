@@ -1,13 +1,10 @@
 <template>
   <div>
     <div class="chart-wrapper">
-      Select months to show already purchased
-      <TimeFrameSelector :hasAccess="hasAccess" />
-
-      Select months to purchase
-      <div class="purchase-wrapper">
-        <TimeFrameSelector :purchaseMode="true" :hasAccess="hasAccess" />
-      </div>
+      <TimeFrameSelector
+        :hasAccess="hasAccess"
+        @data-subscribed="getAccessibleDatasets()"
+      />
       <LineChart
         v-if="orderList.length > 0"
         ref="chartRef"
@@ -201,6 +198,7 @@ export default defineComponent({
           userId: 192,
         },
       })
+      console.log(monthAccess)
       this.hasAccess = monthAccess.data.map((data) => data.datasetId)
     },
   },
