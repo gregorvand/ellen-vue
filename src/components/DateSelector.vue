@@ -116,8 +116,6 @@ export default {
           )
         }
       } else {
-        console.log('no access yet.. purchasing')
-
         // purchase with credits
         axios({
           method: 'post',
@@ -127,8 +125,7 @@ export default {
             datasetId: this.assignID,
           },
         })
-          .then((data) => {
-            console.log('woo purchased', data)
+          .then(() => {
             const notification = {
               type: 'success',
               message: `Great, you can now access ${this.longerReadableDate}`,
@@ -139,7 +136,6 @@ export default {
             this.$parent.$emit('data-subscribed')
           })
           .catch((error) => {
-            console.log(error.response.status)
             if (error.response.status == 433) {
               const notification = {
                 type: 'error',
@@ -157,19 +153,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.date-selector-wrapper {
-  // display: none;
-
-  // &.selectable {
-  //   display: flex;
-  // }
-
-  // .purchase-wrapper & {
-  //   &.purchasable {
-  //     display: flex;
-  //   }
-  // }
-}
 .date-selector {
   margin: 0 5px;
 

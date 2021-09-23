@@ -64,7 +64,6 @@ import { mapState } from 'vuex'
 import dayjs from 'dayjs'
 import axios from 'axios'
 
-import { padNumber } from '@/helpers/number_utilities'
 import * as dataUtilties from '@/helpers/data_utilities'
 
 export default {
@@ -120,9 +119,6 @@ export default {
         },
       })
 
-      // get current year and month
-      // make date
-      // format as per assignID
       const monthsAvailableExtended = monthData.data.map((aMonth) => ({
         month: aMonth.month,
         count: aMonth.count,
@@ -131,12 +127,7 @@ export default {
           aMonth.month - 1,
           this.selectedYear
         )}`,
-      })) // TODO: generate this and assignID from the same function
-
-      // console.log('monthdata', monthData)
-      // console.log('monthsAvailable', this.monthsAvailable)
-      // console.log('access', this.hasAccess)
-      // console.log('extended', monthsAvailableExtended)
+      }))
 
       this.monthsAvailable = monthsAvailableExtended
     },
