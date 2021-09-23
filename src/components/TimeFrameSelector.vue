@@ -64,7 +64,8 @@ import { mapState } from 'vuex'
 import dayjs from 'dayjs'
 import axios from 'axios'
 
-import { padNumber } from '../helpers/number_utilities'
+import { padNumber } from '@/helpers/number_utilities'
+import * as dataUtilties from '@/helpers/data_utilities'
 
 export default {
   components: { DateSelector },
@@ -125,9 +126,11 @@ export default {
       const monthsAvailableExtended = monthData.data.map((aMonth) => ({
         month: aMonth.month,
         count: aMonth.count,
-        id: `${this.$store.state.company.currentCompany.id}${padNumber(
-          aMonth.month
-        )}01${this.selectedYear}`,
+        id: `${dataUtilties.constructDateIdentifier(
+          this.$store.state.company.currentCompany.id,
+          aMonth.month - 1,
+          this.selectedYear
+        )}`,
       })) // TODO: generate this and assignID from the same function
 
       // console.log('monthdata', monthData)

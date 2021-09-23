@@ -31,6 +31,8 @@ import dayjs from 'dayjs'
 import { mapState } from 'vuex'
 import axios from 'axios'
 
+import * as dataUtilties from '@/helpers/data_utilities'
+
 export default {
   props: {
     date: {
@@ -57,9 +59,10 @@ export default {
   },
   computed: {
     assignID() {
-      return `${this.company.currentCompany.id}${this.dateObject.date.format(
-        'MMDDYYYY'
-      )}`
+      return dataUtilties.assignDateIdentifier(
+        this.company.currentCompany.id,
+        this.dateObject.date
+      )
     },
     formattedDate() {
       return dayjs()
