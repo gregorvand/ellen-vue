@@ -23,7 +23,6 @@ export default {
   },
   mounted() {
     this.$store.dispatch('credits/fetchBalance').then((data) => {
-      console.log('fetched', data)
       this.loading = false
     })
   },
