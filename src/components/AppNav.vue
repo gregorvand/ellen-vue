@@ -32,16 +32,7 @@
 
       <div class="user-details" v-if="loggedIn">
         <span>{{ user.user.email }}</span>
-        <div class="balance-details">
-          <span class="balance-details-prefix">Balance:</span>
-          <span v-if="credits.displayCreditBalance === null">
-            <img
-              src="@/assets/coin_gif.gif"
-              class="coin"
-              alt="welcome to ELLEN insights"
-          /></span>
-          <span v-else> {{ credits.displayCreditBalance }}</span>
-        </div>
+        <CreditsBalance />
       </div>
     </section>
     <div v-if="loggedIn" class="logoutButton" @click="logout">Logout</div>
@@ -51,7 +42,10 @@
 <script>
 import { authComputed } from '@/store/helpers.js'
 import { mapState } from 'vuex'
+
+import CreditsBalance from '@/components/CreditsBalance'
 export default {
+  components: { CreditsBalance },
   computed: {
     ...authComputed,
     ...mapState(['user', 'credits']),
@@ -61,11 +55,6 @@ export default {
     logout() {
       this.$store.dispatch('user/logout')
     },
-  },
-  mounted() {
-    if (this.loggedIn) {
-      this.$store.dispatch('credits/fetchBalance')
-    }
   },
 }
 </script>
@@ -82,7 +71,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     padding: 10px;
-    min-height: 70px;
+    height: 70px;
     display: flex;
 
     img.logo {
@@ -101,6 +90,7 @@ export default {
   .subnav {
     display: flex;
     width: 100%;
+    height: 60px;
     justify-content: space-between;
     padding: $mobile-padding;
     font-size: 12px;
@@ -112,6 +102,7 @@ export default {
   .user-details {
     display: flex;
     flex-direction: column;
+    align-items: flex-end;
 
     .balance-details {
       display: flex;

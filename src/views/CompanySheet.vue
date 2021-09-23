@@ -2,7 +2,8 @@
   <div>
     <div class="company-sheet-ticker">
       <div class="company-sheet-name">
-        <h1>{{ company.nameIdentifier }}</h1>
+        <h1 v-if="company.nameIdentifier">{{ company.nameIdentifier }}</h1>
+        <h1 v-else><BaseLoadingSpinner /></h1>
       </div>
       <span v-if="company.ticker">Symbol: {{ company.ticker }}</span>
     </div>
@@ -51,5 +52,6 @@ export default {
 h1 {
   margin: 5px;
   font-size: 20px;
+  height: 30px;
 }
 </style>
