@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="timeframe-selector-wrapper">
     <div>Select year</div>
     <ul class="year-select">
       <li
@@ -64,6 +64,8 @@ import { mapState } from 'vuex'
 import dayjs from 'dayjs'
 import axios from 'axios'
 
+import { padNumber } from '../helpers/number_utilities'
+
 export default {
   components: { DateSelector },
   props: {
@@ -117,20 +119,13 @@ export default {
         },
       })
 
-      monthData.data.forEach((element) => {
-        console.log(element)
-      })
-
-      // TODO: move to general helper
-      // this pads out a number with 0 if only one digit
-      function n(num, len = 2) {
-        return `${num}`.padStart(len, '0')
-      }
-
+      // get current year and month
+      // make date
+      // format as per assignID
       const monthsAvailableExtended = monthData.data.map((aMonth) => ({
         month: aMonth.month,
         count: aMonth.count,
-        id: `${this.$store.state.company.currentCompany.id}${n(
+        id: `${this.$store.state.company.currentCompany.id}${padNumber(
           aMonth.month
         )}01${this.selectedYear}`,
       })) // TODO: generate this and assignID from the same function
@@ -158,6 +153,12 @@ ul {
   width: 100%;
   @include breakpoint(small only) {
     flex-direction: column;
+  }
+}
+
+.timeframe-selector-wrapper {
+  h3 {
+    text-align: left;
   }
 }
 
@@ -199,7 +200,7 @@ ul.year-select {
 .months-available-wrapper {
   height: 50px;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   width: 100%;
   overflow-x: scroll;
   overflow-y: hidden;
@@ -211,10 +212,6 @@ ul.year-select {
   &.active {
     animation: data-enter-up 1s forwards;
     justify-content: flex-start;
-
-    @include breakpoint(medium up) {
-      justify-content: center;
-    }
   }
 }
 

@@ -1,10 +1,6 @@
 <template>
   <div>
     <div class="chart-wrapper">
-      <TimeFrameSelector
-        :hasAccess="hasAccess"
-        @data-subscribed="getAccessibleDatasets()"
-      />
       <LineChart
         v-if="orderList.length > 0"
         ref="chartRef"
@@ -16,6 +12,10 @@
       <div class="scroll-enabler-mobile">
         <!-- this area is just to enable scroll from underneath the chart -->
       </div>
+      <TimeFrameSelector
+        :hasAccess="hasAccess"
+        @data-subscribed="getAccessibleDatasets()"
+      />
     </div>
   </div>
 </template>
@@ -200,6 +200,7 @@ export default defineComponent({
       })
       console.log(monthAccess)
       this.hasAccess = monthAccess.data.map((data) => data.datasetId)
+      this.$store.dispatch('credits/fetchBalance')
     },
   },
 })
