@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="timeframe-selector-wrapper">
     <div>Select year</div>
     <ul class="year-select">
       <li
@@ -11,19 +11,41 @@
         {{ year }}
       </li>
     </ul>
+    <h3>Timeframe</h3>
     <div class="chart-timeframe-selector">
       <div
         v-if="monthsAvailable[0] != 'loading'"
         class="months-available-wrapper"
         :class="{ active: monthsAvailable.length > 0 }"
       >
-        <!-- eventually we want a store of valid months that will generate the buttons -->
         <DateSelector
-          v-for="month in monthsAvailable"
+          v-for="month in purchasedMonths"
           :date="{ date: month, year: selectedYear }"
-          :key="month.month + selectedYear"
+          :key="`${month.id}`"
           :monthIsAccessble="hasAccess"
-          :purchaseMode="purchaseMode"
+        />
+        <span class="data-not-available" v-if="purchasedMonths.length == 0"
+          >No purchased months</span
+        >
+      </div>
+      <div v-else class="months-available-wrapper">
+        <BaseLoadingSpinner />
+      </div>
+    </div>
+
+    <h3>Purchase additional months</h3>
+    <div class="chart-timeframe-selector">
+      <div
+        v-if="monthsAvailable[0] != 'loading'"
+        class="months-available-wrapper"
+        :class="{ active: monthsAvailable.length > 0 }"
+      >
+        <DateSelector
+          v-for="month in lockedMonths"
+          :date="{ date: month, year: selectedYear }"
+          :key="`${month.id}`"
+          :monthIsAccessble="hasAccess"
+          :purchaseMode="true"
         />
         <span class="data-not-available" v-if="monthsAvailable.length == 0"
           >No data for this year available</span
@@ -41,6 +63,8 @@ import DateSelector from './DateSelector.vue'
 import { mapState } from 'vuex'
 import dayjs from 'dayjs'
 import axios from 'axios'
+
+import * as dataUtilties from '@/helpers/data_utilities'
 
 export default {
   components: { DateSelector },
@@ -60,6 +84,16 @@ export default {
     }
   },
   computed: {
+    purchasedMonths() {
+      return this.monthsAvailable.filter((month) =>
+        this.hasAccess.includes(month.id)
+      )
+    },
+    lockedMonths() {
+      return this.monthsAvailable.filter(
+        (month) => !this.hasAccess.includes(month.id)
+      )
+    },
     ...mapState('company', ['currentCompany']),
   },
   created() {
@@ -75,6 +109,7 @@ export default {
       // TODO: remove 2020 after dev
       this.monthsAvailable = ['loading'] // clear month UI
       this.selectedYear = year
+
       let monthData = await axios({
         method: 'post',
         url: `${process.env.VUE_APP_API_URL}/api/orders/dates-available`,
@@ -83,12 +118,18 @@ export default {
           year: year,
         },
       })
-      this.monthsAvailable = monthData.data
-    },
-  },
-  watch: {
-    '$store.company.currentCompany.id': function (x, y) {
-      console.log(x, y)
+
+      const monthsAvailableExtended = monthData.data.map((aMonth) => ({
+        month: aMonth.month,
+        count: aMonth.count,
+        id: `${dataUtilties.constructDateIdentifier(
+          this.$store.state.company.currentCompany.id,
+          aMonth.month - 1,
+          this.selectedYear
+        )}`,
+      }))
+
+      this.monthsAvailable = monthsAvailableExtended
     },
   },
 }
@@ -106,6 +147,12 @@ ul {
   width: 100%;
   @include breakpoint(small only) {
     flex-direction: column;
+  }
+}
+
+.timeframe-selector-wrapper {
+  h3 {
+    text-align: left;
   }
 }
 
@@ -147,7 +194,7 @@ ul.year-select {
 .months-available-wrapper {
   height: 50px;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   width: 100%;
   overflow-x: scroll;
   overflow-y: hidden;
@@ -159,10 +206,6 @@ ul.year-select {
   &.active {
     animation: data-enter-up 1s forwards;
     justify-content: flex-start;
-
-    @include breakpoint(medium up) {
-      justify-content: center;
-    }
   }
 }
 

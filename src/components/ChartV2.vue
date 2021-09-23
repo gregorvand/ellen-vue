@@ -1,13 +1,6 @@
 <template>
   <div>
     <div class="chart-wrapper">
-      Select months to show already purchased
-      <TimeFrameSelector :hasAccess="hasAccess" />
-
-      Select months to purchase
-      <div class="purchase-wrapper">
-        <TimeFrameSelector :purchaseMode="true" :hasAccess="hasAccess" />
-      </div>
       <LineChart
         v-if="orderList.length > 0"
         ref="chartRef"
@@ -19,6 +12,10 @@
       <div class="scroll-enabler-mobile">
         <!-- this area is just to enable scroll from underneath the chart -->
       </div>
+      <TimeFrameSelector
+        :hasAccess="hasAccess"
+        @data-subscribed="getAccessibleDatasets()"
+      />
     </div>
   </div>
 </template>
@@ -41,6 +38,8 @@ import 'chartjs-adapter-date-fns'
 import TimeFrameSelector from './TimeFrameSelector.vue'
 import axios from 'axios'
 import { mapState } from 'vuex'
+
+import { defaultChartOptions } from '../helpers/chart_helpers'
 
 Chart.register(...registerables, zoomPlugin)
 
@@ -95,77 +94,8 @@ export default defineComponent({
       orderList.value = setValues.data
     })
 
-    const options = {
-      elements: {
-        point: {
-          pointStyle: 'dash',
-          borderWidth: 0,
-        },
-      },
-      scales: {
-        y: {
-          ticks: {
-            beginAtZero: true,
-          },
-          type: 'linear',
-        },
-
-        x: {
-          type: 'time',
-          distribution: 'linear',
-          time: {
-            unit: 'day',
-            stepSize: '1',
-          },
-          ticks: {
-            autoSkip: false,
-            maxRotation: 45,
-            minRotation: 45, // stops jumping on mobile if always set
-          },
-          gridLines: {
-            display: false,
-          },
-        },
-      },
-      interaction: {
-        intersect: false,
-        mode: 'nearest',
-      },
-      responsive: true,
-      maintainAspectRatio: false,
-
-      plugins: {
-        legend: {
-          display: false,
-        },
-        zoom: {
-          pan: {
-            enabled: true,
-            mode: 'x',
-            speed: 0.1,
-            threshold: 10,
-          },
-          zoom: {
-            wheel: {
-              enabled: true,
-            },
-            pinch: {
-              enabled: true,
-            },
-            // drag: {
-            //   enabled: true,
-            // },
-            mode: 'x',
-          },
-          limits: {
-            x: { min: 'original', max: 'original' },
-            y: { min: 'original', max: 'original' },
-          },
-        },
-      },
-    }
-
-    // loaded = true
+    // set up chart type from our default options
+    const options = defaultChartOptions
 
     return {
       chartData,
@@ -198,10 +128,10 @@ export default defineComponent({
         url: `${process.env.VUE_APP_API_URL}/api/dataset-access/company-by-user`,
         params: {
           companyId: this.companyId,
-          userId: 192,
         },
       })
       this.hasAccess = monthAccess.data.map((data) => data.datasetId)
+      this.$store.dispatch('credits/fetchBalance')
     },
   },
 })
