@@ -1,7 +1,7 @@
 <template>
   <div class="balance-details">
     <span class="balance-details-prefix">Credits Balance:</span>
-    <span v-if="!credits.displayCreditBalance">
+    <span v-if="credits.displayCreditBalance === 'loading'">
       <img
         src="@/assets/coin_gif.gif"
         class="coin"

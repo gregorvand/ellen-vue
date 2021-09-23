@@ -3,7 +3,7 @@ import axios from 'axios'
 export const namespaced = true
 
 export const state = () => ({
-  displayCreditBalance: false,
+  displayCreditBalance: 'loading',
 })
 
 export const getters = {
