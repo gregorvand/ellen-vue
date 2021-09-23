@@ -128,7 +128,6 @@ export default defineComponent({
         url: `${process.env.VUE_APP_API_URL}/api/dataset-access/company-by-user`,
         params: {
           companyId: this.companyId,
-          userId: 192,
         },
       })
       this.hasAccess = monthAccess.data.map((data) => data.datasetId)
