@@ -104,18 +104,3 @@ async function getDataPoints(companyId, startDate, endDate) {
     },
   })
 }
-
-// async function getDataPointsV2(companyId, startDate, endDate) {
-//   console.log('here')
-//   return axios({
-//     method: 'get',
-//     url: `${process.env.VUE_APP_API_URL}/api/companies/orders-by-month`,
-//     params: {
-//       companyId: companyId,
-//       dateStart: encodeURIComponent(startDate),
-//       dateEnd: encodeURIComponent(endDate),
-//     },
-//   }).catch((error) => {
-//     console.log(error.response)
-//   })
-// }
