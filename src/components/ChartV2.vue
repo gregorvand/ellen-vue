@@ -39,6 +39,8 @@ import TimeFrameSelector from './TimeFrameSelector.vue'
 import axios from 'axios'
 import { mapState } from 'vuex'
 
+import { defaultChartOptions } from '../helpers/chart_helpers'
+
 Chart.register(...registerables, zoomPlugin)
 
 export default defineComponent({
@@ -92,77 +94,8 @@ export default defineComponent({
       orderList.value = setValues.data
     })
 
-    const options = {
-      elements: {
-        point: {
-          pointStyle: 'dash',
-          borderWidth: 0,
-        },
-      },
-      scales: {
-        y: {
-          ticks: {
-            beginAtZero: true,
-          },
-          type: 'linear',
-        },
-
-        x: {
-          type: 'time',
-          distribution: 'linear',
-          time: {
-            unit: 'day',
-            stepSize: '1',
-          },
-          ticks: {
-            autoSkip: false,
-            maxRotation: 45,
-            minRotation: 45, // stops jumping on mobile if always set
-          },
-          gridLines: {
-            display: false,
-          },
-        },
-      },
-      interaction: {
-        intersect: false,
-        mode: 'nearest',
-      },
-      responsive: true,
-      maintainAspectRatio: false,
-
-      plugins: {
-        legend: {
-          display: false,
-        },
-        zoom: {
-          pan: {
-            enabled: true,
-            mode: 'x',
-            speed: 0.1,
-            threshold: 10,
-          },
-          zoom: {
-            wheel: {
-              enabled: true,
-            },
-            pinch: {
-              enabled: true,
-            },
-            // drag: {
-            //   enabled: true,
-            // },
-            mode: 'x',
-          },
-          limits: {
-            x: { min: 'original', max: 'original' },
-            y: { min: 'original', max: 'original' },
-          },
-        },
-      },
-    }
-
-    // loaded = true
+    // set up chart type from our default options
+    const options = defaultChartOptions
 
     return {
       chartData,
@@ -198,7 +131,6 @@ export default defineComponent({
           userId: 192,
         },
       })
-      console.log(monthAccess)
       this.hasAccess = monthAccess.data.map((data) => data.datasetId)
       this.$store.dispatch('credits/fetchBalance')
     },
