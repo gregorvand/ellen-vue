@@ -7,7 +7,8 @@
         <CompanySelector :company="company" v-bind:disableCheckBox="true" />
       </li>
     </ul>
-    <h2>Buy credits</h2>
+
+    <CurrentPayments />
     <PaymentsSubscription />
     <!-- <Payments /> -->
   </div>
@@ -19,9 +20,10 @@ import axios from 'axios'
 import CompanySelector from '../components/CompanySelector'
 // import Payments from '../components/Payments'
 import PaymentsSubscription from '../components/PaymentsSubscription'
+import CurrentPayments from '../components/CurrentPayments.vue'
 
 export default {
-  components: { CompanySelector, PaymentsSubscription },
+  components: { CompanySelector, PaymentsSubscription, CurrentPayments },
   data() {
     return {
       selectedCompanies: [],

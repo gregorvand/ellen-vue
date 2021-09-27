@@ -1,6 +1,6 @@
 <template>
   <div class="form-container">
-    Subscriptions....
+    <h3>Buy credits (Subscription)</h3>
     <div class="credit-selection">
       <div v-for="valueAmount in creditValues" :key="'radio-' + valueAmount.id">
         <input

@@ -61,11 +61,15 @@ export default {
       ],
       cardError: '',
       isProcessing: false,
+      storedCards: this.returnStoredCards,
     }
   },
   computed: {
     stripeElements() {
       return this.$stripe.elements()
+    },
+    returnStoredCards() {
+      return this.checkStoredCards()
     },
     ...mapState(['user', 'credits']),
     ...mapGetters('credits', ['currentCredits']),
@@ -162,6 +166,14 @@ export default {
         this.cardError = ''
         this.chargeCredits = 0
       }
+    },
+    async checkStoredCards() {
+      const storedCards = await axios({
+        method: 'get',
+        url: `${process.env.VUE_APP_API_URL}/current-cards-subscriptions`,
+      })
+
+      return storedCards
     },
   },
 }
