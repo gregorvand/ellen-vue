@@ -15,19 +15,32 @@
       </div>
     </div>
 
-    Stored cards
-    <div v-for="storedCard in storedCards" :key="storedCard.id">
-      <div class="card">
-        <input type="radio" v-model="selectedCardId" :value="storedCard.id" />
-        <label for="">
-          <span class="card-brand">{{ storedCard.card.brand }}</span>
-          <span class="card-hidden-digits">....</span
-          >{{ storedCard.card.last4 }}
-        </label>
+    <div class="stored-card-wrapper" v-if="!cardsLoading">
+      <div v-if="storedCards.length > 0">
+        Stored cards
+        <div v-for="storedCard in storedCards" :key="storedCard.id">
+          <div class="card">
+            <input
+              type="radio"
+              v-model="selectedCardId"
+              :value="storedCard.id"
+              :id="'card-selector-' + storedCard.id"
+            />
+            <label :for="'card-selector-' + storedCard.id">
+              <span class="card-brand">{{ storedCard.card.brand }}</span>
+              <span class="card-hidden-digits">....</span
+              >{{ storedCard.card.last4 }}
+            </label>
+          </div>
+        </div>
       </div>
+      <div v-else>No stored cards, add a new one below</div>
+    </div>
+    <div class="stored-card-wrapper" v-else>
+      <BaseLoadingSpinner />
     </div>
     <div class="stripe-card-form">
-      <div class="card-inputs">
+      <div class="card-inputs" :class="{ hide: selectedCardId !== '' }">
         <label>Card Number</label>
         <!-- form populates from library -->
         <div id="card" class="card"></div>
@@ -82,6 +95,7 @@ export default {
       isProcessing: false,
       storedCards: [],
       selectedCardId: '',
+      cardsLoading: true,
     }
   },
   computed: {
@@ -132,6 +146,7 @@ export default {
       })
 
       this.storedCards = cardsAndSubsResult.data.cards
+      this.cardsLoading = false
     },
     async chargeCard() {
       const { token, error } = await this.$stripe.createToken(this.card)
@@ -186,6 +201,7 @@ export default {
           root: true,
         })
         this.isProcessing = false
+        this.selectedCardId = ''
       } else {
         const notification = {
           type: 'success',
@@ -204,6 +220,8 @@ export default {
         this.card.clear()
         this.cardError = ''
         this.chargeCredits = 0
+        this.selectedCardId = ''
+        this.getStoredCards()
       }
     },
     async createStripeCustomer() {
@@ -247,6 +265,12 @@ export default {
           }
         }
       }
+    }
+  }
+
+  .card-inputs {
+    &.hide {
+      display: none;
     }
   }
 }
@@ -301,6 +325,44 @@ export default {
 
   > img {
     width: 100%;
+  }
+}
+
+.stored-card-wrapper {
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+
+  .card {
+    margin: 10px auto;
+    width: 250px;
+    display: flex;
+    height: 50px;
+    align-items: center;
+  }
+
+  input[type='radio'] {
+    display: none;
+  }
+  input + label {
+    background-color: $color-ellen-brand-bright;
+    border-radius: $border-radius;
+    padding: 10px;
+    margin: 10px;
+    width: 200px;
+    cursor: pointer;
+    border: solid 2px $color-ellen-dark;
+
+    &:hover {
+      background-color: $color-white;
+    }
+  }
+
+  input:checked + label {
+    background-color: $color-ellen-dark;
+    color: $color-ellen-brand-bright;
   }
 }
 </style>
