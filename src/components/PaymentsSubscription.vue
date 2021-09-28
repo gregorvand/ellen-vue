@@ -105,8 +105,6 @@ export default {
   },
   methods: {
     async chargeCard() {
-      const customer = await this.createStripeCustomer()
-      console.log('customer?', customer)
       const { token, error } = await this.$stripe.createToken(this.card)
       if (error) {
         // handle error here

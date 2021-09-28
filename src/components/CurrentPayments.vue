@@ -35,8 +35,6 @@ export default {
         url: `${process.env.VUE_APP_API_URL}/current-cards-subscriptions`,
       })
 
-      console.log(cardsAndSubsResult)
-
       this.storedCards = cardsAndSubsResult.data.cards
       this.currentSubscriptions = cardsAndSubsResult.data.subscriptions
 
@@ -49,7 +47,6 @@ export default {
       )
 
       this.subscriptionsAndCards = combinedSubscriptionResult
-      console.log(combinedSubscriptionResult)
     },
   },
 }
