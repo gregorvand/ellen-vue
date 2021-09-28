@@ -29,6 +29,9 @@
       <router-link v-if="loggedIn" :to="{ name: 'dashboard' }"
         >My Companies</router-link
       >
+      <router-link v-if="loggedIn" :to="{ name: 'account' }"
+        >My Account</router-link
+      >
 
       <div class="user-details" v-if="loggedIn">
         <span>{{ user.user.email }}</span>
