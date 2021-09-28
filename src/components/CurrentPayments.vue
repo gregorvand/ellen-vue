@@ -16,7 +16,7 @@
 
         <span class="renew-date"
           >This will automatically renew on
-          {{ sub.billing_cycle_anchor | unixDate }}</span
+          {{ sub.current_period_end | unixDate }}</span
         >
 
         <button class="cancel" @click="cancelSubscription(sub.id)">
