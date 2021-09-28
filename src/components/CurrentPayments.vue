@@ -38,8 +38,6 @@ export default {
   data() {
     return {
       subscriptionsAndCards: [],
-      storedCards: [],
-      currentSubscriptions: [],
       loading: true,
     }
   },
@@ -53,9 +51,6 @@ export default {
         url: `${process.env.VUE_APP_API_URL}/current-cards-subscriptions`,
       })
 
-      this.storedCards = cardsAndSubsResult.data.cards
-      this.currentSubscriptions = cardsAndSubsResult.data.subscriptions
-
       // finds the associated card by payment ID and merges the result so that we have
       // array of subscriptions and their payment method details in one place
 
@@ -66,7 +61,6 @@ export default {
 
       this.subscriptionsAndCards = combinedSubscriptionResult
       this.loading = false
-      console.log(combinedSubscriptionResult)
     },
     async cancelSubscription(subId) {
       try {
