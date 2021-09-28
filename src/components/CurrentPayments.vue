@@ -64,7 +64,6 @@ export default {
     },
     async cancelSubscription(subId) {
       try {
-        console.log(subId)
         const cancelSubscription = await axios({
           method: 'delete',
           url: `${process.env.VUE_APP_API_URL}/subscription`,

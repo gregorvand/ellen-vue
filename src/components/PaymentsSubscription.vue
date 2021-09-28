@@ -5,7 +5,7 @@
       <div v-for="valueAmount in creditValues" :key="'radio-' + valueAmount.id">
         <input
           type="radio"
-          :value="valueAmount.value"
+          :value="valueAmount"
           :id="'credit-selector-' + valueAmount.id"
           v-model="chargeCredits"
         />
@@ -39,9 +39,17 @@
         :disabled="chargeCredits == 0"
       >
         <span v-if="chargeCredits == 0">Select Credits</span>
-        <span v-else>Pay ${{ chargeCredits * 30 }}</span>
-        <!-- TODO: API-based real-time cost of tokens !-->
+        <span v-else
+          >Subscribe ${{ chargeCredits.value * chargeCredits.price }} /month ({{
+            chargeCredits.value
+          }}
+          credits)</span
+        >
+        <!-- TODO: API-based real-time cost of tokens? Could not see immediately how to do that -->
       </button>
+      <span class="subscribe-blurb">
+        Can be cancelled at any time from your dashboard.</span
+      >
     </div>
     <div v-if="isProcessing" class="loading-coin">
       <strong>Processing payment</strong>
@@ -51,9 +59,6 @@
         alt="welcome to ELLEN insights"
       />
     </div>
-
-    <br />
-    <div class="summary">Credits to purchase: {{ chargeCredits }} <br /></div>
   </div>
 </template>
 
@@ -68,10 +73,10 @@ export default {
       chargeCredits: 0,
       creditValues: [
         // these will eventually come from API
-        { id: 1, value: 10 },
-        { id: 2, value: 20 },
-        { id: 3, value: 50 },
-        { id: 4, value: 100 },
+        { id: 1, value: 10, price: 30 },
+        { id: 2, value: 20, price: 25 },
+        { id: 3, value: 50, price: 20 },
+        { id: 4, value: 100, price: 15 },
       ],
       cardError: '',
       isProcessing: false,
@@ -119,13 +124,13 @@ export default {
     this.card.destroy()
   },
   methods: {
+    async getCreditPricing() {},
     async getStoredCards() {
       const cardsAndSubsResult = await axios({
         method: 'get',
         url: `${process.env.VUE_APP_API_URL}/current-cards-subscriptions`,
       })
 
-      console.log(cardsAndSubsResult)
       this.storedCards = cardsAndSubsResult.data.cards
     },
     async chargeCard() {
@@ -146,7 +151,7 @@ export default {
         url: `${process.env.VUE_APP_API_URL}/create-subscription`,
         data: {
           priceId: `${process.env.VUE_APP_STRIPE_SUBSCRIPTION_ID}`,
-          quantity: parseInt(this.chargeCredits),
+          quantity: parseInt(this.chargeCredits.value),
         },
       })
 
@@ -192,7 +197,8 @@ export default {
           root: true,
         })
         let currentBalance = this.$store.getters['credits/currentCredits']
-        currentBalance = parseInt(currentBalance) + parseInt(this.chargeCredits)
+        currentBalance =
+          parseInt(currentBalance) + parseInt(this.chargeCredits.value)
         this.$store.dispatch('credits/setBalance', currentBalance)
 
         this.card.clear()
@@ -264,6 +270,10 @@ export default {
 
 .summary {
   text-align: left;
+}
+
+.subscribe-blurb {
+  font-size: 11px;
 }
 
 .stripe-card-form {
