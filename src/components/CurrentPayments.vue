@@ -3,14 +3,21 @@
     <h3>Current Subscriptions</h3>
     <div v-if="subscriptionsAndCards.length > 0">
       <div v-for="sub in subscriptionsAndCards" :key="sub.id">
-        <div v-for="plan in sub.items.data" :key="plan.id">
-          You will be charged for {{ plan.quantity }} credits every
+        <div class="plan-details" v-for="plan in sub.items.data" :key="plan.id">
+          <strong>{{ plan.quantity }} </strong>credits, every
           {{ plan.plan.interval }}
         </div>
-        <span class="card-brand">{{ sub.card.brand }}</span> card to be charged:
-        <br />
-        Expires: {{ sub.card.exp_month }} / {{ sub.card.exp_year }} <br />
-        Ending: {{ sub.card.last4 }}
+
+        <h4>Payment method</h4>
+        <div class="card">
+          <span class="card-brand">{{ sub.card.brand }}</span>
+          <span class="card-hidden-digits">....</span>{{ sub.card.last4 }}
+        </div>
+
+        <span class="renew-date"
+          >This will automatically renew on
+          {{ sub.billing_cycle_anchor | unixDate }}</span
+        >
 
         <button class="cancel" @click="cancelSubscription(sub.id)">
           Cancel this subscription
@@ -59,6 +66,7 @@ export default {
 
       this.subscriptionsAndCards = combinedSubscriptionResult
       this.loading = false
+      console.log(combinedSubscriptionResult)
     },
     async cancelSubscription(subId) {
       try {
@@ -96,15 +104,47 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.card-brand {
-  font-weight: 400;
-  text-transform: capitalize;
+.plan-details {
+  background-color: $color-ellen-brand-bright;
+  border-radius: $border-radius;
+}
+h4 {
+  margin: 5px 0 0;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &-brand {
+    font-weight: 400;
+    text-transform: capitalize;
+  }
+
+  &-hidden-digits {
+    font-size: 60px;
+    color: $color-ellen-dark;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    line-height: 0;
+    padding-bottom: 35px;
+    margin: 0 5px 0 10px;
+  }
 }
 
 .subscriptions-wrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+.renew-date {
+  display: inline-block;
+  font-size: rem-calc(11px);
+  width: 100%;
 }
 
 .cancel {

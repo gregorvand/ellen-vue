@@ -7,6 +7,7 @@ import { provide } from '@vue/composition-api'
 
 // Globally register all `_base`-prefixed components
 import '@/components/_globals'
+import dayjs from 'dayjs'
 
 Vue.config.productionTip = false
 Vue.use(CompositionAPI)
@@ -25,6 +26,10 @@ Vue.directive('click-outside', {
   unbind: function (el) {
     document.body.removeEventListener('click', el.clickOutsideEvent)
   },
+})
+
+Vue.filter('unixDate', function (dateDigits) {
+  return dayjs.unix(dateDigits).format('D MMMM')
 })
 
 new Vue({
