@@ -140,6 +140,7 @@ export default {
   methods: {
     async getCreditPricing() {},
     async getStoredCards() {
+      const customer = await this.createStripeCustomer()
       const cardsAndSubsResult = await axios({
         method: 'get',
         url: `${process.env.VUE_APP_API_URL}/current-cards-subscriptions`,
@@ -149,6 +150,7 @@ export default {
       this.cardsLoading = false
     },
     async chargeCard() {
+      const customer = await this.createStripeCustomer()
       const { token, error } = await this.$stripe.createToken(this.card)
 
       // error card input form unless user has since selected a stored card
