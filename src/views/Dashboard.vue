@@ -14,9 +14,7 @@
 
 <script>
 import axios from 'axios'
-// import { mapState } from 'vuex'
 import CompanySelector from '../components/CompanySelector'
-// import Payments from '../components/Payments'
 import PaymentsSubscription from '../components/PaymentsSubscription'
 
 export default {
