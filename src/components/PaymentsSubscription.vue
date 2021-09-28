@@ -15,11 +15,21 @@
       </div>
     </div>
 
-    <br />
-    <div class="summary">Credits to purchase: {{ chargeCredits }} <br /></div>
+    Stored cards
+    <div v-for="storedCard in storedCards" :key="storedCard.id">
+      <div class="card">
+        <input type="radio" v-model="selectedCardId" :value="storedCard.id" />
+        <label for="">
+          <span class="card-brand">{{ storedCard.card.brand }}</span>
+          <span class="card-hidden-digits">....</span
+          >{{ storedCard.card.last4 }}
+        </label>
+      </div>
+    </div>
     <div class="stripe-card-form">
       <div class="card-inputs">
         <label>Card Number</label>
+        <!-- form populates from library -->
         <div id="card" class="card"></div>
         <span id="card-error">{{ cardError }}</span>
       </div>
@@ -41,6 +51,9 @@
         alt="welcome to ELLEN insights"
       />
     </div>
+
+    <br />
+    <div class="summary">Credits to purchase: {{ chargeCredits }} <br /></div>
   </div>
 </template>
 
@@ -62,6 +75,8 @@ export default {
       ],
       cardError: '',
       isProcessing: false,
+      storedCards: [],
+      selectedCardId: '',
     }
   },
   computed: {
@@ -73,7 +88,7 @@ export default {
   },
   mounted() {
     // Style Object documentation here: https://stripe.com/docs/js/appendix/style
-
+    this.getStoredCards()
     this.card = this.stripeElements.create('card', {
       iconStyle: 'solid',
       style: {
@@ -104,9 +119,20 @@ export default {
     this.card.destroy()
   },
   methods: {
+    async getStoredCards() {
+      const cardsAndSubsResult = await axios({
+        method: 'get',
+        url: `${process.env.VUE_APP_API_URL}/current-cards-subscriptions`,
+      })
+
+      console.log(cardsAndSubsResult)
+      this.storedCards = cardsAndSubsResult.data.cards
+    },
     async chargeCard() {
       const { token, error } = await this.$stripe.createToken(this.card)
-      if (error) {
+
+      // error card input form unless user has since selected a stored card
+      if (error && this.selectedCardId === '') {
         // handle error here
         this.cardError = error.message
         return
@@ -123,17 +149,27 @@ export default {
           quantity: parseInt(this.chargeCredits),
         },
       })
-      const makeCharge = await this.$stripe.confirmCardPayment(
-        createSubscription.data.clientSecret,
-        {
+
+      let paymentMethod = {}
+
+      if (this.selectedCardId === '') {
+        paymentMethod = {
           payment_method: {
             card: this.card,
             billing_details: {
               email: this.user.user.email,
             },
           },
-          receipt_email: 'gregor+receipt@ellen.me',
         }
+      } else {
+        paymentMethod = {
+          payment_method: this.selectedCardId,
+        }
+      }
+
+      const makeCharge = await this.$stripe.confirmCardPayment(
+        createSubscription.data.clientSecret,
+        paymentMethod
       )
 
       if (makeCharge.error) {
@@ -188,21 +224,21 @@ export default {
       display: flex;
       flex-basis: 45%;
     }
-  }
 
-  > div {
-    color: black !important;
-
-    input {
+    > div {
       color: black !important;
-    }
 
-    input[type='radio'] {
-      display: none;
+      input {
+        color: black !important;
+      }
 
-      &:checked {
-        + label {
-          background-color: $color-ellen-brand;
+      input[type='radio'] {
+        display: none;
+
+        &:checked {
+          + label {
+            background-color: $color-ellen-brand;
+          }
         }
       }
     }

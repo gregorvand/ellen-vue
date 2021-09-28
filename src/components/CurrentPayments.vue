@@ -9,7 +9,7 @@
         </div>
 
         <h4>Payment method</h4>
-        <div class="card">
+        <div class="card" v-if="sub.card">
           <span class="card-brand">{{ sub.card.brand }}</span>
           <span class="card-hidden-digits">....</span>{{ sub.card.last4 }}
         </div>
