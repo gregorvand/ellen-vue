@@ -15,7 +15,16 @@ function constructDateIdentifier(companyID, month, year) {
   return assignDateIdentifier(companyID, fullDate)
 }
 
+const mergeById = (a1, a2) =>
+  a1.map((a1Item) => ({
+    ...a2.find(
+      (a2Item) => a2Item.id === a1Item.default_payment_method && a2Item
+    ),
+    ...a1Item,
+  }))
+
 module.exports = {
   assignDateIdentifier: assignDateIdentifier,
   constructDateIdentifier: constructDateIdentifier,
+  mergeById: mergeById,
 }

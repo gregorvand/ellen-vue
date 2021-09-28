@@ -6,6 +6,7 @@ import EventShow from '../views/EventShow.vue'
 
 import Home from '@/views/Home.vue'
 import Dashboard from '@/views/Dashboard.vue'
+import Account from '@/views/Account.vue'
 import RegisterUser from '@/views/RegisterUser.vue'
 import LoginUser from '@/views/LoginUser.vue'
 import CompanySheet from '@/views/CompanySheet.vue'
@@ -34,6 +35,12 @@ const routes = [
     path: '/dashboard',
     name: 'dashboard',
     component: Dashboard,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/account',
+    name: 'account',
+    component: Account,
     meta: { requiresAuth: true },
   },
   {

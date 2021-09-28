@@ -1,10 +1,11 @@
 <template>
   <div class="form-container">
+    <h3>Buy credits (Subscription)</h3>
     <div class="credit-selection">
       <div v-for="valueAmount in creditValues" :key="'radio-' + valueAmount.id">
         <input
           type="radio"
-          :value="valueAmount.value"
+          :value="valueAmount"
           :id="'credit-selector-' + valueAmount.id"
           v-model="chargeCredits"
         />
@@ -14,11 +15,34 @@
       </div>
     </div>
 
-    <br />
-    <div class="summary">Credits to purchase: {{ chargeCredits }} <br /></div>
+    <div class="stored-card-wrapper" v-if="!cardsLoading">
+      <div v-if="storedCards.length > 0">
+        Stored cards
+        <div v-for="storedCard in storedCards" :key="storedCard.id">
+          <div class="card">
+            <input
+              type="radio"
+              v-model="selectedCardId"
+              :value="storedCard.id"
+              :id="'card-selector-' + storedCard.id"
+            />
+            <label :for="'card-selector-' + storedCard.id">
+              <span class="card-brand">{{ storedCard.card.brand }}</span>
+              <span class="card-hidden-digits">....</span
+              >{{ storedCard.card.last4 }}
+            </label>
+          </div>
+        </div>
+      </div>
+      <div v-else>No stored cards, add a new one below</div>
+    </div>
+    <div class="stored-card-wrapper" v-else>
+      <BaseLoadingSpinner />
+    </div>
     <div class="stripe-card-form">
-      <div class="card-inputs">
+      <div class="card-inputs" :class="{ hide: selectedCardId !== '' }">
         <label>Card Number</label>
+        <!-- form populates from library -->
         <div id="card" class="card"></div>
         <span id="card-error">{{ cardError }}</span>
       </div>
@@ -28,9 +52,17 @@
         :disabled="chargeCredits == 0"
       >
         <span v-if="chargeCredits == 0">Select Credits</span>
-        <span v-else>Pay ${{ chargeCredits * 30 }}</span>
-        <!-- TODO: API-based real-time cost of tokens !-->
+        <span v-else
+          >Subscribe ${{ chargeCredits.value * chargeCredits.price }} /month ({{
+            chargeCredits.value
+          }}
+          credits)</span
+        >
+        <!-- TODO: API-based real-time cost of tokens? Could not see immediately how to do that -->
       </button>
+      <span class="subscribe-blurb">
+        Can be cancelled at any time from your dashboard.</span
+      >
     </div>
     <div v-if="isProcessing" class="loading-coin">
       <strong>Processing payment</strong>
@@ -54,29 +86,28 @@ export default {
       chargeCredits: 0,
       creditValues: [
         // these will eventually come from API
-        { id: 1, value: 10 },
-        { id: 2, value: 20 },
-        { id: 3, value: 50 },
-        { id: 4, value: 100 },
+        { id: 1, value: 10, price: 30 },
+        { id: 2, value: 20, price: 25 },
+        { id: 3, value: 50, price: 20 },
+        { id: 4, value: 100, price: 15 },
       ],
       cardError: '',
       isProcessing: false,
-      storedCards: this.returnStoredCards,
+      storedCards: [],
+      selectedCardId: '',
+      cardsLoading: true,
     }
   },
   computed: {
     stripeElements() {
       return this.$stripe.elements()
     },
-    returnStoredCards() {
-      return this.checkStoredCards()
-    },
     ...mapState(['user', 'credits']),
     ...mapGetters('credits', ['currentCredits']),
   },
   mounted() {
     // Style Object documentation here: https://stripe.com/docs/js/appendix/style
-
+    this.getStoredCards()
     this.card = this.stripeElements.create('card', {
       iconStyle: 'solid',
       style: {
@@ -107,36 +138,58 @@ export default {
     this.card.destroy()
   },
   methods: {
+    async getCreditPricing() {},
+    async getStoredCards() {
+      const cardsAndSubsResult = await axios({
+        method: 'get',
+        url: `${process.env.VUE_APP_API_URL}/current-cards-subscriptions`,
+      })
+
+      this.storedCards = cardsAndSubsResult.data.cards
+      this.cardsLoading = false
+    },
     async chargeCard() {
       const { token, error } = await this.$stripe.createToken(this.card)
-      if (error) {
+
+      // error card input form unless user has since selected a stored card
+      if (error && this.selectedCardId === '') {
         // handle error here
         this.cardError = error.message
         return
       }
       this.isProcessing = true
+
       // handle the token
       // send it to your server
-      const createIntent = await axios({
+      const createSubscription = await axios({
         method: 'post',
-        url: `${process.env.VUE_APP_API_URL}/create-payment-intent`,
+        url: `${process.env.VUE_APP_API_URL}/create-subscription`,
         data: {
-          token: token,
-          chargeAmount: parseInt(this.chargeCredits),
+          priceId: `${process.env.VUE_APP_STRIPE_SUBSCRIPTION_ID}`,
+          quantity: parseInt(this.chargeCredits.value),
         },
       })
 
-      const makeCharge = await this.$stripe.confirmCardPayment(
-        createIntent.data.clientSecret,
-        {
+      let paymentMethod = {}
+
+      if (this.selectedCardId === '') {
+        paymentMethod = {
           payment_method: {
             card: this.card,
             billing_details: {
               email: this.user.user.email,
             },
           },
-          receipt_email: 'gregor+receipt@ellen.me',
         }
+      } else {
+        paymentMethod = {
+          payment_method: this.selectedCardId,
+        }
+      }
+
+      const makeCharge = await this.$stripe.confirmCardPayment(
+        createSubscription.data.clientSecret,
+        paymentMethod
       )
 
       if (makeCharge.error) {
@@ -148,6 +201,7 @@ export default {
           root: true,
         })
         this.isProcessing = false
+        this.selectedCardId = ''
       } else {
         const notification = {
           type: 'success',
@@ -159,21 +213,23 @@ export default {
           root: true,
         })
         let currentBalance = this.$store.getters['credits/currentCredits']
-        currentBalance = parseInt(currentBalance) + parseInt(this.chargeCredits)
+        currentBalance =
+          parseInt(currentBalance) + parseInt(this.chargeCredits.value)
         this.$store.dispatch('credits/setBalance', currentBalance)
 
         this.card.clear()
         this.cardError = ''
         this.chargeCredits = 0
+        this.selectedCardId = ''
+        this.getStoredCards()
       }
     },
-    async checkStoredCards() {
-      const storedCards = await axios({
-        method: 'get',
-        url: `${process.env.VUE_APP_API_URL}/current-cards-subscriptions`,
+    async createStripeCustomer() {
+      // we create the customer when user clicks credits, since we can preempt we will then need the customer
+      return await axios({
+        method: 'post',
+        url: `${process.env.VUE_APP_API_URL}/create-stripe-customer`,
       })
-
-      return storedCards
     },
   },
 }
@@ -192,23 +248,29 @@ export default {
       display: flex;
       flex-basis: 45%;
     }
-  }
 
-  > div {
-    color: black !important;
-
-    input {
+    > div {
       color: black !important;
-    }
 
-    input[type='radio'] {
-      display: none;
+      input {
+        color: black !important;
+      }
 
-      &:checked {
-        + label {
-          background-color: $color-ellen-brand;
+      input[type='radio'] {
+        display: none;
+
+        &:checked {
+          + label {
+            background-color: $color-ellen-brand;
+          }
         }
       }
+    }
+  }
+
+  .card-inputs {
+    &.hide {
+      display: none;
     }
   }
 }
@@ -232,6 +294,10 @@ export default {
 
 .summary {
   text-align: left;
+}
+
+.subscribe-blurb {
+  font-size: 11px;
 }
 
 .stripe-card-form {
@@ -259,6 +325,44 @@ export default {
 
   > img {
     width: 100%;
+  }
+}
+
+.stored-card-wrapper {
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+
+  .card {
+    margin: 10px auto;
+    width: 250px;
+    display: flex;
+    height: 50px;
+    align-items: center;
+  }
+
+  input[type='radio'] {
+    display: none;
+  }
+  input + label {
+    background-color: $color-ellen-brand-bright;
+    border-radius: $border-radius;
+    padding: 10px;
+    margin: 10px;
+    width: 200px;
+    cursor: pointer;
+    border: solid 2px $color-ellen-dark;
+
+    &:hover {
+      background-color: $color-white;
+    }
+  }
+
+  input:checked + label {
+    background-color: $color-ellen-dark;
+    color: $color-ellen-brand-bright;
   }
 }
 </style>

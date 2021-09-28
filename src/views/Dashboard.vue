@@ -7,18 +7,18 @@
         <CompanySelector :company="company" v-bind:disableCheckBox="true" />
       </li>
     </ul>
-    <h2>Buy credits</h2>
-    <Payments />
+    <PaymentsSubscription />
+    <!-- <Payments /> -->
   </div>
 </template>
 
 <script>
 import axios from 'axios'
-// import { mapState } from 'vuex'
 import CompanySelector from '../components/CompanySelector'
-import Payments from '../components/Payments'
+import PaymentsSubscription from '../components/PaymentsSubscription'
+
 export default {
-  components: { CompanySelector, Payments },
+  components: { CompanySelector, PaymentsSubscription },
   data() {
     return {
       selectedCompanies: [],
