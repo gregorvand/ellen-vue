@@ -16,6 +16,7 @@
 
 <script>
 import axios from 'axios'
+import { mergeById } from '@/helpers/data_utilities'
 export default {
   data() {
     return {
@@ -41,11 +42,6 @@ export default {
 
       // finds the associated card by payment ID and merges the result so that we have
       // array of subscriptions and their payment method details in one place
-      const mergeById = (a1, a2) =>
-        a1.map((sub) => ({
-          ...a2.find((item) => item.id === sub.default_payment_method && item),
-          ...sub,
-        }))
 
       const combinedSubscriptionResult = mergeById(
         cardsAndSubsResult.data.subscriptions.data,
