@@ -2,7 +2,11 @@
   <div class="subscriptions-wrapper">
     <h3>Current Subscriptions</h3>
     <div v-if="subscriptionsAndCards.length > 0">
-      <div v-for="sub in subscriptionsAndCards" :key="sub.id">
+      <div
+        v-for="sub in subscriptionsAndCards"
+        :key="sub.id"
+        class="subscription-wrapper"
+      >
         <div class="plan-details" v-for="plan in sub.items.data" :key="plan.id">
           <strong>{{ plan.quantity }} </strong>credits, each
           {{ plan.plan.interval }}
@@ -132,6 +136,16 @@ h4 {
   display: flex;
   flex-direction: column;
   justify-content: center;
+
+  .subscription-wrapper {
+    border: solid $color-ellen-light-gray 2px;
+    border-radius: $border-radius;
+    padding: 10px;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
 }
 
 .renew-date {
@@ -146,6 +160,6 @@ h4 {
   color: $color-black;
   max-width: 200px;
   font-size: rem-calc(12px);
-  margin: 20px auto;
+  margin: 10px auto 0;
 }
 </style>
