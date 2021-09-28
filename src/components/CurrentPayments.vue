@@ -4,7 +4,7 @@
     <div v-if="subscriptionsAndCards.length > 0">
       <div v-for="sub in subscriptionsAndCards" :key="sub.id">
         <div class="plan-details" v-for="plan in sub.items.data" :key="plan.id">
-          <strong>{{ plan.quantity }} </strong>credits, every
+          <strong>{{ plan.quantity }} </strong>credits, each
           {{ plan.plan.interval }}
         </div>
 
