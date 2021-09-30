@@ -1,22 +1,24 @@
 <template>
   <div class="nav-header">
+    <div class="nav-header-pattern" :style="patternProps"></div>
     <section class="topnav">
-      <router-link to="/">
-        <img
-          src="@/assets/ELLENv2logo.svg"
-          class="logo"
-          alt="welcome to ELLEN insights"
-        />
-      </router-link>
-      <h1>
-        INSIGHTS. <br />
-        BENCHMARKING.
-      </h1>
-      <!-- <router-link to="/"> Home </router-link>
-    <template v-if="loggedIn">
-      <router-link :to="{ name: 'dashboard' }"> Dashboard </router-link>
-      <router-link :to="{ name: 'earnings' }"> Earnings </router-link>
-    </template> -->
+      <div class="nav-header-left">
+        <router-link to="/">
+          <img
+            src="@/assets/ELLENv2logo.svg"
+            class="logo"
+            alt="welcome to ELLEN insights"
+          />
+        </router-link>
+        <h1>
+          INSIGHTS. <br />
+          BENCHMARKING.
+        </h1>
+      </div>
+
+      <div class="nav-header-search"></div>
+
+      <div class="nav-header-right"></div>
     </section>
 
     <section class="subnav">
@@ -32,13 +34,13 @@
       <router-link v-if="loggedIn" :to="{ name: 'account' }"
         >My Account</router-link
       >
+      <div v-if="loggedIn" class="logoutButton" @click="logout">Logout</div>
 
       <div class="user-details" v-if="loggedIn">
         <span>{{ user.user.email }}</span>
         <CreditsBalance />
       </div>
     </section>
-    <div v-if="loggedIn" class="logoutButton" @click="logout">Logout</div>
   </div>
 </template>
 
@@ -49,6 +51,13 @@ import { mapState } from 'vuex'
 import CreditsBalance from '@/components/CreditsBalance'
 export default {
   components: { CreditsBalance },
+  data: function () {
+    return {
+      patternProps: {
+        backgroundImage: `url(${require('@/assets/ellen_pattern.svg')})`,
+      },
+    }
+  },
   computed: {
     ...authComputed,
     ...mapState(['user', 'credits']),
@@ -67,15 +76,36 @@ export default {
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  height: 130px;
+
+  &-pattern {
+    background-size: 100%;
+    background-position: 0 0;
+    position: absolute;
+    width: 100%;
+    height: 130px;
+    background-size: cover;
+    opacity: 0.2;
+  }
+
+  &-left {
+    display: flex;
+    flex-direction: row;
+
+    h1 {
+      margin-left: 15px;
+    }
+  }
 
   .topnav {
     width: 100%;
-    background-color: $color-ellen-dark;
+    background-color: rgba(246, 246, 246, 0.7);
     justify-content: space-between;
     align-items: center;
     padding: 10px;
     height: 70px;
     display: flex;
+    position: relative;
 
     img.logo {
       max-width: 25vw;
@@ -84,9 +114,8 @@ export default {
     h1 {
       font-size: rem-calc(18px);
       display: flex;
-      color: white;
+      color: $color-ellen-dark-gray;
       text-align: left;
-      margin: 0;
     }
   }
 
@@ -100,6 +129,7 @@ export default {
     background-color: $color-ellen-light-gray;
     padding: 5px 15px;
     align-items: center;
+    position: relative;
   }
 
   .user-details {

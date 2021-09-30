@@ -15,13 +15,6 @@
         </li>
       </ul>
     </form>
-    <!-- dev only -->
-    <!-- <ul>
-      <li>
-        <CompanySelector :company="{ companyName: 'Test Company', id: '5' }" />
-      </li>
-    </ul> -->
-    <!--  -->
   </div>
 </template>
 
