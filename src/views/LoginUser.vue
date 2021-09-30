@@ -48,9 +48,19 @@ export default {
 <style lang="scss" scoped>
 form {
   width: 300px;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   input {
     width: 100%;
+    height: 40px;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    border: solid $color-ellen-dark 2px;
+    border-radius: $border-radius;
   }
 }
 </style>
