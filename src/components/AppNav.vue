@@ -184,10 +184,19 @@ $nav-height: 110px;
     }
 
     @include breakpoint(small only) {
+      background-color: $color-ellen-brand-bright;
       position: fixed;
       bottom: 0;
       width: 100%;
       z-index: 10;
+      grid-template-columns: 1fr 1fr 1fr;
+      display: grid;
+      height: $mobile-footer-nav-height;
+
+      a {
+        background: $color-ellen-dark;
+        color: $color-white;
+      }
     }
   }
 

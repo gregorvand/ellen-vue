@@ -32,6 +32,10 @@ export default {
   flex-direction: column;
   justify-content: center;
 
+  @include breakpoint(small only) {
+    padding-bottom: $mobile-footer-nav-height + 20px;
+  }
+
   > div {
     display: flex;
     flex-direction: column;
