@@ -116,7 +116,7 @@ span {
 
   &.price {
     width: 30px;
-    font-size: 12px;
+    font-size: $small-label-font-size;
   }
 }
 

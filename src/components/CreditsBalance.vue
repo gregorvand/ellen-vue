@@ -1,13 +1,18 @@
 <template>
   <div class="balance-details">
-    <span class="balance-details-prefix">Credits Balance:</span>
-    <span v-if="credits.displayCreditBalance === 'loading'">
+    <span class="balance-details-prefix">Credits Balance</span>
+    <span
+      class="balance-value"
+      v-if="credits.displayCreditBalance === 'loading'"
+    >
       <img
         src="@/assets/coin_gif.gif"
         class="coin"
         alt="welcome to ELLEN insights"
     /></span>
-    <span v-else>&nbsp;{{ credits.displayCreditBalance }}</span>
+    <span class="balance-value" v-else
+      >&nbsp;{{ credits.displayCreditBalance }}</span
+    >
   </div>
 </template>
 
@@ -45,6 +50,19 @@ export default {
     width: 20px;
     object-fit: cover;
     height: 22px;
+  }
+
+  .balance-value {
+    width: 50px;
+    background-color: $color-ellen-brand-bright;
+    padding: 2px;
+    border-radius: 5px;
+    margin-left: 5px;
+    font-weight: 600;
+    font-size: 14px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
   }
 }
 </style>

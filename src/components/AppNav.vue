@@ -1,7 +1,7 @@
 <template>
   <div class="nav-header">
     <div class="nav-header-pattern" :style="patternProps"></div>
-    <section class="topnav">
+    <section class="nav-header-main">
       <div class="nav-header-left">
         <router-link to="/">
           <img
@@ -10,18 +10,25 @@
             alt="welcome to ELLEN insights"
           />
         </router-link>
-        <h1>
+        <h1 class="tagline">
           INSIGHTS. <br />
           BENCHMARKING.
         </h1>
       </div>
 
-      <div class="nav-header-search"></div>
+      <div class="nav-header-search">
+        <SearchForm v-if="loggedIn && this.$route.name !== 'home'" />
+      </div>
 
-      <div class="nav-header-right"></div>
+      <div class="nav-header-right">
+        <div class="user-details" v-if="loggedIn">
+          <span>{{ user.user.email }}</span>
+          <CreditsBalance />
+        </div>
+      </div>
     </section>
 
-    <section class="subnav">
+    <section class="nav-header-subnav">
       <router-link v-if="!loggedIn" to="/login" class="login-link">
         Login
       </router-link>
@@ -32,14 +39,9 @@
         >My Companies</router-link
       >
       <router-link v-if="loggedIn" :to="{ name: 'account' }"
-        >My Account</router-link
+        >Account</router-link
       >
       <div v-if="loggedIn" class="logoutButton" @click="logout">Logout</div>
-
-      <div class="user-details" v-if="loggedIn">
-        <span>{{ user.user.email }}</span>
-        <CreditsBalance />
-      </div>
     </section>
   </div>
 </template>
@@ -49,8 +51,11 @@ import { authComputed } from '@/store/helpers.js'
 import { mapState } from 'vuex'
 
 import CreditsBalance from '@/components/CreditsBalance'
+import SearchForm from '@/components/SearchForm'
+
 export default {
-  components: { CreditsBalance },
+  components: { CreditsBalance, SearchForm },
+
   data: function () {
     return {
       patternProps: {
@@ -72,76 +77,138 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$nav-height-mobile: 100px;
+$nav-height: 110px;
+
 .nav-header {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  height: 130px;
+  height: $nav-height-mobile;
+
+  @include breakpoint(medium up) {
+    height: $nav-height;
+  }
 
   &-pattern {
     background-size: 100%;
     background-position: 0 0;
     position: absolute;
     width: 100%;
-    height: 130px;
+    height: $nav-height-mobile;
     background-size: cover;
     opacity: 0.2;
+
+    @include breakpoint(medium up) {
+      height: $nav-height;
+    }
   }
 
   &-left {
     display: flex;
     flex-direction: row;
+    grid-area: logo;
 
     h1 {
       margin-left: 15px;
     }
   }
 
-  .topnav {
+  &-search {
+    height: 50px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    grid-area: search;
+  }
+
+  &-right {
+    grid-area: user;
+  }
+
+  &-main {
     width: 100%;
-    background-color: rgba(246, 246, 246, 0.7);
+    background-color: $color-ellen-white-transparent;
     justify-content: space-between;
     align-items: center;
     padding: 10px;
     height: 70px;
-    display: flex;
+    display: grid;
     position: relative;
+    z-index: base-index(top);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto;
+    grid-template-areas:
+      'logo search search'
+      'user user user';
+
+    @include breakpoint(medium up) {
+      grid-template-columns: 1fr 1fr 1fr;
+      align-content: center;
+      grid-template-areas: 'logo search user';
+    }
 
     img.logo {
       max-width: 25vw;
       display: flex;
     }
-    h1 {
+
+    h1.tagline {
+      display: none;
       font-size: rem-calc(18px);
-      display: flex;
       color: $color-ellen-dark-gray;
       text-align: left;
+
+      @include breakpoint(large up) {
+        display: flex;
+      }
     }
   }
 
-  .subnav {
+  &-subnav {
     display: flex;
     width: 100%;
-    height: 60px;
-    justify-content: space-between;
+    height: 40px;
+    justify-content: flex-end;
     padding: $mobile-padding;
-    font-size: 12px;
-    background-color: $color-ellen-light-gray;
+    font-size: $small-label-font-size;
+    background-color: $color-ellen-gray-transparent;
     padding: 5px 15px;
     align-items: center;
     position: relative;
+    z-index: base-index(middle);
+
+    > a:hover {
+      text-decoration: underline;
+    }
+
+    @include breakpoint(small only) {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      z-index: 10;
+    }
   }
 
   .user-details {
     display: flex;
-    flex-direction: column;
-    align-items: flex-end;
+    font-size: $small-label-font-size;
+    grid-area: user;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    @include breakpoint(medium up) {
+      flex-direction: column;
+      align-items: flex-end;
+    }
 
     .balance-details {
       display: flex;
       flex-direction: row;
       align-items: center;
-      height: 30px;
+      height: 40px;
 
       &-prefix {
         font-weight: 600;
@@ -156,7 +223,6 @@ export default {
 
     span {
       display: flex;
-      margin-left: 10px;
     }
   }
 }

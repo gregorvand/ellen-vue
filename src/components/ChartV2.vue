@@ -159,7 +159,7 @@ async function getDataPoints(companyId, months) {
 button {
   margin: 10px;
   padding: 20px;
-  font-size: 12px;
+  font-size: $small-label-font-size;
   line-height: 1;
 }
 
