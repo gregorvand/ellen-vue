@@ -6,7 +6,7 @@
         type="text"
         v-model="currentQuery"
         @keyup.esc="clearInput"
-        placeholder="Search for company name or symbol"
+        placeholder="Search for a company"
       />
 
       <ul class="companies-results" v-if="results.length > 0">
@@ -15,13 +15,6 @@
         </li>
       </ul>
     </form>
-    <!-- dev only -->
-    <!-- <ul>
-      <li>
-        <CompanySelector :company="{ companyName: 'Test Company', id: '5' }" />
-      </li>
-    </ul> -->
-    <!--  -->
   </div>
 </template>
 
@@ -79,6 +72,11 @@ export default {
     @extend %heading-font-family;
     color: $color-ellen-dark;
     font-size: rem-calc(16px);
+    border-color: $color-ellen-dark-gray;
+
+    &:focus-visible {
+      outline-color: $color-ellen-dark;
+    }
 
     &::placeholder {
       @extend %heading-font-family;

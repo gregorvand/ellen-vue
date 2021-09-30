@@ -5,6 +5,8 @@ $color-ellen-dark: #05769C;
 $color-ellen-brand: #FFF6A8;
 $color-ellen-light-gray: #F9F9F9;
 $color-ellen-dark-gray: #C0B8B8;
+$color-ellen-white-transparent: rgba(255, 255, 255, 0.5);
+$color-ellen-gray-transparent: rgba(246, 246, 246, 0.7);
 $color-ellen-brand-bright: #F0F8FF;
 $color-ellen-brand-dark: #0d139c;
 
@@ -13,6 +15,7 @@ $mobile-padding: 15px;
 $border-radius: 5px;
 
 // fonts
+@import './helpers/.helpers';
 @import './fonts';
 @import './components/.components';
 @import 'footer';
