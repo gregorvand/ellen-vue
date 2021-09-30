@@ -33,7 +33,7 @@
         Login
       </router-link>
 
-      <div v-if="!loggedIn">:: Space for promo ::</div>
+      <!-- <div v-if="!loggedIn">:: Space for promo ::</div>   -->
 
       <router-link v-if="loggedIn" :to="{ name: 'dashboard' }"
         >My Companies</router-link
@@ -196,6 +196,11 @@ $nav-height: 110px;
       a {
         background: $color-ellen-dark;
         color: $color-white;
+        height: 35px;
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        border-radius: $border-radius;
       }
     }
   }

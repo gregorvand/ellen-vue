@@ -1,28 +1,30 @@
 <template>
-  <div class="company-selector" :class="isCategoryCompanyClass">
-    <div class="company-selector-label">
-      <router-link
-        v-if="this.$route.name == 'dashboard'"
-        :to="{
-          name: 'company',
-          params: { id: company.id },
-        }"
-      >
-        <span>{{ companyName }}</span>
-      </router-link>
-      <span v-else>{{ companyName }}</span>
-      <span class="ticker-label" v-if="company.ticker"
-        >({{ company.ticker }})</span
-      >
+  <div
+    class="company-selector"
+    :class="[isCategoryCompanyClass, { proprietary: !isPublicCompany }]"
+  >
+    <router-link
+      v-if="this.$route.name == 'dashboard'"
+      class="company-selector-link"
+      :to="{
+        name: 'company',
+        params: { id: company.id },
+      }"
+    >
+    </router-link>
+    <div class="company-details">
+      <div class="company-selector-label">
+        <span class="company-selector-title">{{ companyName }}</span>
+        <span class="ticker-label" v-if="company.ticker"
+          >({{ company.ticker }})</span
+        >
+      </div>
+      <div class="company-type">
+        <span v-if="!isPublicCompany">Proprietary Insights </span>
+        <span v-else>Earnings alerts charts</span>
+      </div>
     </div>
-
-    <span :class="'company-type-label ' + isPublicCompany">
-      {{ companyType }}
-    </span>
-    <span class="price">
-      {{ price }}
-    </span>
-    <div class="checkbox-spacer">
+    <div class="company-checkbox">
       <input
         v-if="!disableCheckBox && allowEdit"
         class="select-company"
@@ -75,12 +77,11 @@ export default {
       checked: this.$store.getters['selectedCompanies/userHasCompany'](
         this.company.id
       ),
-      isPublicCompany: this.company.ticker ? 'public' : 'private',
+      isPublicCompany: this.company.ticker ? true : false,
       isCategoryCompanyClass: this.company.addedFromCategory
         ? 'category-add'
         : 'individual-add',
       allowEdit: this.company.addedFromCategory ? false : true,
-      price: this.company.ticker ? 'FREE' : '$20',
     }
   },
 
@@ -99,19 +100,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.select-company,
-.checkbox-spacer {
-  height: 1.6em;
+.select-company {
   width: 30px;
+  height: 20px;
 }
 
 span {
   display: flex;
-  width: 100%;
 
   &.ticker-label {
     margin-bottom: -5px;
     font-size: 10px;
+    flex-grow: 1;
+    justify-content: center;
+    justify-content: flex-start;
+    padding: 0 5px;
   }
 
   &.price {
@@ -122,24 +125,71 @@ span {
 
 .company-selector {
   // view specifics
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  width: 350px;
+  border-radius: $border-radius;
+  background-color: $color-ellen-light-gray;
+  display: flex;
+  flex-direction: row;
+  padding: 5px;
+  position: relative;
+
+  a {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    &:hover {
+      background-color: $color-ellen-white-transparent;
+      transition: all 200ms;
+    }
+
+    &:hover + .company-details > .company-selector-title {
+      text-decoration: underline;
+    }
+  }
+
+  &.proprietary {
+    background-color: $color-ellen-brand-bright;
+  }
+
+  .company-details {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  &-label {
+    display: flex;
+  }
 
   .dashboard & {
-    height: 40px;
+    height: 50px;
     display: flex;
     align-items: center;
     margin-bottom: 5px;
-    width: 100%;
-    max-width: 500px;
 
-    &-label {
+    .company-details-label {
       width: 100%;
+      display: flex;
+      height: 50%;
+      align-items: center;
     }
   }
 
   // subcomponents
-  &-label {
-    width: 65%;
-    font-size: 13px;
+  &-title {
+    @extend %company-title;
+    text-decoration: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    line-height: 1;
+    height: 50%;
   }
 
   &.category-add {
@@ -164,16 +214,9 @@ span {
   }
 }
 
-.company-type-label {
-  @extend %company-type-label;
-
-  &.public {
-    background-color: $color-ellen-brand-dark;
-  }
-
-  &.private {
-    color: $color-black;
-    background-color: $color-ellen-brand-bright;
-  }
+.company-type {
+  display: flex;
+  width: 100%;
+  font-size: $small-label-font-size;
 }
 </style>

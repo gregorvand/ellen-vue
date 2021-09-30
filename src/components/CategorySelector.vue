@@ -72,14 +72,6 @@ export default {
       ),
     }
   },
-
-  // computed: {
-  //   categoryName() {
-  //     return this.category.categoryName
-  //       ? this.category.categoryName // elastic search
-  //       : this.category.nameIdentifier // ellen DB
-  //   },
-  // },
 }
 </script>
 
