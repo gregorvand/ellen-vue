@@ -142,7 +142,7 @@ export default {
       if (makeCharge.error) {
         const notification = {
           type: 'error',
-          message: `Oh no, we were not able to process the payment for this reason: ${makeCharge.error.message}`,
+          message: `We were not able to process the payment for this reason: ${makeCharge.error.message}`,
         }
         this.$store.dispatch('notification/add', notification, {
           root: true,
@@ -151,8 +151,7 @@ export default {
       } else {
         const notification = {
           type: 'success',
-          message:
-            'Great, we just added credits to your account, they should show up shortly',
+          message: 'Credits added! 💰',
         }
         this.isProcessing = false
         this.$store.dispatch('notification/add', notification, {

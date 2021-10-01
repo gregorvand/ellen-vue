@@ -6,6 +6,7 @@
 
 <script>
 import { mapActions } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
   props: {
@@ -14,6 +15,7 @@ export default {
       required: true,
     },
   },
+  computed: mapState('notification', ['notifications']),
   data() {
     return {
       timeout: null,
@@ -21,7 +23,7 @@ export default {
   },
   // lifecyle hooks
   mounted() {
-    this.timeout = setTimeout(() => this.remove(this.notification), 5000)
+    this.timeout = setTimeout(() => this.remove(this.notification), 10000)
   },
   beforeDestroy() {
     clearTimeout(this.timeout)
@@ -37,16 +39,50 @@ export default {
 
 <style lang="scss" scoped>
 .notification-bar {
-  margin: 1em 0 1em;
   width: 100%;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  animation: data-enter-up 10s infinite;
+  background-color: $color-white;
+  position: relative;
+  line-height: 1;
+  z-index: 10;
+
+  p {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    @extend %heading-font-family;
+    font-size: 14px;
+  }
 
   &.-text-success {
-    background-color: green;
+    color: rgb(19, 155, 19);
+    font-weight: 600;
   }
 
   &.-text-error {
-    background-color: yellow;
-    color: $color-black;
+    color: salmon;
+  }
+}
+
+@keyframes data-enter-up {
+  0% {
+    transform: translateY(-40px);
+  }
+
+  15% {
+    transform: translateY(0);
+  }
+
+  75% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(40px);
   }
 }
 </style>

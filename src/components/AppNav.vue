@@ -29,19 +29,25 @@
     </section>
 
     <section class="nav-header-subnav">
-      <router-link v-if="!loggedIn" to="/login" class="login-link">
-        Login
-      </router-link>
+      <div class="nav-header-subnav-left">
+        <router-link v-if="!loggedIn" to="/login" class="login-link">
+          Login
+        </router-link>
+      </div>
+
+      <NotificationContainer />
 
       <!-- <div v-if="!loggedIn">:: Space for promo ::</div>   -->
 
-      <router-link v-if="loggedIn" :to="{ name: 'dashboard' }"
-        >My Companies</router-link
-      >
-      <router-link v-if="loggedIn" :to="{ name: 'account' }"
-        >Account</router-link
-      >
-      <div v-if="loggedIn" class="logoutButton" @click="logout">Logout</div>
+      <div class="user-controls">
+        <router-link v-if="loggedIn" :to="{ name: 'dashboard' }"
+          >My Companies</router-link
+        >
+        <router-link v-if="loggedIn" :to="{ name: 'account' }"
+          >Account</router-link
+        >
+        <div v-if="loggedIn" class="logoutButton" @click="logout">Logout</div>
+      </div>
     </section>
   </div>
 </template>
@@ -52,9 +58,10 @@ import { mapState } from 'vuex'
 
 import CreditsBalance from '@/components/CreditsBalance'
 import SearchForm from '@/components/SearchForm'
+import NotificationContainer from '@/components/NotificationContainer.vue'
 
 export default {
-  components: { CreditsBalance, SearchForm },
+  components: { CreditsBalance, SearchForm, NotificationContainer },
 
   data: function () {
     return {
@@ -167,20 +174,35 @@ $nav-height: 110px;
   }
 
   &-subnav {
-    display: flex;
+    display: grid;
     width: 100%;
     height: 40px;
     justify-content: flex-end;
     padding: $mobile-padding;
     font-size: $small-label-font-size;
     background-color: $color-ellen-gray-transparent;
-    padding: 5px 15px;
+    padding: 0px 15px;
     align-items: center;
     position: relative;
     z-index: base-index(middle);
+    position: relative;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-areas: 'login notifications user';
 
     > a:hover {
       text-decoration: underline;
+    }
+
+    &-left {
+      grid-area: login;
+    }
+
+    .user-controls {
+      grid-area: user;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      height: 100%;
     }
 
     @include breakpoint(small only) {

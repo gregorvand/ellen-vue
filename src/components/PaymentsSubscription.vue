@@ -140,7 +140,7 @@ export default {
   methods: {
     async getCreditPricing() {},
     async getStoredCards() {
-      const customer = await this.createStripeCustomer()
+      await this.createStripeCustomer()
       const cardsAndSubsResult = await axios({
         method: 'get',
         url: `${process.env.VUE_APP_API_URL}/current-cards-subscriptions`,
@@ -150,7 +150,7 @@ export default {
       this.cardsLoading = false
     },
     async chargeCard() {
-      const customer = await this.createStripeCustomer()
+      await this.createStripeCustomer()
       const { token, error } = await this.$stripe.createToken(this.card)
 
       // error card input form unless user has since selected a stored card
@@ -197,7 +197,7 @@ export default {
       if (makeCharge.error) {
         const notification = {
           type: 'error',
-          message: `Oh no, we were not able to process the payment for this reason: ${makeCharge.error.message}`,
+          message: `We were not able to process the payment for this reason: ${makeCharge.error.message}`,
         }
         this.$store.dispatch('notification/add', notification, {
           root: true,
@@ -207,8 +207,7 @@ export default {
       } else {
         const notification = {
           type: 'success',
-          message:
-            'Great, we just added credits to your account, they should show up shortly',
+          message: `${this.chargeCredits.value} credits added! 💰`,
         }
         this.isProcessing = false
         this.$store.dispatch('notification/add', notification, {
