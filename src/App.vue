@@ -1,19 +1,18 @@
 <template>
   <div id="app" :class="'app-wrapper ' + $route.name">
     <AppNav />
-    <NotificationContainer />
     <router-view :key="$route.fullPath" />
   </div>
 </template>
 
 <script>
 import AppNav from '@/components/AppNav.vue'
-import NotificationContainer from '@/components/NotificationContainer.vue'
+// import NotificationContainer from '@/components/NotificationContainer.vue'
 
 export default {
   components: {
     AppNav,
-    NotificationContainer,
+    // NotificationContainer,
   },
 }
 // comment for deploy
