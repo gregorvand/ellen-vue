@@ -56,7 +56,7 @@ export default {
 
     > span {
       display: flex;
-      min-width: 150px;
+      min-width: 100%;
       height: 20px;
       margin: 0 5px;
     }
