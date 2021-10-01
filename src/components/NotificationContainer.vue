@@ -7,11 +7,8 @@
         :notification="notification"
       />
       <div class="persistent-notification">
-        <span>TaylorStitch +October 1</span>
+        <span>Potential persistent notification area....</span>
         <span>TaylorStitch +October 2</span>
-        <span>TaylorStitch +October 3</span>
-        <span>TaylorStitch +October 4</span>
-        <span>TaylorStitch +October 5</span>
       </div>
     </div>
   </div>

@@ -46,7 +46,6 @@
         <router-link v-if="loggedIn" :to="{ name: 'account' }"
           >Account</router-link
         >
-        <div v-if="loggedIn" class="logoutButton" @click="logout">Logout</div>
       </div>
     </section>
   </div>
@@ -85,7 +84,7 @@ export default {
 
 <style lang="scss" scoped>
 $nav-height-mobile: 100px;
-$nav-height: 110px;
+$nav-height: 120px;
 
 .nav-header {
   display: flex;
@@ -107,7 +106,7 @@ $nav-height: 110px;
     opacity: 0.2;
 
     @include breakpoint(medium up) {
-      height: $nav-height;
+      height: $nav-height -10px;
     }
   }
 
@@ -211,7 +210,8 @@ $nav-height: 110px;
       bottom: 0;
       width: 100%;
       z-index: 10;
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas: 'notifications user';
       display: grid;
       height: $mobile-footer-nav-height;
 
