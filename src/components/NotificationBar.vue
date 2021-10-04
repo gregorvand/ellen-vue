@@ -55,7 +55,11 @@ export default {
     align-items: center;
     height: 100%;
     @extend %heading-font-family;
-    font-size: 14px;
+    font-size: $small-label-font-size;
+
+    @include breakpoint(medium up) {
+      font-size: 14px;
+    }
   }
 
   &.-text-success {
