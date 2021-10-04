@@ -7,6 +7,12 @@
     }"
   >
     <div class="date-selector">
+      <img
+        v-if="purchaseMode"
+        class="no-access-lock-img"
+        src="@/assets/lock.png"
+        alt="no access"
+      />
       <div class="purchase-selector" v-if="purchaseMode">
         <label :for="assignID">
           {{ readableDate }}
@@ -179,17 +185,32 @@ export default {
 
   &.purchasable {
     .date-selector {
-      width: 70px;
+      width: 80px;
       height: 20px;
       background-color: $color-ellen-light-gray;
       margin-right: 10px;
+      position: relative;
+
+      .no-access-lock-img {
+        position: absolute;
+        top: -10px;
+        right: -7px;
+      }
 
       .purchase-selector {
         display: flex;
       }
 
       input {
-        display: flex !important;
+        display: flex;
+        height: 18px;
+        width: 18px;
+        margin-left: 10px;
+      }
+
+      label {
+        background-color: $color-ellen-light-gray;
+        border: solid transparent 2px;
       }
     }
   }
