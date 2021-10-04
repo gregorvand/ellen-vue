@@ -149,10 +149,32 @@ export default {
           companyId: this.$store.getters['company/getCompanyId'],
           datasetIdArray: dataToPurchase,
         },
-      }).then((datasets) => {
-        console.log('added!', datasets)
-        this.$emit('data-subscribed')
       })
+        .then((datasets) => {
+          this.$emit('data-subscribed')
+          this.$store.dispatch('selectedDataSets/clearDatasetCart')
+
+          const addedData = datasets.data
+          const suffix = addedData.length > 1 ? 'months' : 'month'
+          const notification = {
+            type: 'success',  
+            message: `📈 Added ${addedData.length} ${suffix} `,
+          }
+          this.$store.dispatch('notification/add', notification, {
+            root: true,
+          })
+        })
+        .catch((error) => {
+          if (error.response.status == 433) {
+            const notification = {
+              type: 'error',
+              message: 'Not enough credits',
+            }
+            this.$store.dispatch('notification/add', notification, {
+              root: true,
+            })
+          }
+        })
     },
   },
 }
