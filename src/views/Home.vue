@@ -6,7 +6,7 @@
     </p>
 
     <section class="home-components">
-      <SearchForm />
+      <SearchForm :showCheckbox="true" />
       <SelectedCompanies />
       <CategoryList />
       <BaseSaveButton v-if="loggedIn" />

@@ -9,11 +9,20 @@
         placeholder="Search for a company"
       />
 
-      <ul class="companies-results" v-if="results.length > 0">
-        <li v-for="result in results" :key="result.id">
-          <CompanySelector :company="result" />
-        </li>
-      </ul>
+      <div v-if="showCheckbox">
+        <ul class="companies-results" v-if="results.length > 0">
+          <li v-for="result in results" :key="result.id">
+            <CompanySelector :company="result" />
+          </li>
+        </ul>
+      </div>
+      <div v-else>
+        <ul class="companies-results" v-if="results.length > 0">
+          <li v-for="result in results" :key="result.id">
+            <CompanySelector :company="result" v-bind:disableCheckBox="true" />
+          </li>
+        </ul>
+      </div>
     </form>
   </div>
 </template>
@@ -23,12 +32,18 @@ import { mapState } from 'vuex'
 import CompanySelector from '@/components/CompanySelector.vue'
 
 export default {
+  props: {
+    showCheckbox: {
+      type: Boolean,
+    },
+  },
   components: {
     CompanySelector,
   },
   data: function () {
     return {
       currentQuery: null,
+      parent: this.$parent,
     }
   },
   methods: {
