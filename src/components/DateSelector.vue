@@ -139,7 +139,7 @@ export default {
             if (error.response.status == 433) {
               const notification = {
                 type: 'error',
-                message: `Oh no, we were not able to add ${this.longerReadableDate}, you do not have enough credits`,
+                message: `Not able to add ${this.longerReadableDate}, you do not have enough credits`,
               }
               this.$store.dispatch('notification/add', notification, {
                 root: true,
@@ -153,6 +153,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.date-selector-wrapper {
+  &:first-of-type {
+    .date-selector {
+      margin-left: 0;
+    }
+  }
+}
+
 .date-selector {
   margin: 0 5px;
 

@@ -1,14 +1,17 @@
 <template>
   <div class="timeframe-selector-wrapper">
-    <div>Select year</div>
     <ul class="year-select">
       <li
-        v-for="year in yearsChoice"
+        v-for="(year, index) in yearsChoice"
         :key="year"
         @click="getAvailableDates(year)"
-        :class="{ active: selectedYear == year }"
       >
-        {{ year }}
+        <span
+          class="year-select-link"
+          :class="{ active: selectedYear == year }"
+          >{{ year }}</span
+        >
+        <span class="divider" v-if="index + 1 < yearsChoice.length"> |</span>
       </li>
     </ul>
     <h3>Timeframe</h3>
@@ -157,14 +160,31 @@ ul {
 }
 
 ul.year-select {
-  margin: 10px auto;
+  margin: 5px auto;
   padding: 0;
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: flex-start;
+
+  @include breakpoint(small only) {
+    justify-content: space-evenly;
+  }
+
   > li {
+    display: flex;
+    align-items: center;
+    height: 20px;
+
+    .divider {
+      @include breakpoint(small only) {
+        display: none;
+      }
+    }
+  }
+
+  > li .year-select-link {
     @extend %heading-font-family;
-    font-size: 11px;
+    font-size: $small-label-font-size;
     margin: 0 5px;
     cursor: pointer;
 
@@ -183,12 +203,6 @@ ul.year-select {
   display: flex;
   width: 100%;
   overflow: hidden;
-
-  .data-not-available {
-    font-size: 11px;
-    color: $color-ellen-dark;
-    width: 100%;
-  }
 }
 
 .months-available-wrapper {
@@ -198,7 +212,6 @@ ul.year-select {
   width: 100%;
   overflow-x: scroll;
   overflow-y: hidden;
-  padding: 10px;
   // border: solid black thin;
   align-items: center;
   transform: translateY(0);
@@ -206,6 +219,13 @@ ul.year-select {
   &.active {
     animation: data-enter-up 1s forwards;
     justify-content: flex-start;
+  }
+
+  .data-not-available {
+    font-size: 11px;
+    color: $color-ellen-dark;
+    width: 100%;
+    display: flex;
   }
 }
 

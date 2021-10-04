@@ -1,11 +1,16 @@
 <template>
-  <div>
-    <div class="company-sheet-ticker">
+  <div class="inner-container max-width">
+    <div class="container row">
       <div class="company-sheet-name">
         <h1 v-if="company.nameIdentifier">{{ company.nameIdentifier }}</h1>
         <h1 v-else><BaseLoadingSpinner /></h1>
       </div>
       <span v-if="company.ticker">Symbol: {{ company.ticker }}</span>
+      <div>
+        <span class="key-line"></span>
+        <!-- v if company is Edison -->
+        <span>Avg orders/day</span>
+      </div>
     </div>
     <template v-if="publicData && company.ticker">
       <div>
@@ -49,9 +54,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-h1 {
-  margin: 5px;
-  font-size: 20px;
-  height: 30px;
+.company-sheet {
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+
+  &-name {
+    flex-direction: row;
+  }
 }
 </style>
