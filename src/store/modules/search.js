@@ -20,6 +20,9 @@ export const mutations = {
   SET_SEARCH_RESULTS(state, payload) {
     state.results = payload
   },
+  CLEAR_SEARCH_RESULTS(state) {
+    state.results = []
+  },
 }
 
 export const actions = {
@@ -41,5 +44,9 @@ export const actions = {
         const results = data.hits['hits'].map((result) => result._source) // map from ES format
         commit('SET_SEARCH_RESULTS', results)
       })
+  },
+
+  clearResults({ commit }) {
+    commit('CLEAR_SEARCH_RESULTS')
   },
 }

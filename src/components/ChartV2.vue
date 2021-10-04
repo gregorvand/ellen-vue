@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="chart-wrapper">
+    <div class="chart-wrapper global-max-width">
       <LineChart
         v-if="orderList.length > 0"
         ref="chartRef"
@@ -150,7 +150,6 @@ async function getDataPoints(companyId, months) {
 
 <style scoped lang="scss">
 .chart-wrapper {
-  width: 100%;
   position: relative;
   overflow: hidden;
   width: 100vw;
