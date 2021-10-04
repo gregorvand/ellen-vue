@@ -229,19 +229,17 @@ export default {
 
   label {
     @extend .btn;
-    min-width: 50px;
+    min-width: 80px;
     width: auto;
     user-select: none;
-    background-color: $color-white;
+    background-color: $color-ellen-brand-bright;
     color: $color-ellen-dark;
-    border-color: $color-ellen-dark;
     margin: 0;
     width: 100%;
   }
 
   input:checked + label {
-    background-color: #6ed6b7;
-    color: $color-white;
+    color: $color-ellen-brand-dark;
     border: solid $color-ellen-dark 2px;
   }
 }

@@ -14,7 +14,7 @@
         <span class="divider" v-if="index + 1 < yearsChoice.length"> |</span>
       </li>
     </ul>
-    <h3>Timeframe</h3>
+    <h3>View purchased months</h3>
     <div class="chart-timeframe-selector">
       <div
         v-if="monthsAvailable[0] != 'loading'"
@@ -295,7 +295,7 @@ ul.year-select {
   }
 
   .data-not-available {
-    font-size: 11px;
+    font-size: 14px;
     color: $color-ellen-dark;
     width: 100%;
     display: flex;
