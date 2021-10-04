@@ -25,7 +25,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$mobile-height: 50px;
+
 .notification-container {
+  height: $mobile-height;
   position: relative;
   bottom: 0;
   width: 100%;
@@ -33,7 +36,6 @@ export default {
   color: white;
   z-index: 100;
   grid-area: notifications;
-  height: 100%;
   overflow: hidden;
   background-color: $color-white;
   border-right: dotted 1px black;
@@ -43,7 +45,7 @@ export default {
 
   .persistent-notification {
     color: #000;
-    height: 40px;
+    height: $mobile-height;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -54,11 +56,19 @@ export default {
     left: 0;
     animation: scroll-left 20s linear infinite;
 
+    @include breakpoint(medium up) {
+      height: 100%;
+    }
+
     > span {
       display: flex;
-      min-width: 100%;
+      min-width: 200%;
       height: 20px;
       margin: 0 5px;
+
+      @include breakpoint(medium up) {
+        min-width: 100%;
+      }
     }
   }
 }

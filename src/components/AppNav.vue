@@ -83,8 +83,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-
 .nav-header {
   display: flex;
   align-items: center;
@@ -184,13 +182,18 @@ export default {
     padding: $mobile-padding;
     font-size: $small-label-font-size;
     background-color: $color-ellen-gray-transparent;
-    padding: 0px 15px;
+    padding: 0;
     align-items: center;
     position: relative;
     z-index: base-index(middle);
     position: relative;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-areas: 'login notifications user';
+
+    @include breakpoint(medium up) {
+      padding: 0px 15px;
+      height: 100%;
+    }
 
     > a:hover {
       text-decoration: underline;
@@ -227,6 +230,8 @@ export default {
         display: flex;
         justify-content: center;
         border-radius: $border-radius;
+        padding: 5px;
+        font-size: 11px;
       }
     }
   }

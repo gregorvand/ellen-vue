@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="chart-wrapper global-max-width">
+  <div class="chart-wrapper global-max-width">
+    <div class="chart-frame">
       <LineChart
         v-if="orderList.length > 0"
         ref="chartRef"
@@ -12,11 +12,11 @@
       <div class="scroll-enabler-mobile">
         <!-- this area is just to enable scroll from underneath the chart -->
       </div>
-      <TimeFrameSelector
-        :hasAccess="hasAccess"
-        @data-subscribed="getAccessibleDatasets()"
-      />
     </div>
+    <TimeFrameSelector
+      :hasAccess="hasAccess"
+      @data-subscribed="getAccessibleDatasets()"
+    />
   </div>
 </template>
 
@@ -153,6 +153,10 @@ async function getDataPoints(companyId, months) {
   position: relative;
   overflow: hidden;
   width: 100vw;
+
+  .chart-frame {
+    position: relative;
+  }
 }
 
 button {

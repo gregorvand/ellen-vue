@@ -40,7 +40,7 @@ export default {
 <style lang="scss" scoped>
 .notification-bar {
   width: 100%;
-  height: 40px;
+  height: 50px;
   display: flex;
   justify-content: center;
   animation: data-enter-up 10s infinite;

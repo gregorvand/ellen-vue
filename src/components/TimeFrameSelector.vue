@@ -137,7 +137,6 @@ export default {
   },
   methods: {
     async getAvailableDates(year = dayjs('1/1/2020').year()) {
-      this.$store.dispatch('selectedDataSets/clearDatasetCart')
       const currentCompanyId = this.$store.getters['company/getCompanyId']
       // TODO: remove 2020 after dev
       this.monthsAvailable = ['loading'] // clear month UI
@@ -276,7 +275,7 @@ ul.year-select {
 }
 
 .months-available-wrapper {
-  height: 50px;
+  height: 70px;
   display: flex;
   justify-content: flex-start;
   width: 100%;
@@ -285,6 +284,10 @@ ul.year-select {
   // border: solid black thin;
   align-items: center;
   transform: translateY(0);
+
+  @include breakpoint(medium up) {
+    height: 50px;
+  }
 
   &.active {
     animation: data-enter-up 1s forwards;
@@ -302,12 +305,17 @@ ul.year-select {
 .purchase-controls {
   display: flex;
   flex-direction: column;
+  width: 100%;
+
+  @include breakpoint(medium up) {
+    max-width: 250px;
+  }
 
   button {
     margin: 10px 0;
     padding: 20px;
-    width: 250px;
-    max-width: 250px;
+    width: 100%;
+    max-width: none;
   }
 
   .credit-cost {
