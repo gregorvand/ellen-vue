@@ -14,6 +14,8 @@ $color-ellen-brand-dark: #0d139c;
 $mobile-padding: 15px;
 $border-radius: 5px;
 $mobile-footer-nav-height: 50px;
+$nav-height: 120px;
+$nav-height-mobile: 100px;
 
 // fonts
 @import './helpers/.helpers';
@@ -36,6 +38,10 @@ body {
 
   * {
     box-sizing: border-box;
+  }
+
+  @include breakpoint(medium up) {
+    padding-top: $nav-height;
   }
 }
 label {

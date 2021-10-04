@@ -7,10 +7,18 @@
     }"
   >
     <div class="date-selector">
-      <div class="checkbox-spacer" v-if="purchaseMode">
-        <label :for="assignID" @click="updateRequestedDates">{{
-          readableDate
-        }}</label>
+      <img
+        v-if="purchaseMode"
+        class="no-access-lock-img"
+        src="@/assets/lock.png"
+        alt="no access"
+      />
+      <div class="purchase-selector" v-if="purchaseMode">
+        <label :for="assignID">
+          {{ readableDate }}
+
+          <input :id="assignID" type="checkbox" @click="addToCart" />
+        </label>
       </div>
       <div class="checkbox-spacer" v-else>
         <input
@@ -55,6 +63,7 @@ export default {
           .set('month', this.date.date.month - 1)
           .set('year', this.date.year),
       },
+      toPurchase: [],
     }
   },
   computed: {
@@ -80,6 +89,9 @@ export default {
     accessibleMonth() {
       return this.monthIsAccessble.includes(this.assignID)
     },
+    cartCount() {
+      return this.selectedDataSets.datasetCart.length
+    },
     checked: {
       get() {
         return this.$store.getters['selectedDataSets/userHasSelectedDates'](
@@ -90,7 +102,7 @@ export default {
         return false
       },
     },
-    ...mapState(['company']),
+    ...mapState(['company', 'selectedDataSets']),
   },
   methods: {
     async updateRequestedDates() {
@@ -122,7 +134,7 @@ export default {
           url: `${process.env.VUE_APP_API_URL}/api/dataset-access/charge`,
           data: {
             companyId: this.company.currentCompany.id,
-            datasetId: this.assignID,
+            datasetIdArray: [this.assignID],
           },
         })
           .then(() => {
@@ -148,6 +160,17 @@ export default {
           })
       }
     },
+    async addToCart() {
+      this.selectedDataSets.datasetCart.includes(this.assignID)
+        ? this.$store.dispatch(
+            'selectedDataSets/removeDatasetFromCart',
+            this.assignID
+          )
+        : this.$store.dispatch(
+            'selectedDataSets/addDatasetToCart',
+            this.assignID
+          )
+    },
   },
 }
 </script>
@@ -157,6 +180,38 @@ export default {
   &:first-of-type {
     .date-selector {
       margin-left: 0;
+    }
+  }
+
+  &.purchasable {
+    .date-selector {
+      width: 80px;
+      height: 20px;
+      background-color: $color-ellen-light-gray;
+      margin-right: 10px;
+      position: relative;
+
+      .no-access-lock-img {
+        position: absolute;
+        top: -10px;
+        right: -7px;
+      }
+
+      .purchase-selector {
+        display: flex;
+      }
+
+      input {
+        display: flex;
+        height: 18px;
+        width: 18px;
+        margin-left: 10px;
+      }
+
+      label {
+        background-color: $color-ellen-light-gray;
+        border: solid transparent 2px;
+      }
     }
   }
 }
@@ -180,21 +235,14 @@ export default {
     background-color: $color-white;
     color: $color-ellen-dark;
     border-color: $color-ellen-dark;
-    margin: 0 5px;
+    margin: 0;
+    width: 100%;
   }
 
   input:checked + label {
     background-color: #6ed6b7;
     color: $color-white;
     border: solid $color-ellen-dark 2px;
-  }
-}
-
-.purchase-wrapper {
-  .date-selector-wrapper.purchasable {
-    input + label {
-      border-color: red;
-    }
   }
 }
 </style>
