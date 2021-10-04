@@ -137,6 +137,7 @@ export default {
   },
   methods: {
     async getAvailableDates(year = dayjs('1/1/2020').year()) {
+      this.$store.dispatch('selectedDataSets/clearDatasetCart')
       const currentCompanyId = this.$store.getters['company/getCompanyId']
       // TODO: remove 2020 after dev
       this.monthsAvailable = ['loading'] // clear month UI
