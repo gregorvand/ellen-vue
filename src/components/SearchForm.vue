@@ -5,7 +5,6 @@
         v-on:keyup="searchCompanies"
         type="text"
         v-model="currentQuery"
-        @keyup.esc="clearInput"
         placeholder="Search for a company"
       />
 
@@ -51,8 +50,10 @@ export default {
       this.$store.dispatch('search/doSearchQuery', this.currentQuery)
     },
     clearInput() {
-      this.currentQuery = ''
-      this.$store.dispatch('search/doSearchQuery', '')
+      if (this.currentQuery !== '') {
+        this.currentQuery = ''
+        this.$store.dispatch('search/clearResults', '')
+      }
     },
   },
   computed: {
