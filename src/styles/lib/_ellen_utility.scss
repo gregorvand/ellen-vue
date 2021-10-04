@@ -1,0 +1,29 @@
+// experiment with a low number of useful utility classes
+
+.container {
+  padding: 0 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+
+  &.row {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  width: 100%;
+}
+
+$global-max-width: 1024px;
+
+.global-max-width {
+  max-width: 1024px;
+}
+
+.inner-container {
+  max-width: $global-max-width;
+  display: flex;
+  margin: 0 auto;
+}

@@ -4,12 +4,6 @@ export const state = {
   selectedCompanies: [],
 }
 
-// export const getters = {
-//   getterValue: (state) => {
-//     return state.value
-//   },
-// }
-
 export const mutations = {
   PUSH(state, company) {
     state.selectedCompanies.push({

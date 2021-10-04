@@ -1,14 +1,17 @@
 <template>
-  <div class="timeframe-selector-wrapper">
-    <div>Select year</div>
+  <div class="timeframe-selector-wrapper container">
     <ul class="year-select">
       <li
-        v-for="year in yearsChoice"
+        v-for="(year, index) in yearsChoice"
         :key="year"
         @click="getAvailableDates(year)"
-        :class="{ active: selectedYear == year }"
       >
-        {{ year }}
+        <span
+          class="year-select-link"
+          :class="{ active: selectedYear == year }"
+          >{{ year }}</span
+        >
+        <span class="divider" v-if="index + 1 < yearsChoice.length"> |</span>
       </li>
     </ul>
     <h3>Timeframe</h3>
@@ -47,6 +50,7 @@
           :monthIsAccessble="hasAccess"
           :purchaseMode="true"
         />
+
         <span class="data-not-available" v-if="monthsAvailable.length == 0"
           >No data for this year available</span
         >
@@ -54,6 +58,12 @@
       <div v-else class="months-available-wrapper">
         <BaseLoadingSpinner />
       </div>
+    </div>
+    <div class="purchase-controls" v-if="monthsAvailable.length > 0">
+      <button :disabled="cartCount < 1" @click="multiPurchase">
+        {{ cartCountLabel }}
+      </button>
+      <span class="credit-cost">{{ creditCost }}</span>
     </div>
   </div>
 </template>
@@ -94,7 +104,28 @@ export default {
         (month) => !this.hasAccess.includes(month.id)
       )
     },
-    ...mapState('company', ['currentCompany']),
+    cartCount() {
+      return this.selectedDataSets.datasetCart.length
+    },
+    cartCountLabel() {
+      const cartCount = this.selectedDataSets.datasetCart.length
+      const suffix = cartCount > 1 ? 'months' : 'month'
+      if (cartCount == 0) {
+        return `select months`
+      } else {
+        return `Purchase ${cartCount} ${suffix}`
+      }
+    },
+    creditCost() {
+      const currentCredits = this.$store.getters['credits/currentCredits']
+      const cost =
+        process.env.VUE_APP_DATASET_COST *
+        this.selectedDataSets.datasetCart.length
+      return cost <= parseInt(currentCredits)
+        ? `This will deduct ${cost} credits`
+        : 'not enough credits'
+    },
+    ...mapState(['company', ['currentCompany'], 'selectedDataSets']),
   },
   created() {
     this.$store.watch((state) => {
@@ -102,6 +133,7 @@ export default {
         this.getAvailableDates()
       }
     })
+    this.$store.dispatch('selectedDataSets/clearDatasetCart')
   },
   methods: {
     async getAvailableDates(year = dayjs('1/1/2020').year()) {
@@ -131,6 +163,46 @@ export default {
 
       this.monthsAvailable = monthsAvailableExtended
     },
+
+    async multiPurchase() {
+      let dataToPurchase = await this.$store.getters[
+        'selectedDataSets/datasetCart'
+      ]
+
+      axios({
+        method: 'post',
+        url: `${process.env.VUE_APP_API_URL}/api/dataset-access/charge`,
+        data: {
+          companyId: this.$store.getters['company/getCompanyId'],
+          datasetIdArray: dataToPurchase,
+        },
+      })
+        .then((datasets) => {
+          this.$emit('data-subscribed')
+          this.$store.dispatch('selectedDataSets/clearDatasetCart')
+
+          const addedData = datasets.data
+          const suffix = addedData.length > 1 ? 'months' : 'month'
+          const notification = {
+            type: 'success',
+            message: `📈 Added ${addedData.length} ${suffix} `,
+          }
+          this.$store.dispatch('notification/add', notification, {
+            root: true,
+          })
+        })
+        .catch((error) => {
+          if (error.response.status == 433) {
+            const notification = {
+              type: 'error',
+              message: 'Not enough credits',
+            }
+            this.$store.dispatch('notification/add', notification, {
+              root: true,
+            })
+          }
+        })
+    },
   },
 }
 </script>
@@ -157,14 +229,31 @@ ul {
 }
 
 ul.year-select {
-  margin: 10px auto;
+  margin: 5px auto;
   padding: 0;
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: flex-start;
+
+  @include breakpoint(small only) {
+    justify-content: space-evenly;
+  }
+
   > li {
+    display: flex;
+    align-items: center;
+    height: 20px;
+
+    .divider {
+      @include breakpoint(small only) {
+        display: none;
+      }
+    }
+  }
+
+  > li .year-select-link {
     @extend %heading-font-family;
-    font-size: 11px;
+    font-size: $small-label-font-size;
     margin: 0 5px;
     cursor: pointer;
 
@@ -183,12 +272,6 @@ ul.year-select {
   display: flex;
   width: 100%;
   overflow: hidden;
-
-  .data-not-available {
-    font-size: 11px;
-    color: $color-ellen-dark;
-    width: 100%;
-  }
 }
 
 .months-available-wrapper {
@@ -198,7 +281,6 @@ ul.year-select {
   width: 100%;
   overflow-x: scroll;
   overflow-y: hidden;
-  padding: 10px;
   // border: solid black thin;
   align-items: center;
   transform: translateY(0);
@@ -207,11 +289,34 @@ ul.year-select {
     animation: data-enter-up 1s forwards;
     justify-content: flex-start;
   }
+
+  .data-not-available {
+    font-size: 11px;
+    color: $color-ellen-dark;
+    width: 100%;
+    display: flex;
+  }
 }
 
-button {
-  margin: 10px;
-  padding: 20px;
+.purchase-controls {
+  display: flex;
+  flex-direction: column;
+
+  button {
+    margin: 10px 0;
+    padding: 20px;
+    width: 250px;
+    max-width: 250px;
+  }
+
+  .credit-cost {
+    font-size: $small-label-font-size;
+    display: flex;
+    background-color: $color-ellen-brand-bright;
+    padding: 2px;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 // animations

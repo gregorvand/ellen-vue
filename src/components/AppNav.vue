@@ -83,8 +83,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$nav-height-mobile: 100px;
-$nav-height: 120px;
+
 
 .nav-header {
   display: flex;
@@ -94,6 +93,11 @@ $nav-height: 120px;
 
   @include breakpoint(medium up) {
     height: $nav-height;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: white;
+    z-index: 100;
   }
 
   &-pattern {
