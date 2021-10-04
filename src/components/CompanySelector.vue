@@ -4,7 +4,7 @@
     :class="[isCategoryCompanyClass, { proprietary: !isPublicCompany }]"
   >
     <router-link
-      v-if="this.$route.name == 'dashboard'"
+      v-if="this.$route.name !== 'home'"
       class="company-selector-link"
       :to="{
         name: 'company',

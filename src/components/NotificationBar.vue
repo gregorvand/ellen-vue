@@ -40,7 +40,7 @@ export default {
 <style lang="scss" scoped>
 .notification-bar {
   width: 100%;
-  height: 40px;
+  height: 50px;
   display: flex;
   justify-content: center;
   animation: data-enter-up 10s infinite;
@@ -55,7 +55,11 @@ export default {
     align-items: center;
     height: 100%;
     @extend %heading-font-family;
-    font-size: 14px;
+    font-size: $small-label-font-size;
+
+    @include breakpoint(medium up) {
+      font-size: 14px;
+    }
   }
 
   &.-text-success {
