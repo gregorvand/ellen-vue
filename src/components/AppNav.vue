@@ -83,8 +83,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-
 .nav-header {
   display: flex;
   align-items: center;
