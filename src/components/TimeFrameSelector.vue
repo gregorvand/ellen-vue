@@ -1,5 +1,5 @@
 <template>
-  <div class="timeframe-selector-wrapper">
+  <div class="timeframe-selector-wrapper container">
     <ul class="year-select">
       <li
         v-for="(year, index) in yearsChoice"
@@ -50,7 +50,7 @@
           :monthIsAccessble="hasAccess"
           :purchaseMode="true"
         />
-        <button @click="multiPurchase">Purchase!</button>
+
         <span class="data-not-available" v-if="monthsAvailable.length == 0"
           >No data for this year available</span
         >
@@ -58,6 +58,12 @@
       <div v-else class="months-available-wrapper">
         <BaseLoadingSpinner />
       </div>
+    </div>
+    <div class="purchase-controls" v-if="monthsAvailable.length > 0">
+      <button :disabled="cartCount < 1" @click="multiPurchase">
+        {{ cartCountLabel }}
+      </button>
+      <span class="credit-cost">{{ creditCost }}</span>
     </div>
   </div>
 </template>
@@ -98,7 +104,28 @@ export default {
         (month) => !this.hasAccess.includes(month.id)
       )
     },
-    ...mapState('company', ['currentCompany']),
+    cartCount() {
+      return this.selectedDataSets.datasetCart.length
+    },
+    cartCountLabel() {
+      const cartCount = this.selectedDataSets.datasetCart.length
+      const suffix = cartCount > 1 ? 'months' : 'month'
+      if (cartCount == 0) {
+        return `select months`
+      } else {
+        return `Purchase ${cartCount} ${suffix}`
+      }
+    },
+    creditCost() {
+      const currentCredits = this.$store.getters['credits/currentCredits']
+      const cost =
+        process.env.VUE_APP_DATASET_COST *
+        this.selectedDataSets.datasetCart.length
+      return cost <= parseInt(currentCredits)
+        ? `This will deduct ${cost} credits`
+        : 'not enough credits'
+    },
+    ...mapState(['company', ['currentCompany'], 'selectedDataSets']),
   },
   created() {
     this.$store.watch((state) => {
@@ -157,7 +184,7 @@ export default {
           const addedData = datasets.data
           const suffix = addedData.length > 1 ? 'months' : 'month'
           const notification = {
-            type: 'success',  
+            type: 'success',
             message: `📈 Added ${addedData.length} ${suffix} `,
           }
           this.$store.dispatch('notification/add', notification, {
@@ -271,9 +298,25 @@ ul.year-select {
   }
 }
 
-button {
-  margin: 10px;
-  padding: 20px;
+.purchase-controls {
+  display: flex;
+  flex-direction: column;
+
+  button {
+    margin: 10px 0;
+    padding: 20px;
+    width: 250px;
+    max-width: 250px;
+  }
+
+  .credit-cost {
+    font-size: $small-label-font-size;
+    display: flex;
+    background-color: $color-ellen-brand-bright;
+    padding: 2px;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 // animations

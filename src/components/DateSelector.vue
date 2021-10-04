@@ -7,9 +7,12 @@
     }"
   >
     <div class="date-selector">
-      <div class="checkbox-spacer" v-if="purchaseMode">
-        {{ readableDate }}
-        <input type="checkbox" @click="addToCart" />
+      <div class="purchase-selector" v-if="purchaseMode">
+        <label :for="assignID">
+          {{ readableDate }}
+
+          <input :id="assignID" type="checkbox" @click="addToCart" />
+        </label>
       </div>
       <div class="checkbox-spacer" v-else>
         <input
@@ -80,6 +83,9 @@ export default {
     accessibleMonth() {
       return this.monthIsAccessble.includes(this.assignID)
     },
+    cartCount() {
+      return this.selectedDataSets.datasetCart.length
+    },
     checked: {
       get() {
         return this.$store.getters['selectedDataSets/userHasSelectedDates'](
@@ -90,7 +96,7 @@ export default {
         return false
       },
     },
-    ...mapState(['company']),
+    ...mapState(['company', 'selectedDataSets']),
   },
   methods: {
     async updateRequestedDates() {
@@ -149,7 +155,15 @@ export default {
       }
     },
     async addToCart() {
-      this.$store.dispatch('selectedDataSets/addDatasetToCart', this.assignID)
+      this.selectedDataSets.datasetCart.includes(this.assignID)
+        ? this.$store.dispatch(
+            'selectedDataSets/removeDatasetFromCart',
+            this.assignID
+          )
+        : this.$store.dispatch(
+            'selectedDataSets/addDatasetToCart',
+            this.assignID
+          )
     },
   },
 }
@@ -165,6 +179,15 @@ export default {
 
   &.purchasable {
     .date-selector {
+      width: 70px;
+      height: 20px;
+      background-color: $color-ellen-light-gray;
+      margin-right: 10px;
+
+      .purchase-selector {
+        display: flex;
+      }
+
       input {
         display: flex !important;
       }
@@ -191,21 +214,14 @@ export default {
     background-color: $color-white;
     color: $color-ellen-dark;
     border-color: $color-ellen-dark;
-    margin: 0 5px;
+    margin: 0;
+    width: 100%;
   }
 
   input:checked + label {
     background-color: #6ed6b7;
     color: $color-white;
     border: solid $color-ellen-dark 2px;
-  }
-}
-
-.purchase-wrapper {
-  .date-selector-wrapper.purchasable {
-    input + label {
-      border-color: red;
-    }
   }
 }
 </style>

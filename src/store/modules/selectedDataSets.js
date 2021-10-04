@@ -40,6 +40,11 @@ export const mutations = {
   PUSH_TO_CART(state, dateId) {
     state.datasetCart.push(dateId)
   },
+  REMOVE_FROM_CART(state, dateToRemove) {
+    state.datasetCart = state.datasetCart.filter(
+      (date) => date !== dateToRemove
+    )
+  },
   CLEAR_CART(state) {
     state.datasetCart = []
   },
@@ -64,6 +69,9 @@ export const actions = {
 
   addDatasetToCart({ commit }, dateId) {
     commit('PUSH_TO_CART', dateId)
+  },
+  removeDatasetFromCart({ commit }, dateId) {
+    commit('REMOVE_FROM_CART', dateId)
   },
   clearDatasetCart({ commit }) {
     commit('CLEAR_CART')
