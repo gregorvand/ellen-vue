@@ -50,6 +50,7 @@
           :monthIsAccessble="hasAccess"
           :purchaseMode="true"
         />
+        <button @click="multiPurchase">Purchase!</button>
         <span class="data-not-available" v-if="monthsAvailable.length == 0"
           >No data for this year available</span
         >
@@ -105,6 +106,7 @@ export default {
         this.getAvailableDates()
       }
     })
+    this.$store.dispatch('selectedDataSets/clearDatasetCart')
   },
   methods: {
     async getAvailableDates(year = dayjs('1/1/2020').year()) {
@@ -133,6 +135,24 @@ export default {
       }))
 
       this.monthsAvailable = monthsAvailableExtended
+    },
+
+    async multiPurchase() {
+      let dataToPurchase = await this.$store.getters[
+        'selectedDataSets/datasetCart'
+      ]
+
+      axios({
+        method: 'post',
+        url: `${process.env.VUE_APP_API_URL}/api/dataset-access/charge`,
+        data: {
+          companyId: this.$store.getters['company/getCompanyId'],
+          datasetIdArray: dataToPurchase,
+        },
+      }).then((datasets) => {
+        console.log('added!', datasets)
+        this.$emit('data-subscribed')
+      })
     },
   },
 }

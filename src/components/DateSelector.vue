@@ -8,9 +8,8 @@
   >
     <div class="date-selector">
       <div class="checkbox-spacer" v-if="purchaseMode">
-        <label :for="assignID" @click="updateRequestedDates">{{
-          readableDate
-        }}</label>
+        {{ readableDate }}
+        <input type="checkbox" @click="addToCart" />
       </div>
       <div class="checkbox-spacer" v-else>
         <input
@@ -55,6 +54,7 @@ export default {
           .set('month', this.date.date.month - 1)
           .set('year', this.date.year),
       },
+      toPurchase: [],
     }
   },
   computed: {
@@ -122,7 +122,7 @@ export default {
           url: `${process.env.VUE_APP_API_URL}/api/dataset-access/charge`,
           data: {
             companyId: this.company.currentCompany.id,
-            datasetId: this.assignID,
+            datasetIdArray: [this.assignID],
           },
         })
           .then(() => {
@@ -148,6 +148,9 @@ export default {
           })
       }
     },
+    async addToCart() {
+      this.$store.dispatch('selectedDataSets/addDatasetToCart', this.assignID)
+    },
   },
 }
 </script>
@@ -157,6 +160,14 @@ export default {
   &:first-of-type {
     .date-selector {
       margin-left: 0;
+    }
+  }
+
+  &.purchasable {
+    .date-selector {
+      input {
+        display: flex !important;
+      }
     }
   }
 }

@@ -5,11 +5,16 @@ import axios from 'axios'
 export const state = () => ({
   currentDataSets: [],
   selectedDateIDs: [],
+  datasetCart: [],
 })
 
 export const getters = {
   userHasSelectedDates: (state) => (id) => {
     return state.selectedDateIDs.find((selectedDates) => selectedDates === id)
+  },
+
+  datasetCart(state) {
+    return state.datasetCart
   },
 }
 
@@ -31,6 +36,13 @@ export const mutations = {
   PUSH_DATASET(state, dataset) {
     state.currentDataSets.push(dataset)
   },
+
+  PUSH_TO_CART(state, dateId) {
+    state.datasetCart.push(dateId)
+  },
+  CLEAR_CART(state) {
+    state.datasetCart = []
+  },
 }
 
 export const actions = {
@@ -48,6 +60,13 @@ export const actions = {
     commit('DEACTIVATE_DATESET', dateId)
     //  trigger DataSet to be deactivated
     // avoid extra API calls by keeping in store but deactivating
+  },
+
+  addDatasetToCart({ commit }, dateId) {
+    commit('PUSH_TO_CART', dateId)
+  },
+  clearDatasetCart({ commit }) {
+    commit('CLEAR_CART')
   },
 
   async getAndStoreDataSet({ commit, state }, payload) {
