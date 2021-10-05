@@ -10,6 +10,7 @@
         :chartData="chartData"
         :options="options"
         :class="'ellen-chart'"
+        :height="300"
       />
       <div v-else>Loading chart..</div>
       <div class="scroll-enabler-mobile">
@@ -158,9 +159,17 @@ async function getDataPoints(companyId, months) {
   position: relative;
   overflow: hidden;
   width: 100vw;
+  min-height: 500px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 
-  .chart-frame {
+  .chart-frame,
+  .ellen-chart {
     position: relative;
+    display: flex;
+    width: 100%;
 
     &.chart-unavailable {
       pointer-events: none;

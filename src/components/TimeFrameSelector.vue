@@ -68,8 +68,10 @@
       <button :disabled="cartCount < 1 || !creditCost" @click="multiPurchase">
         {{ cartCountLabel }}
       </button>
-      <span v-if="creditCost != false">{{ creditCost }}</span>
-      <div v-else>
+      <span class="credit-cost" v-if="creditCost != false">{{
+        creditCost
+      }}</span>
+      <div class="credit-cost" v-else>
         Not enough credits -
         <router-link :to="{ name: 'dashboard' }">Buy more </router-link>
       </div>
@@ -236,12 +238,22 @@ ul {
   &.chart-unavailable {
     position: absolute;
     top: 0;
-    width: 550px; // allow month UI element to peak off the side
-    border: solid;
+    border: solid $color-ellen-dark;
+    border-radius: $border-radius;
     background-color: $color-ellen-brand-bright;
-    height: 350px;
     padding: 20px;
     justify-content: flex-start;
+    height: 280px;
+    padding: 20px;
+    justify-content: flex-start;
+    margin-top: 40px;
+    width: 95%;
+
+    @include breakpoint(medium up) {
+      width: 550px; // allow month UI element to peak off the side
+      background-color: $color-ellen-brand-bright;
+      height: 350px;
+    }
   }
 
   h3 {
@@ -342,6 +354,7 @@ ul.year-select {
     padding: 20px;
     width: 100%;
     max-width: none;
+    line-height: 1;
   }
 
   .credit-cost {
