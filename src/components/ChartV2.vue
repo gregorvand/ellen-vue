@@ -10,7 +10,6 @@
         :chartData="chartData"
         :options="options"
         :class="'ellen-chart'"
-        :height="chartHeight"
       />
       <div v-else>Loading chart..</div>
       <div class="scroll-enabler-mobile">
@@ -37,7 +36,6 @@ import {
 import { LineChart } from 'vue-chart-3'
 import { Chart, registerables } from 'chart.js'
 import zoomPlugin from 'chartjs-plugin-zoom'
-import { useWindowSize } from 'vue-window-size'
 // import { CrosshairPlugin } from 'chartjs-plugin-crosshair' - iterferes with scroll/pan
 
 import 'chartjs-adapter-date-fns'
@@ -78,15 +76,6 @@ export default defineComponent({
     ...mapState('selectedDataSets', ['currentDataSets']),
     dataSetData() {
       return this.currentDataSets.map((dataset) => dataset.data)
-    },
-    windowWidth() {
-      const { width } = useWindowSize()
-      return width
-    },
-    chartHeight() {
-      // TODO: Assess if helpful. Does not currently redraw without page refresh
-      // ie if user changes their window size down to small, needs a refresh
-      return this.windowWidth.value < 640 ? 300 : 400
     },
   },
 
