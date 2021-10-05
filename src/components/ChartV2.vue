@@ -17,6 +17,7 @@
       </div>
     </div>
     <TimeFrameSelector
+      v-if="fetchedUserAceesData"
       :hasAccess="hasAccess"
       @data-subscribed="getAccessibleDatasets()"
     />
@@ -68,6 +69,7 @@ export default defineComponent({
       selectedCompanies: [],
       monthsAvailable: [],
       hasAccess: [],
+      fetchedUserAceesData: false,
     }
   },
   computed: {
@@ -119,11 +121,10 @@ export default defineComponent({
     }).then(({ data }) => {
       this.selectedCompanies = data.companies
     })
+    this.getAccessibleDatasets()
     this.$store.dispatch('selectedCompanies/clearCompanySelection') // ideally state becomes saved companies
   },
-  mounted() {
-    this.getAccessibleDatasets()
-  },
+
   methods: {
     async getAccessibleDatasets() {
       let monthAccess = await axios({
@@ -135,6 +136,7 @@ export default defineComponent({
       })
       this.hasAccess = monthAccess.data.map((data) => data.datasetId)
       this.$store.dispatch('credits/fetchBalance')
+      this.fetchedUserAceesData = true
     },
   },
 })
