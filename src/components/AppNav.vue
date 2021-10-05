@@ -41,8 +41,8 @@
 
       <div class="user-controls">
         <router-link v-if="loggedIn" :to="{ name: 'dashboard' }"
-          >My Companies</router-link
-        >
+          >My Companies
+        </router-link>
         <router-link v-if="loggedIn" :to="{ name: 'account' }"
           >Account</router-link
         >
