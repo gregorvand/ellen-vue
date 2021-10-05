@@ -29,15 +29,9 @@
     </section>
 
     <section class="nav-header-subnav">
-      <div class="nav-header-subnav-left">
-        <router-link v-if="!loggedIn" to="/login" class="login-link">
-          Login
-        </router-link>
-      </div>
+      <div class="nav-header-subnav-left"></div>
 
       <NotificationContainer />
-
-      <!-- <div v-if="!loggedIn">:: Space for promo ::</div>   -->
 
       <div class="user-controls">
         <router-link v-if="loggedIn" :to="{ name: 'dashboard' }"
@@ -46,6 +40,9 @@
         <router-link v-if="loggedIn" :to="{ name: 'account' }"
           >Account</router-link
         >
+        <router-link v-if="!loggedIn" to="/login" class="login-link">
+          Login
+        </router-link>
       </div>
     </section>
   </div>
@@ -200,7 +197,9 @@ export default {
     }
 
     &-left {
-      grid-area: login;
+      @include breakpoint(medium up) {
+        grid-area: login;
+      }
     }
 
     .user-controls {
@@ -232,6 +231,8 @@ export default {
         border-radius: $border-radius;
         padding: 5px;
         font-size: 11px;
+        width: 100%;
+        margin: 10px;
       }
     }
   }
