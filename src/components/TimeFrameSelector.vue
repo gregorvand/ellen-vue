@@ -17,7 +17,7 @@
         <span class="divider" v-if="index + 1 < yearsChoice.length"> |</span>
       </li>
     </ul>
-    <div v-if="hasAccess.length > 0">
+    <div class="container no-padding" v-if="hasAccess.length > 0">
       <h3>View purchased months</h3>
       <div class="chart-timeframe-selector">
         <div
