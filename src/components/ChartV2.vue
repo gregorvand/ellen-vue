@@ -1,12 +1,16 @@
 <template>
   <div class="chart-wrapper global-max-width">
-    <div class="chart-frame">
+    <div
+      class="chart-frame"
+      :class="{ 'chart-unavailable': hasAccess.length == 0 }"
+    >
       <LineChart
         v-if="orderList.length > 0"
         ref="chartRef"
         :chartData="chartData"
         :options="options"
         :class="'ellen-chart'"
+        :height="chartHeight"
       />
       <div v-else>Loading chart..</div>
       <div class="scroll-enabler-mobile">
@@ -14,6 +18,7 @@
       </div>
     </div>
     <TimeFrameSelector
+      v-if="fetchedUserAceesData"
       :hasAccess="hasAccess"
       @data-subscribed="getAccessibleDatasets()"
     />
@@ -32,6 +37,7 @@ import {
 import { LineChart } from 'vue-chart-3'
 import { Chart, registerables } from 'chart.js'
 import zoomPlugin from 'chartjs-plugin-zoom'
+import { useWindowSize } from 'vue-window-size'
 // import { CrosshairPlugin } from 'chartjs-plugin-crosshair' - iterferes with scroll/pan
 
 import 'chartjs-adapter-date-fns'
@@ -65,12 +71,22 @@ export default defineComponent({
       selectedCompanies: [],
       monthsAvailable: [],
       hasAccess: [],
+      fetchedUserAceesData: false,
     }
   },
   computed: {
     ...mapState('selectedDataSets', ['currentDataSets']),
     dataSetData() {
       return this.currentDataSets.map((dataset) => dataset.data)
+    },
+    windowWidth() {
+      const { width } = useWindowSize()
+      return width
+    },
+    chartHeight() {
+      // TODO: Assess if helpful. Does not currently redraw without page refresh
+      // ie if user changes their window size down to small, needs a refresh
+      return this.windowWidth.value < 640 ? 300 : 400
     },
   },
 
@@ -116,11 +132,10 @@ export default defineComponent({
     }).then(({ data }) => {
       this.selectedCompanies = data.companies
     })
+    this.getAccessibleDatasets()
     this.$store.dispatch('selectedCompanies/clearCompanySelection') // ideally state becomes saved companies
   },
-  mounted() {
-    this.getAccessibleDatasets()
-  },
+
   methods: {
     async getAccessibleDatasets() {
       let monthAccess = await axios({
@@ -132,6 +147,7 @@ export default defineComponent({
       })
       this.hasAccess = monthAccess.data.map((data) => data.datasetId)
       this.$store.dispatch('credits/fetchBalance')
+      this.fetchedUserAceesData = true
     },
   },
 })
@@ -153,9 +169,22 @@ async function getDataPoints(companyId, months) {
   position: relative;
   overflow: hidden;
   width: 100vw;
+  min-height: 500px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 
-  .chart-frame {
+  .chart-frame,
+  .ellen-chart {
     position: relative;
+    display: flex;
+    width: 100%;
+
+    &.chart-unavailable {
+      pointer-events: none;
+      opacity: 0.2;
+    }
   }
 }
 
