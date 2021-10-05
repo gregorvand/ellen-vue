@@ -1,5 +1,8 @@
 <template>
-  <div class="timeframe-selector-wrapper container">
+  <div
+    class="timeframe-selector-wrapper container"
+    :class="{ 'chart-unavailable': hasAccess.length == 0 }"
+  >
     <ul class="year-select">
       <li
         v-for="(year, index) in yearsChoice"
@@ -14,29 +17,31 @@
         <span class="divider" v-if="index + 1 < yearsChoice.length"> |</span>
       </li>
     </ul>
-    <h3>View purchased months</h3>
-    <div class="chart-timeframe-selector">
-      <div
-        v-if="monthsAvailable[0] != 'loading'"
-        class="months-available-wrapper"
-        :class="{ active: monthsAvailable.length > 0 }"
-      >
-        <DateSelector
-          v-for="month in purchasedMonths"
-          :date="{ date: month, year: selectedYear }"
-          :key="`${month.id}`"
-          :monthIsAccessble="hasAccess"
-        />
-        <span class="data-not-available" v-if="purchasedMonths.length == 0"
-          >No purchased months</span
+    <div v-if="hasAccess.length > 0">
+      <h3>View purchased months</h3>
+      <div class="chart-timeframe-selector">
+        <div
+          v-if="monthsAvailable[0] != 'loading'"
+          class="months-available-wrapper"
+          :class="{ active: monthsAvailable.length > 0 }"
         >
-      </div>
-      <div v-else class="months-available-wrapper">
-        <BaseLoadingSpinner />
+          <DateSelector
+            v-for="month in purchasedMonths"
+            :date="{ date: month, year: selectedYear }"
+            :key="`${month.id}`"
+            :monthIsAccessble="hasAccess"
+          />
+          <span class="data-not-available" v-if="purchasedMonths.length == 0"
+            >No purchased months</span
+          >
+        </div>
+        <div v-else class="months-available-wrapper">
+          <BaseLoadingSpinner />
+        </div>
       </div>
     </div>
 
-    <h3>Purchase additional months</h3>
+    <h3>Purchase months</h3>
     <div class="chart-timeframe-selector">
       <div
         v-if="monthsAvailable[0] != 'loading'"
@@ -60,10 +65,14 @@
       </div>
     </div>
     <div class="purchase-controls" v-if="monthsAvailable.length > 0">
-      <button :disabled="cartCount < 1" @click="multiPurchase">
+      <button :disabled="cartCount < 1 || !creditCost" @click="multiPurchase">
         {{ cartCountLabel }}
       </button>
-      <span class="credit-cost">{{ creditCost }}</span>
+      <span v-if="creditCost != false">{{ creditCost }}</span>
+      <div v-else>
+        Not enough credits -
+        <router-link :to="{ name: 'dashboard' }">Buy more </router-link>
+      </div>
     </div>
   </div>
 </template>
@@ -112,8 +121,10 @@ export default {
       const suffix = cartCount > 1 ? 'months' : 'month'
       if (cartCount == 0) {
         return `select months`
-      } else {
+      } else if (this.creditCost) {
         return `Purchase ${cartCount} ${suffix}`
+      } else {
+        return 'Remove an item or buy more credits'
       }
     },
     creditCost() {
@@ -123,22 +134,20 @@ export default {
         this.selectedDataSets.datasetCart.length
       return cost <= parseInt(currentCredits)
         ? `This will deduct ${cost} credits`
-        : 'not enough credits'
+        : false
     },
     ...mapState(['company', ['currentCompany'], 'selectedDataSets']),
   },
   created() {
-    this.$store.watch((state) => {
-      if (state.company.currentCompany.id) {
-        this.getAvailableDates()
-      }
-    })
+    this.getAvailableDates()
+
     this.$store.dispatch('selectedDataSets/clearDatasetCart')
   },
   methods: {
     async getAvailableDates(year = dayjs('1/1/2020').year()) {
       this.$store.dispatch('selectedDataSets/clearDatasetCart')
-      const currentCompanyId = this.$store.getters['company/getCompanyId']
+      const currentCompanyId =
+        this.$route.params.id || this.$store.getters['company/getCompanyId']
       // TODO: remove 2020 after dev
       this.monthsAvailable = ['loading'] // clear month UI
       this.selectedYear = year
@@ -224,6 +233,17 @@ ul {
 }
 
 .timeframe-selector-wrapper {
+  &.chart-unavailable {
+    position: absolute;
+    top: 0;
+    width: 550px; // allow month UI element to peak off the side
+    border: solid;
+    background-color: $color-ellen-brand-bright;
+    height: 350px;
+    padding: 20px;
+    justify-content: flex-start;
+  }
+
   h3 {
     text-align: left;
   }
@@ -288,6 +308,7 @@ ul.year-select {
 
   @include breakpoint(medium up) {
     height: 50px;
+    padding-bottom: 10px;
   }
 
   &.active {
@@ -310,6 +331,10 @@ ul.year-select {
 
   @include breakpoint(medium up) {
     max-width: 250px;
+
+    .chart-unavailable & {
+      max-width: none;
+    }
   }
 
   button {

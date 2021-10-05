@@ -1,6 +1,9 @@
 <template>
   <div class="chart-wrapper global-max-width">
-    <div class="chart-frame">
+    <div
+      class="chart-frame"
+      :class="{ 'chart-unavailable': hasAccess.length == 0 }"
+    >
       <LineChart
         v-if="orderList.length > 0"
         ref="chartRef"
@@ -156,6 +159,11 @@ async function getDataPoints(companyId, months) {
 
   .chart-frame {
     position: relative;
+
+    &.chart-unavailable {
+      pointer-events: none;
+      opacity: 0.2;
+    }
   }
 }
 
