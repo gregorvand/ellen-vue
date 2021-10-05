@@ -19,7 +19,10 @@ button, .button, .btn {
   &:hover {
     background-color: $color-ellen-brand-bright;
     color: $color-ellen-dark;
-    border: solid $color-ellen-dark 2px;
+
+    @include breakpoint(medium up) {
+      border: solid $color-ellen-dark 2px;
+    } 
   }
 
   &:disabled {
