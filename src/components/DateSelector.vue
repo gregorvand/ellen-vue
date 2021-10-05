@@ -54,6 +54,10 @@ export default {
       type: Boolean,
     },
   },
+  mounted() {
+    // TODO: experimental. Does this lock up the server?
+    this.updateRequestedDates()
+  },
   data() {
     return {
       // if user has already selected this company, will return true, else false
@@ -129,35 +133,35 @@ export default {
         }
       } else {
         // purchase with credits
-        axios({
-          method: 'post',
-          url: `${process.env.VUE_APP_API_URL}/api/dataset-access/charge`,
-          data: {
-            companyId: this.company.currentCompany.id,
-            datasetIdArray: [this.assignID],
-          },
-        })
-          .then(() => {
-            const notification = {
-              type: 'success',
-              message: `Great, you can now access ${this.longerReadableDate}`,
-            }
-            this.$store.dispatch('notification/add', notification, {
-              root: true,
-            })
-            this.$parent.$emit('data-subscribed')
-          })
-          .catch((error) => {
-            if (error.response.status == 433) {
-              const notification = {
-                type: 'error',
-                message: `Not able to add ${this.longerReadableDate}, you do not have enough credits`,
-              }
-              this.$store.dispatch('notification/add', notification, {
-                root: true,
-              })
-            }
-          })
+        // axios({
+        //   method: 'post',
+        //   url: `${process.env.VUE_APP_API_URL}/api/dataset-access/charge`,
+        //   data: {
+        //     companyId: this.company.currentCompany.id,
+        //     datasetIdArray: [this.assignID],
+        //   },
+        // })
+        //   .then(() => {
+        //     const notification = {
+        //       type: 'success',
+        //       message: `Great, you can now access ${this.longerReadableDate}`,
+        //     }
+        //     this.$store.dispatch('notification/add', notification, {
+        //       root: true,
+        //     })
+        //     this.$parent.$emit('data-subscribed')
+        //   })
+        //   .catch((error) => {
+        //     if (error.response.status == 433) {
+        //       const notification = {
+        //         type: 'error',
+        //         message: `Not able to add ${this.longerReadableDate}, you do not have enough credits`,
+        //       }
+        //       this.$store.dispatch('notification/add', notification, {
+        //         root: true,
+        //       })
+        //     }
+        //   })
       }
     },
     async addToCart() {
