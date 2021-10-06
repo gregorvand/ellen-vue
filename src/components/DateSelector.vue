@@ -37,7 +37,6 @@
 <script>
 import dayjs from 'dayjs'
 import { mapState } from 'vuex'
-import axios from 'axios'
 
 import * as dataUtilties from '@/helpers/data_utilities'
 
@@ -56,7 +55,7 @@ export default {
   },
   mounted() {
     // TODO: experimental. Does this lock up the server?
-    this.updateRequestedDates()
+    this.loadCurrentDatasets()
   },
   data() {
     return {
@@ -109,12 +108,35 @@ export default {
     ...mapState(['company', 'selectedDataSets']),
   },
   methods: {
+    async loadCurrentDatasets() {
+      const currentData =
+        this.$store.getters['selectedDataSets/currentActiveDataSets']
+      const filteredActive = currentData.filter(
+        (data) => data.metaData.activated == true
+      )
+      const activeDatasetIds = filteredActive.map((data) => data.chartData.id)
+
+      const dateToStore = dayjs(this.dateObject.date).toISOString()
+      if (this.accessibleMonth && !activeDatasetIds.includes(this.assignID)) {
+        this.$store.dispatch('selectedDataSets/addDateToSelection', {
+          date: { date: dateToStore },
+          company: this.company.currentCompany.id,
+          id: this.assignID,
+        })
+      }
+    },
     async updateRequestedDates() {
+      // if already part of active chartData dataset, do nothing
+      // to get the currently active datasets we need to do what ChatV2.vue
+      // is doing and get store.state.selectedDataSets.currentDataSets and then
+      // filter them down to those that are 'active'
+
       if (this.accessibleMonth) {
         // take in object
         // convert date format
         // pass to store
         const dateToStore = dayjs(this.dateObject.date).toISOString()
+        console.log('date...', this.assignID)
         if (!this.checked) {
           this.$store.dispatch('selectedDataSets/addDateToSelection', {
             date: { date: dateToStore },
@@ -131,37 +153,6 @@ export default {
             this.assignID
           )
         }
-      } else {
-        // purchase with credits
-        // axios({
-        //   method: 'post',
-        //   url: `${process.env.VUE_APP_API_URL}/api/dataset-access/charge`,
-        //   data: {
-        //     companyId: this.company.currentCompany.id,
-        //     datasetIdArray: [this.assignID],
-        //   },
-        // })
-        //   .then(() => {
-        //     const notification = {
-        //       type: 'success',
-        //       message: `Great, you can now access ${this.longerReadableDate}`,
-        //     }
-        //     this.$store.dispatch('notification/add', notification, {
-        //       root: true,
-        //     })
-        //     this.$parent.$emit('data-subscribed')
-        //   })
-        //   .catch((error) => {
-        //     if (error.response.status == 433) {
-        //       const notification = {
-        //         type: 'error',
-        //         message: `Not able to add ${this.longerReadableDate}, you do not have enough credits`,
-        //       }
-        //       this.$store.dispatch('notification/add', notification, {
-        //         root: true,
-        //       })
-        //     }
-        //   })
       }
     },
     async addToCart() {
