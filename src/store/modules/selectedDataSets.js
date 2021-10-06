@@ -16,6 +16,10 @@ export const getters = {
   datasetCart(state) {
     return state.datasetCart
   },
+
+  currentActiveDataSets(state) {
+    return state.currentDataSets
+  },
 }
 
 export const mutations = {
