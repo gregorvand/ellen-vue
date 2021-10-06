@@ -136,7 +136,6 @@ export default {
         // convert date format
         // pass to store
         const dateToStore = dayjs(this.dateObject.date).toISOString()
-        console.log('date...', this.assignID)
         if (!this.checked) {
           this.$store.dispatch('selectedDataSets/addDateToSelection', {
             date: { date: dateToStore },
