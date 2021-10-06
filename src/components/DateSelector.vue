@@ -108,6 +108,11 @@ export default {
     ...mapState(['company', 'selectedDataSets']),
   },
   methods: {
+    // if already part of active chartData dataset, do nothing
+    // to get the currently active datasets we need to do what ChatV2.vue
+    // is doing and get store.state.selectedDataSets.currentDataSets and then
+    // filter them down to those that are 'active' already and load accessible months
+    // not already active
     async loadCurrentDatasets() {
       const currentData =
         this.$store.getters['selectedDataSets/currentActiveDataSets']
@@ -126,11 +131,6 @@ export default {
       }
     },
     async updateRequestedDates() {
-      // if already part of active chartData dataset, do nothing
-      // to get the currently active datasets we need to do what ChatV2.vue
-      // is doing and get store.state.selectedDataSets.currentDataSets and then
-      // filter them down to those that are 'active'
-
       if (this.accessibleMonth) {
         // take in object
         // convert date format
