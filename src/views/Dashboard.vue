@@ -1,6 +1,11 @@
 <template>
   <div>
-    <h1>Dashboard</h1>
+    <h1>WELCOME TO</h1>
+    <img
+      src="@/assets/ELLENv2logo.svg"
+      class="logo"
+      alt="welcome to ELLEN insights"
+    />
     <ul class="followed-companies">
       <h2>Followed companies</h2>
       <li v-for="company in selectedCompanies" :key="company.id">
@@ -15,10 +20,9 @@
 <script>
 import axios from 'axios'
 import CompanySelector from '../components/CompanySelector'
-import PaymentsSubscription from '../components/PaymentsSubscription'
 
 export default {
-  components: { CompanySelector, PaymentsSubscription },
+  components: { CompanySelector },
   data() {
     return {
       selectedCompanies: [],
