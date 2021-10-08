@@ -105,6 +105,10 @@ export default {
       padding-bottom: 0px;
     }
   }
+
+  .company-selector {
+    width: 100%;
+  }
 }
 
 .companies-results {
