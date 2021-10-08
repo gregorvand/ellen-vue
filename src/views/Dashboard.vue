@@ -145,7 +145,9 @@ export default {
   }
 }
 .search-component {
-  padding-right: 20px;
+  @include breakpoint(medium up) {
+    padding-right: 20px;
+  }
 }
 
 .followed-companies {
