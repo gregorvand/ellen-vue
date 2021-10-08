@@ -24,7 +24,8 @@ npm run lint
 
 ### Other dependencies / notes
 
-- Elastic search should be installed and running on port 9200 for dev
+- ~Elastic search should be installed and running on port 9200 for dev~
+- ElasticSearch is using cloud-hosted at elastic.co
 - Ensure API server is running and its socket.io / API CORS policy is set to allow incoming connections from wherever this Vue app is hosted / localhost
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
