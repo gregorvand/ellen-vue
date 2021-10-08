@@ -3,6 +3,7 @@
     <form class="search-companies-form" @submit.prevent>
       <input
         v-on:keyup="searchCompanies"
+        v-touch:tap="searchCompanies"
         type="text"
         v-model="currentQuery"
         placeholder="Search for a company"
