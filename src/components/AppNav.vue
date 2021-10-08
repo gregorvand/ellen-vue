@@ -60,7 +60,6 @@ export default {
   components: { CreditsBalance, SearchForm, NotificationContainer },
 
   data: function () {
-    console.log(this.$route.name)
     return {
       patternProps: {
         backgroundImage: `url(${require('@/assets/ellen_pattern.svg')})`,
