@@ -1,7 +1,7 @@
 <template>
   <div>
     <section class="inner-container">
-      <div class="container upper dashboard">
+      <div class="container upper dashboard no-padding">
         <h1>WELCOME TO</h1>
         <img
           src="@/assets/ELLENv2logo.svg"
