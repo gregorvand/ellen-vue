@@ -17,7 +17,7 @@
       </div>
 
       <div class="nav-header-search">
-        <SearchForm v-if="loggedIn && this.$route.name !== 'home'" />
+        <SearchForm v-if="loggedIn && showNavSearch" />
       </div>
 
       <div class="nav-header-right">
@@ -67,6 +67,9 @@ export default {
     }
   },
   computed: {
+    showNavSearch() {
+      return this.$route.name === 'home' ? false : true
+    },
     ...authComputed,
     ...mapState(['user', 'credits']),
   },

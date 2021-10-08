@@ -4,7 +4,7 @@
     :class="[isCategoryCompanyClass, { proprietary: !isPublicCompany }]"
   >
     <router-link
-      v-if="this.$route.name !== 'home'"
+      v-if="disableCheckBox"
       class="company-selector-link"
       :to="{
         name: 'company',
@@ -14,7 +14,19 @@
     </router-link>
     <div class="company-details">
       <div class="company-selector-label">
-        <span class="company-selector-title">{{ companyName }}</span>
+        <span v-if="!disableCheckBox" class="company-selector-title">
+          <router-link
+            class="company-text-link"
+            :to="{
+              name: 'company',
+              params: { id: company.id },
+            }"
+          >
+            {{ companyName }}
+          </router-link></span
+        >
+        <span v-else class="company-selector-title"> {{ companyName }}</span>
+
         <span class="ticker-label" v-if="company.ticker"
           >({{ company.ticker }})</span
         >
@@ -37,6 +49,7 @@
 </template>
 
 <script>
+import CompanyService from '@/services/CompanyService.js'
 export default {
   props: {
     company: {
@@ -60,13 +73,18 @@ export default {
           'selectedCompanies/addCompanyToSelection',
           this.company
         )
-        this.$store.dispatch('compareCompany/updateCompare', this.company)
+        if (this.$route.name !== 'home') {
+          CompanyService.saveCompany(this)
+        }
+
+        // this.$store.dispatch('compareCompany/updateCompare', this.company)
       } else {
         this.$store.dispatch(
           'selectedCompanies/removeCompanySelection',
           this.company
         )
-        this.$store.dispatch('compareCompany/clearCompare', this.company)
+        CompanyService.removeCompany(this)
+        // this.$store.dispatch('compareCompany/clearCompare', this.company)
       }
     },
   },
@@ -74,7 +92,7 @@ export default {
   data() {
     return {
       // if user has already selected this company, will return true, else false
-      checked: this.$store.getters['selectedCompanies/userHasCompany'](
+      checked: this.$store.getters['followedCompanies/userFollowsCompany'](
         this.company.id
       ),
       isPublicCompany: this.company.ticker ? true : false,
@@ -136,7 +154,7 @@ span {
   padding: 5px;
   position: relative;
 
-  a {
+  a.company-selector-link {
     position: absolute;
     top: 0;
     left: 0;
@@ -182,7 +200,8 @@ span {
   }
 
   // subcomponents
-  &-title {
+  &-title,
+  .company-text-link {
     @extend %company-title;
     text-decoration: none;
     display: flex;
@@ -190,6 +209,10 @@ span {
     align-items: center;
     line-height: 1;
     height: 50%;
+  }
+
+  .company-text-link {
+    text-decoration: underline;
   }
 
   &.category-add {

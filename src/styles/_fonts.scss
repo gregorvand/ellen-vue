@@ -19,6 +19,11 @@ $small-label-font-size: 12px;
   font-weight: 600;
 }
 
+%subheading {
+  @extend %company-title;
+  font-size: rem-calc(16px)
+}
+
 body, p {
   @extend %body-font-family;
 }

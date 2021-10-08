@@ -5,6 +5,7 @@ import * as user from '@/store/modules/user.js'
 import * as notification from '@/store/modules/notification.js'
 import * as search from '@/store/modules/search.js'
 import * as selectedCompanies from '@/store/modules/selectedCompanies.js'
+import * as followedCompanies from '@/store/modules/followedCompanies.js'
 import * as selectedDataSets from '@/store/modules/selectedDataSets.js'
 import * as userCompany from '@/store/modules/userCompany.js'
 import * as company from '@/store/modules/company.js'
@@ -22,6 +23,7 @@ export default new Vuex.Store({
     notification,
     search,
     selectedCompanies,
+    followedCompanies,
     selectedCategories,
     selectedDataSets,
     userCompany,

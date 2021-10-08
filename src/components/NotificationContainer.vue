@@ -65,6 +65,7 @@ $mobile-height: 50px;
       min-width: 200%;
       height: 20px;
       margin: 0 5px;
+      align-items: center;
 
       @include breakpoint(medium up) {
         min-width: 100%;

@@ -9,14 +9,14 @@
       />
 
       <div v-if="showCheckbox">
-        <ul class="companies-results" v-if="results.length > 0">
+        <ul class="companies-results" v-if="results.length > 0 && activeForm">
           <li v-for="result in results" :key="result.id">
             <CompanySelector :company="result" />
           </li>
         </ul>
       </div>
       <div v-else>
-        <ul class="companies-results" v-if="results.length > 0">
+        <ul class="companies-results" v-if="results.length > 0 && activeForm">
           <li v-for="result in results" :key="result.id">
             <CompanySelector :company="result" v-bind:disableCheckBox="true" />
           </li>
@@ -43,13 +43,16 @@ export default {
     return {
       currentQuery: null,
       parent: this.$parent,
+      activeForm: false,
     }
   },
   methods: {
     searchCompanies() {
+      this.activeForm = true
       this.$store.dispatch('search/doSearchQuery', this.currentQuery)
     },
     clearInput() {
+      this.activeForm = false
       if (this.currentQuery !== '') {
         this.currentQuery = ''
         this.$store.dispatch('search/clearResults', '')
@@ -75,6 +78,7 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100px;
+  z-index: base_index(top);
 
   form {
     margin-bottom: 0 !important;
@@ -101,6 +105,10 @@ export default {
       text-align: center;
       padding-bottom: 0px;
     }
+  }
+
+  .company-selector {
+    width: 100%;
   }
 }
 
