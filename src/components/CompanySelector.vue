@@ -4,7 +4,7 @@
     :class="[isCategoryCompanyClass, { proprietary: !isPublicCompany }]"
   >
     <router-link
-      v-if="this.$route.name !== 'home'"
+      v-if="disableCheckBox"
       class="company-selector-link"
       :to="{
         name: 'company',
