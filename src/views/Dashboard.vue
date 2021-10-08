@@ -11,9 +11,9 @@
           />
           <p>Tools and insights for your next business move</p>
           <SearchForm :showCheckbox="true" />
-          <ul class="followed-companies">
+          <ul class="followed-companies" ref="scrollingEl">
             <h2>MY FOLLOWED COMPANIES</h2>
-            <li v-for="company in selectedCompanies" :key="company.id">
+            <li v-for="company in followedCompanies" :key="company.id">
               <CompanySelector
                 :company="company"
                 v-bind:disableCheckBox="true"
@@ -29,6 +29,7 @@
 
 <script>
 import axios from 'axios'
+import { mapState } from 'vuex'
 import CompanySelector from '../components/CompanySelector'
 import SearchForm from '@/components/SearchForm'
 
@@ -43,9 +44,16 @@ export default {
     axios
       .post(`${process.env.VUE_APP_API_URL}/api/dashboard`)
       .then(({ data }) => {
-        this.selectedCompanies = data.companies
+        console.log(data.companies)
+        this.$store.dispatch(
+          'followedCompanies/addAllFollowedCompanies',
+          data.companies
+        )
       })
     this.$store.dispatch('selectedCompanies/clearCompanySelection') // ideally state becomes saved companies
+  },
+  computed: {
+    ...mapState('followedCompanies', ['followedCompanies']),
   },
 }
 </script>
@@ -81,5 +89,12 @@ export default {
     @extend %subheading;
     text-align: left;
   }
+}
+
+.followed-companies {
+  flex-direction: column;
+  overflow-y: scroll;
+  justify-content: flex-start;
+  height: 300px;
 }
 </style>

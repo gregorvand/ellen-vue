@@ -78,6 +78,7 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100px;
+  z-index: base_index(top);
 
   form {
     margin-bottom: 0 !important;

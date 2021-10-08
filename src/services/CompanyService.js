@@ -15,6 +15,10 @@ export default {
   },
 
   saveCompany(component) {
+    component.$store.dispatch(
+      'followedCompanies/addFollowedCompany',
+      component.company
+    )
     axios({
       method: 'post',
       url: `${process.env.VUE_APP_API_URL}/api/users/update/companies`,
@@ -25,11 +29,15 @@ export default {
     }).then(({ data }) => {
       component.$store.dispatch('selectedCompanies/clearCompanySelection') // ideally state becomes saved companies
       component.button_label = 'Saved!'
+      console.log(component.company)
 
-      const thisComponent = component // must set this outside of anon function below
-      setTimeout(function () {
-        thisComponent.button_label = defaultLabel
-      }, 1500)
+      const notification = {
+        type: 'success',
+        message: `📈 Added ${component.company.companyName}`,
+      }
+      component.$store.dispatch('notification/add', notification, {
+        root: true,
+      })
     })
   },
 }

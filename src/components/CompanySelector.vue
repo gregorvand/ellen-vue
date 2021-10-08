@@ -37,6 +37,7 @@
 </template>
 
 <script>
+import CompanyService from '@/services/CompanyService.js'
 export default {
   props: {
     company: {
@@ -60,13 +61,14 @@ export default {
           'selectedCompanies/addCompanyToSelection',
           this.company
         )
-        this.$store.dispatch('compareCompany/updateCompare', this.company)
+        CompanyService.saveCompany(this)
+        // this.$store.dispatch('compareCompany/updateCompare', this.company)
       } else {
         this.$store.dispatch(
           'selectedCompanies/removeCompanySelection',
           this.company
         )
-        this.$store.dispatch('compareCompany/clearCompare', this.company)
+        // this.$store.dispatch('compareCompany/clearCompare', this.company)
       }
     },
   },
