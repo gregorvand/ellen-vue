@@ -14,7 +14,19 @@
     </router-link>
     <div class="company-details">
       <div class="company-selector-label">
-        <span class="company-selector-title">{{ companyName }}</span>
+        <span v-if="!disableCheckBox" class="company-selector-title">
+          <router-link
+            class="company-text-link"
+            :to="{
+              name: 'company',
+              params: { id: company.id },
+            }"
+          >
+            {{ companyName }}
+          </router-link></span
+        >
+        <span v-else class="company-selector-title"> {{ companyName }}</span>
+
         <span class="ticker-label" v-if="company.ticker"
           >({{ company.ticker }})</span
         >
@@ -142,7 +154,7 @@ span {
   padding: 5px;
   position: relative;
 
-  a {
+  a.company-selector-link {
     position: absolute;
     top: 0;
     left: 0;
@@ -188,7 +200,8 @@ span {
   }
 
   // subcomponents
-  &-title {
+  &-title,
+  .company-text-link {
     @extend %company-title;
     text-decoration: none;
     display: flex;
@@ -196,6 +209,10 @@ span {
     align-items: center;
     line-height: 1;
     height: 50%;
+  }
+
+  .company-text-link {
+    text-decoration: underline;
   }
 
   &.category-add {
