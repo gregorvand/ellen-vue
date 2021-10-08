@@ -16,7 +16,7 @@ export default {
   },
   methods: {
     saveCompanies() {
-      CompanyService.saveCompany(this)
+      CompanyService.saveManyCompanies(this)
     },
   },
 }

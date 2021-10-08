@@ -84,6 +84,7 @@ import DateSelector from './DateSelector.vue'
 import { mapState } from 'vuex'
 import dayjs from 'dayjs'
 import axios from 'axios'
+import pluralize from 'pluralize'
 
 import * as dataUtilties from '@/helpers/data_utilities'
 
@@ -120,11 +121,10 @@ export default {
     },
     cartCountLabel() {
       const cartCount = this.selectedDataSets.datasetCart.length
-      const suffix = cartCount > 1 ? 'months' : 'month'
       if (cartCount == 0) {
         return `select months`
       } else if (this.creditCost) {
-        return `Purchase ${cartCount} ${suffix}`
+        return `Purchase ${cartCount} ${pluralize('month', cartCount)}`
       } else {
         return 'Remove an item or buy more credits'
       }

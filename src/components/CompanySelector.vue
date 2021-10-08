@@ -61,7 +61,10 @@ export default {
           'selectedCompanies/addCompanyToSelection',
           this.company
         )
-        CompanyService.saveCompany(this)
+        if (this.$route.name !== 'home') {
+          CompanyService.saveCompany(this)
+        }
+
         // this.$store.dispatch('compareCompany/updateCompare', this.company)
       } else {
         this.$store.dispatch(
