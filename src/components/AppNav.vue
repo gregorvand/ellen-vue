@@ -17,7 +17,7 @@
       </div>
 
       <div class="nav-header-search">
-        <SearchForm v-if="loggedIn && this.$route.name !== 'home'" />
+        <SearchForm v-if="loggedIn && showNavSearch" />
       </div>
 
       <div class="nav-header-right">
@@ -60,6 +60,7 @@ export default {
   components: { CreditsBalance, SearchForm, NotificationContainer },
 
   data: function () {
+    console.log(this.$route.name)
     return {
       patternProps: {
         backgroundImage: `url(${require('@/assets/ellen_pattern.svg')})`,
@@ -67,6 +68,9 @@ export default {
     }
   },
   computed: {
+    showNavSearch() {
+      return this.$route.name === 'home' ? false : true
+    },
     ...authComputed,
     ...mapState(['user', 'credits']),
   },

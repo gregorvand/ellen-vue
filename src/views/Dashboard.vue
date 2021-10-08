@@ -1,28 +1,39 @@
 <template>
   <div>
-    <h1>WELCOME TO</h1>
-    <img
-      src="@/assets/ELLENv2logo.svg"
-      class="logo"
-      alt="welcome to ELLEN insights"
-    />
-    <ul class="followed-companies">
-      <h2>Followed companies</h2>
-      <li v-for="company in selectedCompanies" :key="company.id">
-        <CompanySelector :company="company" v-bind:disableCheckBox="true" />
-      </li>
-    </ul>
-    <PaymentsSubscription />
-    <!-- <Payments /> -->
+    <section class="container">
+      <div class="inner-container">
+        <div class="dashboard left inner-container">
+          <h1>WELCOME TO</h1>
+          <img
+            src="@/assets/ELLENv2logo.svg"
+            class="logo"
+            alt="welcome to ELLEN insights"
+          />
+          <p>Tools and insights for your next business move</p>
+          <SearchForm :showCheckbox="true" />
+          <ul class="followed-companies">
+            <h2>MY FOLLOWED COMPANIES</h2>
+            <li v-for="company in selectedCompanies" :key="company.id">
+              <CompanySelector
+                :company="company"
+                v-bind:disableCheckBox="true"
+              />
+            </li>
+          </ul>
+        </div>
+        <div class="dashboard right inner-container"></div>
+      </div>
+    </section>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
 import CompanySelector from '../components/CompanySelector'
+import SearchForm from '@/components/SearchForm'
 
 export default {
-  components: { CompanySelector },
+  components: { CompanySelector, SearchForm },
   data() {
     return {
       selectedCompanies: [],
@@ -40,24 +51,35 @@ export default {
 </script>
 
 <style scoped lang="scss">
-ul {
-  width: 100%;
-  padding: 0;
-  margin: 0;
-  justify-content: center;
+.container {
+  border: solid red thin;
+  min-height: 300px;
+  flex-direction: row;
+
+  .inner-container {
+    min-height: 200px;
+  }
+}
+
+.dashboard {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 0 20px;
-  height: 250px;
-  overflow-y: scroll;
-  max-width: 500px;
-  border: solid $color-black thin;
-}
-li {
-  list-style: none;
-  display: flex;
-  width: 100%;
+
+  &.left {
+    justify-content: flex-start;
+    align-items: flex-start;
+    img {
+      width: 115px;
+    }
+    h1,
+    p {
+      font-size: $small-label-font-size;
+    }
+  }
+
+  h2 {
+    @extend %subheading;
+    text-align: left;
+  }
 }
 </style>

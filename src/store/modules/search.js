@@ -1,5 +1,6 @@
 import axios from 'axios'
 export const namespaced = true // ie user/[action]
+import { ELLEN_SEARCH_CATEGORIES } from '@/helpers/search_helpers'
 
 // Separate axios instance that will not send default auth headers
 const searchClient = axios.create({
@@ -31,9 +32,22 @@ export const actions = {
       from: 0,
       size: 100,
       query: {
-        query_string: {
-          fields: ['companyName', 'ticker'],
-          query: currentQuery || '',
+        bool: {
+          must: [
+            {
+              query_string: {
+                fields: ['companyName', 'ticker'],
+                query: `${currentQuery} ` || '',
+              },
+            },
+          ],
+          filter: [
+            {
+              bool: {
+                should: ELLEN_SEARCH_CATEGORIES,
+              },
+            },
+          ],
         },
       },
     }
