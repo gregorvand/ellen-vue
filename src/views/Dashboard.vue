@@ -44,7 +44,6 @@ export default {
     axios
       .post(`${process.env.VUE_APP_API_URL}/api/dashboard`)
       .then(({ data }) => {
-        console.log(data.companies)
         this.$store.dispatch(
           'followedCompanies/addAllFollowedCompanies',
           data.companies

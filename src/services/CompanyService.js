@@ -20,7 +20,15 @@ export default {
       'followedCompanies/addFollowedCompany',
       component.company
     )
-    updateCompany(component)
+    addCompany(component)
+  },
+
+  removeCompany(component) {
+    component.$store.dispatch(
+      'followedCompanies/removeFollowedCompany',
+      component.company
+    )
+    removeCompany(component)
   },
 
   saveManyCompanies(component) {
@@ -66,7 +74,7 @@ function companiesBulkSuccess(component, data) {
   })
 }
 
-function updateCompany(component) {
+function addCompany(component) {
   axios({
     method: 'post',
     url: `${process.env.VUE_APP_API_URL}/api/users/update/companies`,
@@ -76,5 +84,23 @@ function updateCompany(component) {
     },
   }).then(() => {
     companySuccess(component)
+  })
+}
+
+function removeCompany(component) {
+  axios({
+    method: 'put',
+    url: `${process.env.VUE_APP_API_URL}/api/users/update/companies`,
+    data: {
+      selectedCompany: component.company.id,
+    },
+  }).then(() => {
+    const notification = {
+      type: 'success',
+      message: `No longer following ${component.company.companyName}`,
+    }
+    component.$store.dispatch('notification/add', notification, {
+      root: true,
+    })
   })
 }

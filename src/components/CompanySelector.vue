@@ -71,6 +71,7 @@ export default {
           'selectedCompanies/removeCompanySelection',
           this.company
         )
+        CompanyService.removeCompany(this)
         // this.$store.dispatch('compareCompany/clearCompare', this.company)
       }
     },
@@ -79,7 +80,7 @@ export default {
   data() {
     return {
       // if user has already selected this company, will return true, else false
-      checked: this.$store.getters['selectedCompanies/userHasCompany'](
+      checked: this.$store.getters['followedCompanies/userFollowsCompany'](
         this.company.id
       ),
       isPublicCompany: this.company.ticker ? true : false,
