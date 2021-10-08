@@ -86,7 +86,7 @@ export default {
 
 <style scoped lang="scss">
 .container {
-  min-height: 300px;
+  min-height: 200px;
   flex-direction: row;
 
   &.lower {
