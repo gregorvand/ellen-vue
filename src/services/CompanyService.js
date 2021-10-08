@@ -53,9 +53,10 @@ function companiesBulkSuccess(component, data) {
   component.$store.dispatch('selectedCompanies/clearCompanySelection')
   component.button_label = 'Saved!'
   const companiesAddedCount = data.data.length
+  const icon = companiesAddedCount > 0 ? '✅ ' : ''
   const notification = {
     type: 'success',
-    message: `✅ Added ${companiesAddedCount} new ${pluralize(
+    message: `${icon}Added ${companiesAddedCount} new ${pluralize(
       'company',
       companiesAddedCount
     )}`,
