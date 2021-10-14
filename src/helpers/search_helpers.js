@@ -1,4 +1,5 @@
 const categories = [
+  'Shopify',
   'Apparel Manufacturing',
   'Apparel Retail',
   'Beverages Non-Alcoholic',
