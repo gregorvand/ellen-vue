@@ -74,9 +74,6 @@ export default defineComponent({
   },
   computed: {
     ...mapState('selectedDataSets', ['currentDataSets']),
-    dataSetData() {
-      return this.currentDataSets.map((dataset) => dataset.data)
-    },
   },
 
   setup(props) {
