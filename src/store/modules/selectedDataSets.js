@@ -1,9 +1,11 @@
 export const namespaced = true // ie user/[action]
 import dayjs from 'dayjs'
 import axios from 'axios'
+import Vue from 'vue'
 
 export const state = () => ({
   currentDataSets: [],
+  shadowDataSets: [],
   selectedDateIDs: [],
   datasetCart: [],
 })
@@ -37,13 +39,23 @@ export const mutations = {
     )
     selectedSet.metaData.activated = false
   },
-  PUSH_DATASET(state, dataset) {
-    state.currentDataSets.push(dataset)
+  SWAP_DATASET(state, dataset) {
+    state.currentDataSets.push(...dataset)
+    // Vue.set(state, 'currentDataSets', dataset)
+  },
+
+  CLEAR_DATASET(state) {
+    state.currentDataSets.splice(0, state.currentDataSets.length)
+  },
+
+  SWAP_SHADOW_DATASET(state, dataset) {
+    state.shadowDataSets.push(dataset)
   },
 
   PUSH_TO_CART(state, dateId) {
     state.datasetCart.push(dateId)
   },
+
   REMOVE_FROM_CART(state, dateToRemove) {
     state.datasetCart = state.datasetCart.filter(
       (date) => date !== dateToRemove
@@ -80,6 +92,9 @@ export const actions = {
   clearDatasetCart({ commit }) {
     commit('CLEAR_CART')
   },
+  clearDataset({ commit }) {
+    commit('CLEAR_DATASET')
+  },
 
   async getAndStoreDataSet({ commit, state }, payload) {
     // Push to dataset
@@ -97,10 +112,11 @@ export const actions = {
     } else {
       // API call for dataset
       const dataset = await getDataPoints(company, date1, date2)
-      const plotData = dataset.data
-      const dataMonth = plotData[plotData.length - 1].x // determine month/yr for label from final datapoint
+      const plotData = dataset.data.daily
+      const plotDataMonthly = dataset.data.monthly
+      const dataMonth = dayjs(plotData[plotData.length - 1].x) // determine month/yr for label from final datapoint
 
-      const chartDataObject = {
+      const chartDataObjectDaily = {
         label: dayjs(dataMonth).format('MM/YYYY'),
         data: plotData,
         stepped: true,
@@ -112,14 +128,45 @@ export const actions = {
         id: id,
       }
 
+      const chartDataObjectMonthly = {
+        type: 'bar',
+        data: plotDataMonthly,
+        fill: true,
+        id: id,
+        backgroundColor: 'pink',
+        borderWidth: 1,
+        width: 55,
+        order: 2,
+      }
+
       const metaData = {
         companyId: company,
         activated: true,
       }
 
-      const fullChartData = { chartData: chartDataObject, metaData: metaData }
+      const fullChartData = {
+        chartData: chartDataObjectDaily,
+        chartDataMonthly: chartDataObjectMonthly,
+        metaData: metaData,
+      }
 
-      commit('PUSH_DATASET', fullChartData)
+      // We compile the ChartData full array in the shadowDataSet first,
+      // Then send that up as a completed array to the live currentDataSets
+      // So that we can sort all of the dates into date order first, and
+      // it gives a nicer render than populating the chart sporadically with each dataset
+      commit('SWAP_SHADOW_DATASET', fullChartData)
+      commit('CLEAR_DATASET')
+
+      if (state.shadowDataSets.length === state.selectedDateIDs.length) {
+        let sorted = state.shadowDataSets.sort(function (a, b) {
+          if (a.chartDataMonthly.data[0].x > b.chartDataMonthly.data[0].x)
+            return 1
+          if (a.chartDataMonthly.data[0].x < b.chartDataMonthly.data[0].x)
+            return -1
+        })
+
+        commit('SWAP_DATASET', sorted)
+      }
     }
   },
 }

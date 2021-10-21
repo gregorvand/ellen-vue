@@ -88,8 +88,10 @@ export default defineComponent({
       datasets: dataSetsRef.value
         .filter((data) => data.metaData.companyId == props.companyId)
         .filter((data) => data.metaData.activated == true) // for current Chart, only use data if Company ID matches dataset in store
-        .map((data) => data.chartData), // use chartData part of object
+        .map((data) => data.chartDataMonthly), // use chartData part of object
     }))
+
+    // join up all the monthly data into one dataset
 
     onMounted(async () => {
       const setValues = await getDataPoints(props.companyId, false)
@@ -120,6 +122,10 @@ export default defineComponent({
     })
     this.getAccessibleDatasets()
     this.$store.dispatch('selectedCompanies/clearCompanySelection') // ideally state becomes saved companies
+  },
+
+  updated() {
+    console.log(this.chartData)
   },
 
   methods: {
