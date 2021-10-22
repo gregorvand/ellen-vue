@@ -91,8 +91,6 @@ export default defineComponent({
         .map((data) => data.chartDataMonthly), // use chartData part of object
     }))
 
-    // join up all the monthly data into one dataset
-
     onMounted(async () => {
       const setValues = await getDataPoints(props.companyId, false)
       orderList.value = setValues.data
@@ -122,10 +120,6 @@ export default defineComponent({
     })
     this.getAccessibleDatasets()
     this.$store.dispatch('selectedCompanies/clearCompanySelection') // ideally state becomes saved companies
-  },
-
-  updated() {
-    console.log(this.chartData)
   },
 
   methods: {

@@ -40,11 +40,17 @@ export const mutations = {
     selectedSet.metaData.activated = false
   },
   SWAP_DATASET(state, dataset) {
-    state.currentDataSets.push(...dataset)
-    // Vue.set(state, 'currentDataSets', dataset)
+    // below needed to entirely replace the array and maintain reactivity
+    if (state.currentDataSets.length > 0) {
+      state.currentDataSets.shift()
+      state.currentDataSets.push(dataset)
+    } else {
+      state.currentDataSets.push(dataset)
+    }
   },
 
   CLEAR_DATASET(state) {
+    // Vue.set(state, 'currentDataSets', [])
     state.currentDataSets.splice(0, state.currentDataSets.length)
   },
 
@@ -128,15 +134,16 @@ export const actions = {
         id: id,
       }
 
-      const chartDataObjectMonthly = {
+      let chartDataObjectMonthly = {
+        label: dayjs(dataMonth).format('MM/YYYY'),
         type: 'bar',
         data: plotDataMonthly,
         fill: true,
-        id: id,
-        backgroundColor: 'pink',
-        borderWidth: 1,
-        width: 55,
-        order: 2,
+        // barPercentage: 1,
+        // categoryPercentage: 1,
+        // tickMarkLength: 15,
+        barThickness: 25,
+        offset: false,
       }
 
       const metaData = {
@@ -155,7 +162,6 @@ export const actions = {
       // So that we can sort all of the dates into date order first, and
       // it gives a nicer render than populating the chart sporadically with each dataset
       commit('SWAP_SHADOW_DATASET', fullChartData)
-      commit('CLEAR_DATASET')
 
       if (state.shadowDataSets.length === state.selectedDateIDs.length) {
         let sorted = state.shadowDataSets.sort(function (a, b) {
@@ -165,7 +171,23 @@ export const actions = {
             return -1
         })
 
-        commit('SWAP_DATASET', sorted)
+        // combine all data into one array to be able to plot one continuous line
+        const flattenedPlotData = sorted.map((data) => {
+          return data.chartDataMonthly.data[0]
+        })
+
+        let allData = {
+          chartData: { id: chartDataObjectDaily.id },
+          chartDataMonthly: {
+            type: 'line',
+            data: flattenedPlotData,
+            borderColor: 'pink',
+            fill: true,
+          },
+          metaData: metaData,
+        }
+
+        commit('SWAP_DATASET', allData)
       }
     }
   },
