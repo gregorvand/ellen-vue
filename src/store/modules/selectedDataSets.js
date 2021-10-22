@@ -176,12 +176,20 @@ export const actions = {
           return data.chartDataMonthly.data[0]
         })
 
+        var canvas = document.getElementById('line-chart')
+        var ctx = canvas.getContext('2d')
+        var gradient = ctx.createLinearGradient(0, 0, 0, 300) // value at the end alters height of gradient
+        gradient.addColorStop(0, 'rgba(5,118,156,.5)')
+        gradient.addColorStop(1, 'rgba(255,255,255,.8)')
+        console.log(ctx)
+
         let allData = {
           chartData: { id: chartDataObjectDaily.id },
           chartDataMonthly: {
             type: 'line',
             data: flattenedPlotData,
-            borderColor: 'pink',
+            borderColor: '#05769C',
+            backgroundColor: gradient,
             fill: true,
           },
           metaData: metaData,
