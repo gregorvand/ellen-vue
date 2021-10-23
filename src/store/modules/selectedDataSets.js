@@ -8,6 +8,7 @@ export const state = () => ({
   shadowDataSets: [],
   selectedDateIDs: [],
   datasetCart: [],
+  chartMode: 'monthly',
 })
 
 export const getters = {
@@ -69,6 +70,9 @@ export const mutations = {
   },
   CLEAR_CART(state) {
     state.datasetCart = []
+  },
+  UPDATE_CHART_MODE(state, payload) {
+    state.chartMode = payload
   },
 }
 
@@ -135,15 +139,7 @@ export const actions = {
       }
 
       let chartDataObjectMonthly = {
-        label: dayjs(dataMonth).format('MM/YYYY'),
-        type: 'bar',
         data: plotDataMonthly,
-        fill: true,
-        // barPercentage: 1,
-        // categoryPercentage: 1,
-        // tickMarkLength: 15,
-        barThickness: 25,
-        offset: false,
       }
 
       const metaData = {
@@ -164,7 +160,13 @@ export const actions = {
       commit('SWAP_SHADOW_DATASET', fullChartData)
 
       if (state.shadowDataSets.length === state.selectedDateIDs.length) {
-        let sorted = state.shadowDataSets.sort(function (a, b) {
+        // filter our shadow set for just the current view's company
+        const filtered = state.shadowDataSets.filter(
+          (dataset) => dataset.metaData.companyId == company
+        )
+
+        // sort these in date order
+        const sorted = filtered.sort(function (a, b) {
           if (a.chartDataMonthly.data[0].x > b.chartDataMonthly.data[0].x)
             return 1
           if (a.chartDataMonthly.data[0].x < b.chartDataMonthly.data[0].x)
@@ -181,7 +183,6 @@ export const actions = {
         var gradient = ctx.createLinearGradient(0, 0, 0, 300) // value at the end alters height of gradient
         gradient.addColorStop(0, 'rgba(5,118,156,.5)')
         gradient.addColorStop(1, 'rgba(255,255,255,.8)')
-        console.log(ctx)
 
         let allData = {
           chartData: { id: chartDataObjectDaily.id },
