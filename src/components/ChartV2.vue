@@ -21,6 +21,9 @@
       :hasAccess="hasAccess"
       @data-subscribed="getAccessibleDatasets()"
     />
+    {{ chartMode }}
+    <button @click="toggleView('chartData')">Daily</button>
+    <button @click="toggleView('chartDataMonthly')">Monthly</button>
   </div>
 </template>
 
@@ -62,6 +65,9 @@ export default defineComponent({
     earliestDate: {
       type: String,
     },
+    chartView: {
+      type: String,
+    },
   },
   data: () => {
     return {
@@ -81,15 +87,30 @@ export default defineComponent({
     const orderList = ref([]) // vue3 construct reactive var
     const chartRef = ref()
     const dataSetsRef = ref([])
+    const dataSetsRefDaily = ref([])
     dataSetsRef.value = store.state.selectedDataSets.currentDataSets
+    dataSetsRefDaily.value = store.state.selectedDataSets.currentDailyDataSets
+    const chartType = ref()
+    chartType.value = store.state.selectedDataSets.chartMode
 
     // SETUP data and options
     const chartData = computed(() => ({
       datasets: dataSetsRef.value
         .filter((data) => data.metaData.companyId == props.companyId)
         .filter((data) => data.metaData.activated == true) // for current Chart, only use data if Company ID matches dataset in store
-        .map((data) => data.chartDataMonthly), // use chartData part of object
+        .map((data) => data[chartType.value[0]]), // use chartData part of object
     }))
+
+    const chartDataDaily = computed(() => ({
+      datasets: dataSetsRefDaily.value
+        .filter((data) => data.metaData.companyId == props.companyId)
+        .filter((data) => data.metaData.activated == true) // for current Chart, only use data if Company ID matches dataset in store
+        .map((data) => data.chartData), // use chartData part of object
+    }))
+
+    const chartMode = computed(() => {
+      return chartType.value
+    })
 
     onMounted(async () => {
       const setValues = await getDataPoints(props.companyId, false)
@@ -101,11 +122,13 @@ export default defineComponent({
 
     return {
       chartData,
+      chartDataDaily,
       options,
       orderList,
       getDataPoints,
       chartRef,
       dataSetsRef,
+      chartMode,
     }
   },
   created() {
@@ -134,6 +157,9 @@ export default defineComponent({
       this.hasAccess = monthAccess.data.map((data) => data.datasetId)
       this.$store.dispatch('credits/fetchBalance')
       this.fetchedUserAceesData = true
+    },
+    toggleView(chartType) {
+      this.$store.dispatch('selectedDataSets/updateChartMode', chartType)
     },
   },
 })

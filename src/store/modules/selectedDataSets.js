@@ -1,14 +1,14 @@
 export const namespaced = true // ie user/[action]
 import dayjs from 'dayjs'
 import axios from 'axios'
-import Vue from 'vue'
 
 export const state = () => ({
   currentDataSets: [],
+  currentDailyDataSets: [],
   shadowDataSets: [],
   selectedDateIDs: [],
   datasetCart: [],
-  chartMode: 'monthly',
+  chartMode: ['chartDataMonthly'],
 })
 
 export const getters = {
@@ -50,6 +50,10 @@ export const mutations = {
     }
   },
 
+  PUSH_DAILY_DATASET(state, dataset) {
+    state.currentDailyDataSets.push(dataset)
+  },
+
   CLEAR_DATASET(state) {
     // Vue.set(state, 'currentDataSets', [])
     state.currentDataSets.splice(0, state.currentDataSets.length)
@@ -72,7 +76,8 @@ export const mutations = {
     state.datasetCart = []
   },
   UPDATE_CHART_MODE(state, payload) {
-    state.chartMode = payload
+    state.chartMode.shift()
+    state.chartMode.push(payload)
   },
 }
 
@@ -105,6 +110,9 @@ export const actions = {
   clearDataset({ commit }) {
     commit('CLEAR_DATASET')
   },
+  updateChartMode({ commit }, chartType) {
+    commit('UPDATE_CHART_MODE', chartType)
+  },
 
   async getAndStoreDataSet({ commit, state }, payload) {
     // Push to dataset
@@ -128,7 +136,7 @@ export const actions = {
 
       const chartDataObjectDaily = {
         label: dayjs(dataMonth).format('MM/YYYY'),
-        data: plotData,
+        data: plotData, // push plotData
         stepped: true,
         backgroundColor: ['rgba(255,255,255, 0.2  )'],
         borderColor: ['rgba(50,50,50)'],
@@ -152,6 +160,8 @@ export const actions = {
         chartDataMonthly: chartDataObjectMonthly,
         metaData: metaData,
       }
+
+      commit('PUSH_DAILY_DATASET', fullChartData) // do shadow and then push final once monthly
 
       // We compile the ChartData full array in the shadowDataSet first,
       // Then send that up as a completed array to the live currentDataSets
@@ -185,7 +195,7 @@ export const actions = {
         gradient.addColorStop(1, 'rgba(255,255,255,.8)')
 
         let allData = {
-          chartData: { id: chartDataObjectDaily.id },
+          chartData: chartDataObjectDaily,
           chartDataMonthly: {
             type: 'line',
             data: flattenedPlotData,
@@ -195,7 +205,6 @@ export const actions = {
           },
           metaData: metaData,
         }
-
         commit('SWAP_DATASET', allData)
       }
     }
