@@ -6,6 +6,7 @@ export const state = () => ({
   currentDataSets: [],
   currentDailyDataSets: [],
   shadowDataSets: [],
+  shadowDailyDataSets: [],
   selectedDateIDs: [],
   datasetCart: [],
   chartMode: ['chartDataMonthly'],
@@ -161,7 +162,7 @@ export const actions = {
         metaData: metaData,
       }
 
-      commit('PUSH_DAILY_DATASET', fullChartData) // do shadow and then push final once monthly
+      commit('PUSH_DAILY_DATASET', plotData) // do shadow and then push final once monthly
 
       // We compile the ChartData full array in the shadowDataSet first,
       // Then send that up as a completed array to the live currentDataSets
@@ -188,6 +189,34 @@ export const actions = {
           return data.chartDataMonthly.data[0]
         })
 
+        let allDaily = []
+        sorted.forEach((data) => {
+          console.log('well?', data)
+          allDaily.push(data.chartData.data)
+        })
+
+        let flattenedDaily = allDaily.reduce(function (a, b) {
+          return a.concat(b)
+        })
+
+        console.log(allDaily)
+        console.log(flattenedDaily)
+
+        const chartDataObjectDailyFinal = {
+          label: dayjs(dataMonth).format('MM/YYYY'),
+          data: flattenedDaily, // push plotData
+          stepped: true,
+          backgroundColor: ['rgba(255,255,255, 0.2  )'],
+          borderColor: ['rgba(50,50,50)'],
+          borderWidth: 2,
+          borderCapStyle: 'round',
+          fill: true,
+          id: id,
+        }
+
+        console.log('allDaily?', chartDataObjectDailyFinal)
+        console.log('or', chartDataObjectDaily)
+
         var canvas = document.getElementById('line-chart')
         var ctx = canvas.getContext('2d')
         var gradient = ctx.createLinearGradient(0, 0, 0, 300) // value at the end alters height of gradient
@@ -195,7 +224,7 @@ export const actions = {
         gradient.addColorStop(1, 'rgba(255,255,255,.8)')
 
         let allData = {
-          chartData: chartDataObjectDaily,
+          chartData: chartDataObjectDailyFinal,
           chartDataMonthly: {
             type: 'line',
             data: flattenedPlotData,
