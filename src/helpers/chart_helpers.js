@@ -1,34 +1,31 @@
 const defaultChartOptions = {
-  elements: {
-    point: {
-      pointStyle: 'dash',
-      borderWidth: 0,
-    },
-  },
   scales: {
     y: {
-      ticks: {
-        beginAtZero: true,
-      },
+      // ticks: {
+      //   beginAtZero: true,
+      // },
       type: 'linear',
     },
 
     x: {
-      type: 'time',
+      type: 'timeseries',
       distribution: 'linear',
       time: {
         unit: 'month',
         stepSize: '1',
       },
       ticks: {
+        alignment: 'center',
+        source: 'data',
         maxRotation: 45,
-        minRotation: 45, // stops jumping on mobile if always set
+        minRotation: 45,
       },
       gridLines: {
         display: false,
+        tickMarkLength: 15,
       },
       time: {
-        minUnit: 'day',
+        minUnit: 'month',
       },
     },
   },
@@ -68,6 +65,7 @@ const defaultChartOptions = {
       },
     },
   },
+  clip: false,
 }
 
 module.exports = { defaultChartOptions: defaultChartOptions }

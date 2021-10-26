@@ -193,26 +193,28 @@ export const actions = {
         console.log(allDaily)
         console.log(flattenedDaily)
 
-        const chartDataObjectDailyFinal = {
-          label: dayjs(dataMonth).format('MM/YYYY'),
-          data: flattenedDaily, // push plotData
-          stepped: true,
-          backgroundColor: ['rgba(255,255,255, 0.2  )'],
-          borderColor: ['rgba(50,50,50)'],
-          borderWidth: 2,
-          borderCapStyle: 'round',
-          fill: true,
-          id: id,
-        }
-
-        console.log('allDaily?', chartDataObjectDailyFinal)
-        console.log('or', chartDataObjectDaily)
-
         var canvas = document.getElementById('line-chart')
         var ctx = canvas.getContext('2d')
         var gradient = ctx.createLinearGradient(0, 0, 0, 300) // value at the end alters height of gradient
         gradient.addColorStop(0, 'rgba(5,118,156,.5)')
         gradient.addColorStop(1, 'rgba(255,255,255,.8)')
+
+        const chartDataObjectDailyFinal = {
+          label: dayjs(dataMonth).format('MM/YYYY'),
+          data: flattenedDaily, // push plotData
+          stepped: true,
+          backgroundColor: ['rgba(255,255,255, 0.2  )'],
+          borderColor: '#05769C',
+          borderWidth: 2,
+          borderCapStyle: 'butt',
+          fill: true,
+          backgroundColor: gradient,
+          id: id,
+          pointStyle: 'dash',
+        }
+
+        console.log('allDaily?', chartDataObjectDailyFinal)
+        console.log('or', chartDataObjectDaily)
 
         let allData = {
           chartData: chartDataObjectDailyFinal,
