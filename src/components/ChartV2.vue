@@ -13,17 +13,18 @@
       />
       <div v-else>Loading chart..</div>
       <div class="scroll-enabler-mobile">
-        <!-- this area is just to enable scroll from underneath the chart -->
+        <!-- this area is just to enable user to scroll from underneath the chart -->
       </div>
+    </div>
+    <div class="chart-type-selectors">
+      <button @click="toggleView('chartDataMonthly')">Monthly</button>
+      <button @click="toggleView('chartData')">Daily</button>
     </div>
     <TimeFrameSelector
       v-if="fetchedUserAceesData"
       :hasAccess="hasAccess"
       @data-subscribed="getAccessibleDatasets()"
     />
-    {{ chartMode }}
-    <button @click="toggleView('chartData')">Daily</button>
-    <button @click="toggleView('chartDataMonthly')">Monthly</button>
   </div>
 </template>
 
@@ -104,6 +105,7 @@ export default defineComponent({
     })
 
     onMounted(async () => {
+      console.log('yo')
       const setValues = await getDataPoints(props.companyId, false)
       orderList.value = setValues.data
     })
@@ -204,6 +206,16 @@ button {
     width: 100%;
     height: 70px;
     bottom: 0;
+  }
+}
+
+.chart-type-selectors {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+
+  > button {
+    max-width: 100px;
   }
 }
 
