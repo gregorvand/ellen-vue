@@ -4,7 +4,6 @@ import axios from 'axios'
 
 export const state = () => ({
   currentDataSets: [],
-  currentDailyDataSets: [],
   shadowDataSets: [],
   shadowDailyDataSets: [],
   selectedDateIDs: [],
@@ -51,12 +50,7 @@ export const mutations = {
     }
   },
 
-  PUSH_DAILY_DATASET(state, dataset) {
-    state.currentDailyDataSets.push(dataset)
-  },
-
   CLEAR_DATASET(state) {
-    // Vue.set(state, 'currentDataSets', [])
     state.currentDataSets.splice(0, state.currentDataSets.length)
   },
 
@@ -142,7 +136,6 @@ export const actions = {
         backgroundColor: ['rgba(255,255,255, 0.2  )'],
         borderColor: ['rgba(50,50,50)'],
         borderWidth: 2,
-        borderCapStyle: 'round',
         fill: true,
         id: id,
       }
@@ -161,8 +154,6 @@ export const actions = {
         chartDataMonthly: chartDataObjectMonthly,
         metaData: metaData,
       }
-
-      commit('PUSH_DAILY_DATASET', plotData) // do shadow and then push final once monthly
 
       // We compile the ChartData full array in the shadowDataSet first,
       // Then send that up as a completed array to the live currentDataSets
