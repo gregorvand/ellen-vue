@@ -310,7 +310,6 @@ ul.year-select {
   display: flex;
   width: 100%;
   overflow: hidden;
-  pointer-events: none; //TODO: remove when abiltiy to toggle months reinstated
 }
 
 .months-available-wrapper {
@@ -320,7 +319,6 @@ ul.year-select {
   width: 100%;
   overflow-x: scroll;
   overflow-y: hidden;
-  // border: solid black thin;
   align-items: center;
   transform: translateY(0);
 
@@ -339,6 +337,14 @@ ul.year-select {
     color: $color-ellen-dark;
     width: 100%;
     display: flex;
+  }
+
+  //TODO: remove both below when abiltiy to toggle months reinstated
+  // This disables being able to click on a DateSelector in Chart view (purchased)
+  // Keeps it clickable for the No Access modal
+  pointer-events: none;
+  .chart-unavailable & {
+    pointer-events: auto;
   }
 }
 
