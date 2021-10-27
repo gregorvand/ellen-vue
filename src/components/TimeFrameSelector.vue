@@ -22,7 +22,7 @@
       <div class="chart-timeframe-selector">
         <div
           v-if="monthsAvailable[0] != 'loading'"
-          class="months-available-wrapper"
+          class="months-available-wrapper block-click-events"
           :class="{ active: monthsAvailable.length > 0 }"
         >
           <DateSelector
@@ -337,14 +337,6 @@ ul.year-select {
     color: $color-ellen-dark;
     width: 100%;
     display: flex;
-  }
-
-  //TODO: remove both below when abiltiy to toggle months reinstated
-  // This disables being able to click on a DateSelector in Chart view (purchased)
-  // Keeps it clickable for the No Access modal
-  pointer-events: none;
-  .chart-unavailable & {
-    pointer-events: auto;
   }
 }
 

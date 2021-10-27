@@ -29,6 +29,10 @@ $global-max-width: 1024px;
   width: 100%;
 }
 
+.block-click-events {
+  pointer-events: none;
+}
+
 .no-padding {
   padding: 0 5px;
 
