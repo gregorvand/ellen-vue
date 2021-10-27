@@ -1,9 +1,11 @@
 export const namespaced = true // ie user/[action]
 import dayjs from 'dayjs'
 import axios from 'axios'
+import JSum from 'jsum'
 
 export const state = () => ({
-  currentDataSets: [],
+  allCurrentDataSets: [],
+  currentActiveDataSets: [],
   shadowDataSets: [],
   shadowDailyDataSets: [],
   selectedDateIDs: [],
@@ -21,11 +23,18 @@ export const getters = {
   },
 
   currentActiveDataSets(state) {
-    return state.currentDataSets
+    return state.currentActiveDataSets
+  },
+
+  allCurrentDataSets(state) {
+    return state.allCurrentDataSets
   },
 }
 
 export const mutations = {
+  PUSH_DATASET(state, dataset) {
+    state.allCurrentDataSets.push(dataset)
+  },
   PUSH_DATE(state, dateId) {
     state.selectedDateIDs.push(dateId)
   },
@@ -35,24 +44,25 @@ export const mutations = {
     )
   },
   DEACTIVATE_DATESET(state, dateId) {
-    const selectedSet = state.currentDataSets.find(
+    const selectedSet = state.allCurrentDataSets.find(
       (dataSet) => dataSet.chartData.id == dateId
     )
     selectedSet.metaData.activated = false
   },
   SWAP_DATASET(state, dataset) {
     // below needed to entirely replace the array and maintain reactivity
-    if (state.currentDataSets.length > 0) {
-      state.currentDataSets.shift()
-      state.currentDataSets.push(dataset)
+    const datasets = state.currentActiveDataSets
+    if (datasets.length > 0) {
+      datasets.shift()
+      datasets.push(dataset)
     } else {
-      state.currentDataSets.push(dataset)
+      datasets.push(dataset)
     }
   },
 
-  CLEAR_DATASET(state) {
-    state.currentDataSets.splice(0, state.currentDataSets.length)
-  },
+  // CLEAR_DATASET(state) {
+  //   state.currentActiveDataSets.splice(0, state.currentDataSets.length)
+  // },
 
   SWAP_SHADOW_DATASET(state, dataset) {
     state.shadowDataSets.push(dataset)
@@ -117,7 +127,7 @@ export const actions = {
     const date2 = dayjs(date1).endOf('month').toISOString()
 
     // check if we already have this dataset in the store using payload.id
-    const checkDatasetExists = state.currentDataSets.find(
+    const checkDatasetExists = state.allCurrentDataSets.find(
       (dataset) => dataset.chartData.id == id
     )
     if (checkDatasetExists) {
@@ -160,6 +170,7 @@ export const actions = {
       // So that we can sort all of the dates into date order first, and
       // it gives a nicer render than populating the chart sporadically with each dataset
       commit('SWAP_SHADOW_DATASET', fullChartData)
+      commit('PUSH_DATASET', fullChartData)
 
       if (state.shadowDataSets.length === state.selectedDateIDs.length) {
         // filter our shadow set for just the current view's company
@@ -182,7 +193,6 @@ export const actions = {
 
         let allDaily = []
         sorted.forEach((data) => {
-          console.log('well?', data)
           allDaily.push(data.chartData.data)
         })
 
@@ -190,14 +200,18 @@ export const actions = {
           return a.concat(b)
         })
 
-        console.log(allDaily)
-        console.log(flattenedDaily)
-
         var canvas = document.getElementById('line-chart')
         var ctx = canvas.getContext('2d')
         var gradient = ctx.createLinearGradient(0, 0, 0, 300) // value at the end alters height of gradient
         gradient.addColorStop(0, 'rgba(5,118,156,.5)')
         gradient.addColorStop(1, 'rgba(255,255,255,.8)')
+
+        // create a checksum-like string from the data object
+        // currently not used for a purpose, but a unique ID based on the
+        // the dataset content could be useful for future
+        const dataClone = Array.from(state.selectedDateIDs)
+        let checksum = JSum.digest(dataClone, 'SHA256', 'hex')
+        console.log(checksum)
 
         const chartDataObjectDailyFinal = {
           label: dayjs(dataMonth).format('MM/YYYY'),
@@ -209,12 +223,9 @@ export const actions = {
           borderCapStyle: 'butt',
           fill: true,
           backgroundColor: gradient,
-          id: id,
+          id: checksum,
           pointStyle: 'dash',
         }
-
-        console.log('allDaily?', chartDataObjectDailyFinal)
-        console.log('or', chartDataObjectDaily)
 
         let allData = {
           chartData: chartDataObjectDailyFinal,
@@ -227,6 +238,8 @@ export const actions = {
           },
           metaData: metaData,
         }
+
+        console.log(flattenedPlotData)
         commit('SWAP_DATASET', allData)
       }
     }

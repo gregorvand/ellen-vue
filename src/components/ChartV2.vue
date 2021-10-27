@@ -80,7 +80,7 @@ export default defineComponent({
     }
   },
   computed: {
-    ...mapState('selectedDataSets', ['currentDataSets']),
+    ...mapState('selectedDataSets', ['currentActiveDataSets']),
   },
 
   setup(props) {
@@ -88,7 +88,7 @@ export default defineComponent({
     const orderList = ref([]) // vue3 construct reactive var
     const chartRef = ref()
     const dataSetsRef = ref([])
-    dataSetsRef.value = store.state.selectedDataSets.currentDataSets
+    dataSetsRef.value = store.state.selectedDataSets.currentActiveDataSets
     const chartType = ref()
     chartType.value = store.state.selectedDataSets.chartMode
 
@@ -105,7 +105,6 @@ export default defineComponent({
     })
 
     onMounted(async () => {
-      console.log('yo')
       const setValues = await getDataPoints(props.companyId, false)
       orderList.value = setValues.data
     })
