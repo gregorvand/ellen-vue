@@ -18,7 +18,7 @@
       </li>
     </ul>
     <div class="container no-padding" v-if="hasAccess.length > 0">
-      <h3>View purchased months</h3>
+      <h3>Months presented on chart</h3>
       <div class="chart-timeframe-selector">
         <div
           v-if="monthsAvailable[0] != 'loading'"
@@ -58,6 +58,10 @@
 
         <span class="data-not-available" v-if="monthsAvailable.length == 0"
           >No data for this year available</span
+        >
+
+        <span class="data-not-available" v-if="monthsAvailable.length > 0 && lockedMonths.length == 0"
+          >You have access to all available data for this year</span
         >
       </div>
       <div v-else class="months-available-wrapper">
@@ -146,11 +150,10 @@ export default {
     this.$store.dispatch('selectedDataSets/clearDatasetCart')
   },
   methods: {
-    async getAvailableDates(year = dayjs('1/1/2020').year()) {
+    async getAvailableDates(year = dayjs('1/1/2021').year()) {
       this.$store.dispatch('selectedDataSets/clearDatasetCart')
       const currentCompanyId =
         this.$route.params.id || this.$store.getters['company/getCompanyId']
-      // TODO: remove 2020 after dev
       this.monthsAvailable = ['loading'] // clear month UI
       this.selectedYear = year
 
@@ -305,6 +308,7 @@ ul.year-select {
   display: flex;
   width: 100%;
   overflow: hidden;
+  pointer-events: none; //TODO: remove when abiltiy to toggle months reinstated 
 }
 
 .months-available-wrapper {

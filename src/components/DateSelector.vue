@@ -114,9 +114,9 @@ export default {
     // filter them down to those that are 'active' already and load accessible months
     // not already active
     async loadCurrentDatasets() {
-      const currentData =
-        this.$store.getters['selectedDataSets/currentActiveDataSets']
-      const filteredActive = currentData.filter(
+      const allCurrentDataSets =
+        this.$store.getters['selectedDataSets/allCurrentDataSets']
+      const filteredActive = allCurrentDataSets.filter(
         (data) => data.metaData.activated == true
       )
       const activeDatasetIds = filteredActive.map((data) => data.chartData.id)
@@ -234,7 +234,7 @@ export default {
 
   input:checked + label {
     color: $color-ellen-brand-dark;
-    border: solid $color-ellen-dark 2px;
+    // border: solid $color-ellen-dark 2px;
   }
 }
 </style>

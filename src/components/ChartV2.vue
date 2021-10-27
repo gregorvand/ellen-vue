@@ -11,10 +11,14 @@
         :options="options"
         :class="'ellen-chart'"
       />
-      <div v-else>Loading chart..</div>
+      <div class="chart-loading-frame" v-else><BaseLoadingSpinner /></div>
       <div class="scroll-enabler-mobile">
-        <!-- this area is just to enable scroll from underneath the chart -->
+        <!-- this area is just to enable user to scroll from underneath the chart -->
       </div>
+    </div>
+    <div class="chart-type-selectors">
+      <button @click="toggleView('chartDataMonthly')">Monthly</button>
+      <button @click="toggleView('chartData')">Daily</button>
     </div>
     <TimeFrameSelector
       v-if="fetchedUserAceesData"
@@ -62,6 +66,9 @@ export default defineComponent({
     earliestDate: {
       type: String,
     },
+    chartView: {
+      type: String,
+    },
   },
   data: () => {
     return {
@@ -73,7 +80,7 @@ export default defineComponent({
     }
   },
   computed: {
-    ...mapState('selectedDataSets', ['currentDataSets']),
+    ...mapState('selectedDataSets', ['currentActiveDataSets']),
   },
 
   setup(props) {
@@ -81,15 +88,21 @@ export default defineComponent({
     const orderList = ref([]) // vue3 construct reactive var
     const chartRef = ref()
     const dataSetsRef = ref([])
-    dataSetsRef.value = store.state.selectedDataSets.currentDataSets
+    dataSetsRef.value = store.state.selectedDataSets.currentActiveDataSets
+    const chartType = ref()
+    chartType.value = store.state.selectedDataSets.chartMode
 
     // SETUP data and options
     const chartData = computed(() => ({
       datasets: dataSetsRef.value
         .filter((data) => data.metaData.companyId == props.companyId)
         .filter((data) => data.metaData.activated == true) // for current Chart, only use data if Company ID matches dataset in store
-        .map((data) => data.chartData), // use chartData part of object
+        .map((data) => data[chartType.value[0]]), // use chartData part of object
     }))
+
+    const chartMode = computed(() => {
+      return chartType.value
+    })
 
     onMounted(async () => {
       const setValues = await getDataPoints(props.companyId, false)
@@ -106,6 +119,7 @@ export default defineComponent({
       getDataPoints,
       chartRef,
       dataSetsRef,
+      chartMode,
     }
   },
   created() {
@@ -134,6 +148,9 @@ export default defineComponent({
       this.hasAccess = monthAccess.data.map((data) => data.datasetId)
       this.$store.dispatch('credits/fetchBalance')
       this.fetchedUserAceesData = true
+    },
+    toggleView(chartType) {
+      this.$store.dispatch('selectedDataSets/updateChartMode', chartType)
     },
   },
 })
@@ -174,6 +191,16 @@ async function getDataPoints(companyId, months) {
   }
 }
 
+.chart-loading-frame {
+  height: 400px;
+  widows: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin: 0 auto;
+}
+
 button {
   margin: 10px;
   padding: 20px;
@@ -188,6 +215,16 @@ button {
     width: 100%;
     height: 70px;
     bottom: 0;
+  }
+}
+
+.chart-type-selectors {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+
+  > button {
+    max-width: 100px;
   }
 }
 
