@@ -338,14 +338,6 @@ ul.year-select {
     width: 100%;
     display: flex;
   }
-
-  //TODO: remove both below when abiltiy to toggle months reinstated
-  // This disables being able to click on a DateSelector in Chart view (purchased)
-  // Keeps it clickable for the No Access modal
-  pointer-events: none;
-  .chart-unavailable & {
-    pointer-events: auto;
-  }
 }
 
 .purchase-controls {
