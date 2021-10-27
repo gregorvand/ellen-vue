@@ -211,7 +211,6 @@ export const actions = {
         // the dataset content could be useful for future
         const dataClone = Array.from(state.selectedDateIDs)
         let checksum = JSum.digest(dataClone, 'SHA256', 'hex')
-        console.log(checksum)
 
         const chartDataObjectDailyFinal = {
           label: dayjs(dataMonth).format('MM/YYYY'),
@@ -239,7 +238,6 @@ export const actions = {
           metaData: metaData,
         }
 
-        console.log(flattenedPlotData)
         commit('SWAP_DATASET', allData)
       }
     }

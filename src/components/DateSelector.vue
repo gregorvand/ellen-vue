@@ -234,7 +234,7 @@ export default {
 
   input:checked + label {
     color: $color-ellen-brand-dark;
-    border: solid $color-ellen-dark 2px;
+    // border: solid $color-ellen-dark 2px;
   }
 }
 </style>

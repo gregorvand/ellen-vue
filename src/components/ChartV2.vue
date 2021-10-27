@@ -11,7 +11,7 @@
         :options="options"
         :class="'ellen-chart'"
       />
-      <div v-else>Loading chart..</div>
+      <div class="chart-loading-frame" v-else><BaseLoadingSpinner /></div>
       <div class="scroll-enabler-mobile">
         <!-- this area is just to enable user to scroll from underneath the chart -->
       </div>
@@ -189,6 +189,16 @@ async function getDataPoints(companyId, months) {
       opacity: 0.2;
     }
   }
+}
+
+.chart-loading-frame {
+  height: 400px;
+  widows: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin: 0 auto;
 }
 
 button {
