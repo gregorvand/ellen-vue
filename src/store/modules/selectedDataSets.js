@@ -60,10 +60,6 @@ export const mutations = {
     }
   },
 
-  // CLEAR_DATASET(state) {
-  //   state.currentActiveDataSets.splice(0, state.currentDataSets.length)
-  // },
-
   SWAP_SHADOW_DATASET(state, dataset) {
     state.shadowDataSets.push(dataset)
   },
@@ -111,9 +107,6 @@ export const actions = {
   },
   clearDatasetCart({ commit }) {
     commit('CLEAR_CART')
-  },
-  clearDataset({ commit }) {
-    commit('CLEAR_DATASET')
   },
   updateChartMode({ commit }, chartType) {
     commit('UPDATE_CHART_MODE', chartType)
