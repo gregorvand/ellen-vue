@@ -1,9 +1,9 @@
 const defaultChartOptions = {
   scales: {
     y: {
-      // ticks: {
-      //   beginAtZero: true,
-      // },
+      ticks: {
+        beginAtZero: true,
+      },
       type: 'linear',
     },
 
@@ -54,9 +54,7 @@ const defaultChartOptions = {
         pinch: {
           enabled: true,
         },
-        // drag: {
-        //   enabled: true,
-        // },
+
         mode: 'x',
       },
       limits: {
@@ -65,7 +63,6 @@ const defaultChartOptions = {
       },
     },
   },
-  clip: false,
 }
 
 module.exports = { defaultChartOptions: defaultChartOptions }
