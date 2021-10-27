@@ -22,7 +22,7 @@
       <div class="chart-timeframe-selector">
         <div
           v-if="monthsAvailable[0] != 'loading'"
-          class="months-available-wrapper"
+          class="months-available-wrapper block-click-events"
           :class="{ active: monthsAvailable.length > 0 }"
         >
           <DateSelector
