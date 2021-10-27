@@ -60,7 +60,9 @@
           >No data for this year available</span
         >
 
-        <span class="data-not-available" v-if="monthsAvailable.length > 0 && lockedMonths.length == 0"
+        <span
+          class="data-not-available"
+          v-if="monthsAvailable.length > 0 && lockedMonths.length == 0"
           >You have access to all available data for this year</span
         >
       </div>
@@ -308,7 +310,7 @@ ul.year-select {
   display: flex;
   width: 100%;
   overflow: hidden;
-  pointer-events: none; //TODO: remove when abiltiy to toggle months reinstated 
+  pointer-events: none; //TODO: remove when abiltiy to toggle months reinstated
 }
 
 .months-available-wrapper {
