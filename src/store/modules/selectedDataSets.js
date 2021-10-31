@@ -130,10 +130,10 @@ export const actions = {
       const dataset = await getDataPoints(company, date1, date2)
       const plotData = dataset.data.daily
       const plotDataMonthly = dataset.data.monthly
-      const dataMonth = dayjs(plotData[plotData.length - 1].x) // determine month/yr for label from final datapoint
+      const dataMonth = dayjs(plotData[dataset.data.daily.length - 1].x) // determine month/yr for label from final datapoint
 
       const chartDataObjectDaily = {
-        label: dayjs(dataMonth).format('MM/YYYY'),
+        label: dataMonth.format('MM/YYYY'),
         data: plotData, // push plotData
         stepped: true,
         backgroundColor: ['rgba(255,255,255, 0.2  )'],
@@ -206,7 +206,7 @@ export const actions = {
         let checksum = JSum.digest(dataClone, 'SHA256', 'hex')
 
         const chartDataObjectDailyFinal = {
-          label: dayjs(dataMonth).format('MM/YYYY'),
+          label: dataMonth.format('MM/YYYY'),
           data: flattenedDaily, // push plotData
           stepped: true,
           backgroundColor: ['rgba(255,255,255, 0.2  )'],

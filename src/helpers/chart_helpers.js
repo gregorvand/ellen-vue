@@ -1,9 +1,7 @@
 const defaultChartOptions = {
   scales: {
     y: {
-      ticks: {
-        beginAtZero: true,
-      },
+      beginAtZero: true,
       type: 'linear',
     },
 

@@ -5,13 +5,14 @@
       :class="{ 'chart-unavailable': hasAccess.length == 0 }"
     >
       <LineChart
-        v-if="orderList.length > 0"
         ref="chartRef"
         :chartData="chartData"
         :options="options"
         :class="'ellen-chart'"
       />
-      <div class="chart-loading-frame" v-else><BaseLoadingSpinner /></div>
+      <div class="chart-loading-frame" v-if="dataSetsRef.length > 1">
+        <BaseLoadingSpinner />
+      </div>
       <div class="scroll-enabler-mobile">
         <!-- this area is just to enable user to scroll from underneath the chart -->
       </div>
@@ -104,11 +105,6 @@ export default defineComponent({
       return chartType.value
     })
 
-    onMounted(async () => {
-      const setValues = await getDataPoints(props.companyId, false)
-      orderList.value = setValues.data
-    })
-
     // set up chart type from our default options
     const options = defaultChartOptions
 
@@ -116,7 +112,6 @@ export default defineComponent({
       chartData,
       options,
       orderList,
-      getDataPoints,
       chartRef,
       dataSetsRef,
       chartMode,
@@ -154,17 +149,6 @@ export default defineComponent({
     },
   },
 })
-
-async function getDataPoints(companyId, months) {
-  return await axios({
-    method: 'post',
-    url: `${process.env.VUE_APP_API_URL}/api/companies/orders`,
-    data: {
-      companyId: companyId,
-      lookbackMonths: months,
-    },
-  })
-}
 </script>
 
 <style scoped lang="scss">
