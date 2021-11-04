@@ -28,6 +28,7 @@
 // - If user purchases new access, re-run first command
 // - Start with years being toggled rather than added (and cached)
 // - Move to joining years
+
 import {
   defineComponent,
   ref,
@@ -97,6 +98,8 @@ export default defineComponent({
     const chartData = computed(() => ({
       datasets: [
         {
+          borderColor: '#05769C',
+          fill: true,
           data: dataSetsRef.value
             .filter((data) => data.company == props.companyId)
             .map((data) => data.monthly)
@@ -136,7 +139,7 @@ export default defineComponent({
         url: `${process.env.VUE_APP_API_URL}/api/dataset-year-company-v2`,
         params: {
           companyId: this.companyId,
-          year: '2021',
+          year: '2020',
         },
       })
       console.log(monthAccess)
