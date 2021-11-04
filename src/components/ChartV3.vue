@@ -16,6 +16,11 @@
       <button @click="toggleView('chartDataMonthly')">Monthly</button>
       <button @click="toggleView('chartData')">Daily</button>
     </div>
+    <TimeFrameSelector
+      v-if="fetchedUserAccessData"
+      :hasAccess="hasAccess"
+      @data-subscribed="getAccessibleDatasets"
+    />
 
     {{ chartData }}
   </div>
@@ -36,23 +41,22 @@ import {
   inject,
   computed,
 } from '@vue/composition-api'
-// import { mapState } from 'vuex'
 import { LineChart } from 'vue-chart-3'
 import { Chart, registerables } from 'chart.js'
 import zoomPlugin from 'chartjs-plugin-zoom'
-// import { CrosshairPlugin } from 'chartjs-plugin-crosshair' - iterferes with scroll/pan
 
 import 'chartjs-adapter-date-fns'
-import TimeFrameSelector from './TimeFrameSelector.vue'
+import TimeFrameSelector from './TimeFrameSelectorV2.vue'
 import axios from 'axios'
 import { mapState } from 'vuex'
+import ChartDataService from '../services/ChartDataService'
 
 import { defaultChartOptions } from '../helpers/chart_helpers'
 
 Chart.register(...registerables, zoomPlugin)
 
 export default defineComponent({
-  components: { LineChart },
+  components: { LineChart, TimeFrameSelector },
   props: {
     companyId: {
       required: true,
@@ -79,6 +83,7 @@ export default defineComponent({
       selectedCompanies: [],
       monthsAvailable: [],
       hasAccess: [],
+      fetchedUserAccessData: false,
     }
   },
   computed: {
@@ -132,22 +137,22 @@ export default defineComponent({
   },
 
   methods: {
-    async getAccessibleDatasets() {
-      console.log('email?', this.emailIdentifier)
+    async getAccessibleDatasets(selectedYear = '2021') {
       let monthAccess = await axios({
         method: 'get',
-        url: `${process.env.VUE_APP_API_URL}/api/dataset-year-company-v2`,
+        url: `${process.env.VUE_APP_API_URL}/api/dataset-access/company-by-user`,
         params: {
           companyId: this.companyId,
-          year: '2020',
         },
       })
-      console.log(monthAccess)
-      this.$store.dispatch(
-        'selectedDataSetsV2/getAndStoreDataSet',
-        monthAccess.data
-      )
+      console.log('monthjs?', monthAccess)
+      this.hasAccess = monthAccess.data.map((data) => data.datasetId)
       // this.$store.dispatch('credits/fetchBalance')
+      this.fetchedUserAccessData = true
+
+      if (this.hasAccess.length > 0) {
+        ChartDataService.getChartData(this, this.companyId)
+      }
     },
     toggleView(chartType) {
       this.$store.dispatch('selectedDataSets/updateChartMode', chartType)

@@ -11,12 +11,19 @@ export const getters = {
 
 export const mutations = {
   PUSH_DATASET(state, dataset) {
-    state.currentActiveDataSet.push(dataset)
+    const datasets = state.currentActiveDataSet
+    if (datasets.length > 0) {
+      datasets.shift()
+      datasets.push(dataset)
+    } else {
+      datasets.push(dataset)
+    }
   },
 }
 
 export const actions = {
   async getAndStoreDataSet({ commit, state }, payload) {
+    console.log('happened')
     commit('PUSH_DATASET', payload)
   },
 }
