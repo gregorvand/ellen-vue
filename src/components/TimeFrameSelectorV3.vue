@@ -20,7 +20,7 @@
         <DateLabel
           v-for="accessObject in accessArray"
           :dateID="accessObject.datasetId"
-          :key="`${accessObject.datasetId}`"
+          :key="`${accessObject.id}`"
         />
         <span class="data-not-available" v-if="accessArray.length == 0"
           >No purchased months</span
