@@ -1,7 +1,7 @@
 <template>
   <div
     class="timeframe-selector-wrapper container"
-    :class="{ 'chart-unavailable': accessIDsByCompany.length == 0 }"
+    :class="{ 'chart-unavailable': hasAccess.length == 0 }"
   >
     <h3>View Year</h3>
     <ul class="year-select">

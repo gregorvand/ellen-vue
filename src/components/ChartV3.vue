@@ -12,10 +12,6 @@
         <!-- this area is just to enable user to scroll from underneath the chart -->
       </div>
     </div>
-    <div class="chart-type-selectors">
-      <button @click="toggleView('chartDataMonthly')">Monthly</button>
-      <button @click="toggleView('chartData')">Daily</button>
-    </div>
     <TimeFrameSelectorPurchase :hasAccess="hasAccess" />
 
     {{ chartData }}
