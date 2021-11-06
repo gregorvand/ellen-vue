@@ -16,7 +16,7 @@
       <button @click="toggleView('chartDataMonthly')">Monthly</button>
       <button @click="toggleView('chartData')">Daily</button>
     </div>
-    <TimeFrameSelector :hasAccess="hasAccess" />
+    <TimeFrameSelectorPurchase :hasAccess="hasAccess" />
 
     {{ chartData }}
   </div>
@@ -42,7 +42,8 @@ import { Chart, registerables } from 'chart.js'
 import zoomPlugin from 'chartjs-plugin-zoom'
 
 import 'chartjs-adapter-date-fns'
-import TimeFrameSelector from './TimeFrameSelectorV3.vue'
+// import TimeFrameSelector from './TimeFrameSelectorV3.vue'
+import TimeFrameSelectorPurchase from './TimeFrameSelectorPurchase.vue'
 import axios from 'axios'
 import { mapState } from 'vuex'
 import ChartDataService from '../services/ChartDataService'
@@ -52,7 +53,7 @@ import { defaultChartOptions } from '../helpers/chart_helpers'
 Chart.register(...registerables, zoomPlugin)
 
 export default defineComponent({
-  components: { LineChart, TimeFrameSelector },
+  components: { LineChart, TimeFrameSelectorPurchase },
   props: {
     companyId: {
       required: true,
@@ -133,9 +134,10 @@ export default defineComponent({
   },
 
   methods: {
-    async getAccessibleDatasets(selectedYear = '2021') {
+    async getAccessibleDatasets() {
       ChartDataService.getChartData(this, this.companyId)
     },
+
     toggleView(chartType) {
       this.$store.dispatch('selectedDataSets/updateChartMode', chartType)
     },

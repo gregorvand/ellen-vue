@@ -21,7 +21,7 @@ export const actions = {
       return datasetAccess.datasetId
     })
     const accessObject = {
-      companyId: payload.data[0].companyId,
+      companyId: payload.data[0]?.companyId,
       datasetIds: accessIds,
     }
     console.log(accessObject)
