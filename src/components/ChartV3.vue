@@ -86,26 +86,29 @@ export default defineComponent({
   setup(props) {
     const store = inject('vuex-store')
     const chartRef = ref()
+    const gradRef = ref()
     const dataSetsRef = ref(store.state.selectedDataSetsV2.currentActiveDataSet)
     // SETUP data and options
 
     onMounted(() => {
       console.log(chartRef.value.chartInstance)
       chartRef.value.chartInstance.toBase64Image()
-    })
 
-    var canvas = document.getElementById('line-chart')
-    var ctx = canvas.getContext('2d') // ignore warning: it works
-    var gradient = ctx.createLinearGradient(0, 0, 0, 300) // value at the end alters height of gradient
-    gradient.addColorStop(0, 'rgba(5,118,156,.5)')
-    gradient.addColorStop(1, 'rgba(255,255,255,.8)')
+      var canvas = document.getElementById('line-chart')
+      var ctx = canvas.getContext('2d')
+      var gradient = ctx.createLinearGradient(0, 0, 0, 300) // value at the end alters height of gradient
+      gradient.addColorStop(0, 'rgba(5,118,156,.5)')
+      gradient.addColorStop(1, 'rgba(255,255,255,.8)')
+
+      gradRef.value = gradient
+    })
 
     const chartData = computed(() => ({
       datasets: [
         {
           borderColor: '#05769C',
           fill: true,
-          backgroundColor: gradient,
+          backgroundColor: gradRef.value,
           data: dataSetsRef.value
             .filter((data) => data.company == props.companyId)
             .map((data) => data.monthly)
