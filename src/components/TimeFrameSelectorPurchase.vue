@@ -221,6 +221,7 @@ export default {
           })
           this.$emit('data-subscribed')
           this.getAccess()
+          this.$store.dispatch('credits/fetchBalance')
           this.getAvailableDates(this.selectedYear)
         })
         .catch((error) => {

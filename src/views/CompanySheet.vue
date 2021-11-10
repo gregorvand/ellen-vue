@@ -25,7 +25,6 @@
 </template>
 
 <script>
-// import LineChart from '@/components/ChartV2'
 import LineChart from '@/components/ChartV3'
 
 export default {
