@@ -23,7 +23,6 @@ export const mutations = {
 
 export const actions = {
   async getAndStoreDataSet({ commit, state }, payload) {
-    console.log('happened')
     commit('PUSH_DATASET', payload)
   },
 }

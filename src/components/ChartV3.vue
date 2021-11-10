@@ -91,7 +91,6 @@ export default defineComponent({
     // SETUP data and options
 
     onMounted(() => {
-      console.log(chartRef.value.chartInstance)
       chartRef.value.chartInstance.toBase64Image()
 
       var canvas = document.getElementById('line-chart')

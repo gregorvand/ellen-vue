@@ -95,12 +95,10 @@ export default {
     lockedMonths() {
       const currentCompanyId =
         this.$route.params.id || this.$store.getters['company/getCompanyId']
-      console.log(currentCompanyId)
       let companyDataSets = this.accessIDsByCompany.filter((dataset) => {
         return dataset.companyId == currentCompanyId
       })
 
-      console.log('ok', companyDataSets)
       return (
         this.monthsAvailable.filter(
           (month) =>
@@ -149,14 +147,12 @@ export default {
   },
   methods: {
     async getAvailableDates(year = dayjs('1/1/2021').year()) {
-      console.log('yar?', year)
       this.$store.dispatch('selectedDataSets/clearDatasetCart')
       const currentCompanyId =
         this.$route.params.id || this.$store.getters['company/getCompanyId']
       this.monthsAvailable = ['loading'] // clear month UI
       this.selectedYear = year
 
-      console.log(this.selectedYear)
       ChartDataService.getChartData(this, currentCompanyId, this.selectedYear)
 
       let monthData = await axios({
@@ -186,7 +182,7 @@ export default {
         this.$route.params.id || this.$store.getters['company/getCompanyId']
       ChartDataService.getChartData(this, currentCompanyId, this.selectedYear)
       const access = await ChartDataService.userAccessRecord(currentCompanyId)
-      console.log('tiriti', access)
+
       if (access.data.length > 0) {
         this.$store.dispatch('datasetAccess/storeDatasetAccess', access)
       }

@@ -15,7 +15,7 @@
       </li>
     </ul>
     <div class="container no-padding">
-      <h3>Months presented on chart</h3>
+      <h4>Months presented on chart</h4>
       <div class="chart-timeframe-selector">
         <DateLabel
           v-for="accessObject in accessArray"
@@ -34,6 +34,7 @@
 import DateLabel from './DateLabel.vue'
 import dayjs from 'dayjs'
 import ChartDataService from '../services/ChartDataService'
+import { mapState } from 'vuex'
 
 export default {
   components: { DateLabel },
@@ -58,8 +59,13 @@ export default {
       return this.$route.params.id
     },
     accessArray() {
-      let filtered = this.purchasedMonths.filter((dataset) => {
-        return dataset.datasetId.substr(-4) == this.selectedYear
+      const currentCompanyId =
+        this.$route.params.id || this.$store.getters['company/getCompanyId']
+      let companyDataSets = this.accessIDsByCompany.filter((dataset) => {
+        return dataset.companyId == currentCompanyId
+      })
+      let filtered = companyDataSets[0].datasetIds.filter((dataset) => {
+        return dataset.substr(-4) == this.selectedYear
           ? dataset.datasetId
           : false
       })
@@ -70,6 +76,7 @@ export default {
       })
       return sorted
     },
+    ...mapState('datasetAccess', ['accessIDsByCompany']),
   },
   created() {
     this.getAvailableDates()
@@ -83,7 +90,7 @@ export default {
       this.selectedYear = year
       ChartDataService.getChartData(this, currentCompanyId, this.selectedYear)
       const access = await ChartDataService.userAccessRecord(currentCompanyId)
-      this.purchasedMonths = access.data
+      this.$store.dispatch('datasetAccess/storeDatasetAccess', access)
     },
   },
 }

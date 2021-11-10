@@ -24,7 +24,6 @@ export const actions = {
       companyId: payload.data[0]?.companyId,
       datasetIds: accessIds,
     }
-    console.log(accessObject)
     commit('PUSH_ACCESS', accessObject)
   },
 }
