@@ -13,8 +13,6 @@
       </div>
     </div>
     <TimeFrameSelectorPurchase :hasAccess="hasAccess" />
-
-    {{ chartData }}
   </div>
 </template>
 
