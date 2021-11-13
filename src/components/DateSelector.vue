@@ -52,6 +52,9 @@ export default {
     purchaseMode: {
       type: Boolean,
     },
+    companyId: {
+      type: Number,
+    },
   },
   mounted() {
     // TODO: experimental. Does this lock up the server?
@@ -72,7 +75,7 @@ export default {
   computed: {
     assignID() {
       return dataUtilties.assignDateIdentifier(
-        this.company.currentCompany.id,
+        this.companyId,
         this.dateObject.date
       )
     },

@@ -31,6 +31,7 @@
           :key="`${month.id}`"
           :monthIsAccessble="hasAccess"
           :purchaseMode="true"
+          :companyId="companyId"
         />
 
         <span class="data-not-available" v-if="monthsAvailable.length == 0"
@@ -77,6 +78,12 @@ export default {
   props: {
     purchaseMode: {
       type: Boolean,
+    },
+    emailIdentifier: {
+      type: String,
+    },
+    companyId: {
+      type: Number,
     },
   },
   data: function () {
@@ -153,7 +160,12 @@ export default {
       this.monthsAvailable = ['loading'] // clear month UI
       this.selectedYear = year
 
-      ChartDataService.getChartData(this, currentCompanyId, this.selectedYear)
+      ChartDataService.getChartData(
+        this,
+        currentCompanyId,
+        this.emailIdentifier,
+        this.selectedYear
+      )
 
       let monthData = await axios({
         method: 'post',
@@ -161,6 +173,7 @@ export default {
         data: {
           companyId: currentCompanyId,
           year: year,
+          identifier: this.emailIdentifier,
         },
       })
 
@@ -168,7 +181,7 @@ export default {
         month: aMonth.month,
         count: aMonth.count,
         id: `${dataUtilties.constructDateIdentifier(
-          this.$store.state.company.currentCompany.id,
+          this.companyId,
           aMonth.month - 1,
           this.selectedYear
         )}`,
@@ -180,7 +193,12 @@ export default {
     async getAccess() {
       const currentCompanyId =
         this.$route.params.id || this.$store.getters['company/getCompanyId']
-      ChartDataService.getChartData(this, currentCompanyId, this.selectedYear)
+      ChartDataService.getChartData(
+        this,
+        currentCompanyId,
+        this.emaildentifier,
+        this.selectedYear
+      )
       const access = await ChartDataService.userAccessRecord(currentCompanyId)
 
       if (access.data.length > 0) {
@@ -198,7 +216,7 @@ export default {
         method: 'post',
         url: `${process.env.VUE_APP_API_URL}/api/dataset-access/charge`,
         data: {
-          companyId: this.$store.getters['company/getCompanyId'],
+          companyId: this.companyId,
           datasetIdArray: dataToPurchase,
         },
       })
@@ -206,6 +224,7 @@ export default {
           ChartDataService.getChartData(
             this,
             this.company.currentCompany.id,
+            this.emailIdentifier,
             this.selectedYear
           )
           this.$store.dispatch('selectedDataSets/clearDatasetCart')
