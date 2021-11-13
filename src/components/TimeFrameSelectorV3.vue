@@ -45,6 +45,9 @@ export default {
     purchaseMode: {
       type: Boolean,
     },
+    emailIdentifier: {
+      type: String,
+    },
   },
   data: function () {
     return {
@@ -88,7 +91,7 @@ export default {
         this.$route.params.id || this.$store.getters['company/getCompanyId']
       this.monthsAvailable = ['loading'] // clear month UI
       this.selectedYear = year
-      ChartDataService.getChartData(this, currentCompanyId, this.selectedYear)
+      ChartDataService.getChartData(this, emailIdentifier, this.selectedYear)
       const access = await ChartDataService.userAccessRecord(currentCompanyId)
       this.$store.dispatch('datasetAccess/storeDatasetAccess', access)
     },

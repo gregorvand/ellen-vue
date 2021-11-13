@@ -2,8 +2,10 @@
   <div class="inner-container max-width">
     <div class="container row">
       <div class="company-sheet-name">
-        <h1 v-if="company.nameIdentifier">{{ company.nameIdentifier }}</h1>
-        <h4 v-if="company.emailIdentifier">
+        <h1 v-if="companyObject.data">
+          {{ companyObject.data.nameIdentifier }}
+        </h1>
+        <h4 v-if="companyObject.data !== undefined">
           {{ companyDomain }}
         </h4>
         <h1 v-else><BaseLoadingSpinner /></h1>
@@ -13,36 +15,42 @@
       <div>
         <span class="key-line"></span>
         <!-- v if company is Edison -->
-        <span>Avg orders/day</span>
+        <span>Avg orders/month</span>
       </div>
     </div>
     <LineChart
-      v-if="!company.ticker"
-      :companyId="this.$route.params.id"
-      :companyName="company.nameIdentifier"
+      v-if="companyObject.data !== undefined"
+      :companyObject="companyObject"
     />
   </div>
 </template>
 
 <script>
-// import LineChart from '@/components/ChartV2'
 import LineChart from '@/components/ChartV3'
+import ChartDataService from '../services/ChartDataService'
+// import { computed } from 'vue-demi'
 
 export default {
   name: 'CompanyView',
   components: {
     LineChart,
   },
-
+  data: function () {
+    return {
+      companyObject: {},
+    }
+  },
   beforeCreate() {
-    this.$store.dispatch('company/fetchCompany', this.$route.params.id)
+    ChartDataService.getCompany(this.$route.params.id).then((company) => {
+      this.companyObject = company
+    })
   },
   computed: {
     company() {
       return this.$store.state.company.currentCompany
     },
     companyDomain() {
-      let emailSplit = this.company.emailIdentifier.split('@')
+      let emailSplit = this.companyObject.data.emailIdentifier.split('@')
       return emailSplit[1]
     },
   },

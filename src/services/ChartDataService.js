@@ -1,7 +1,6 @@
 import axios from 'axios'
-import Vue from 'vue'
 export default {
-  async getChartData(component, companyId, selectedYear = '2021') {
+  async getChartData(component, companyId, identifier, selectedYear = '2021') {
     if (companyId !== '' && selectedYear) {
       let initialChartData = await axios({
         method: 'get',
@@ -9,6 +8,7 @@ export default {
         params: {
           companyId: companyId,
           year: selectedYear,
+          identifier: identifier,
         },
       })
       component.$store.dispatch(
@@ -28,5 +28,17 @@ export default {
     })
 
     return userAccessArray
+  },
+
+  async getCompany(companyId) {
+    let indexedCompany = await axios({
+      method: 'get',
+      url: `${process.env.VUE_APP_API_URL}/api/get-company`,
+      params: {
+        id: companyId,
+      },
+    })
+
+    return indexedCompany
   },
 }

@@ -6,13 +6,19 @@
         :chartData="chartData"
         :options="options"
         :class="'ellen-chart'"
+        :emailIdentifier="emailIdentifier"
       />
 
       <div class="scroll-enabler-mobile">
         <!-- this area is just to enable user to scroll from underneath the chart -->
       </div>
     </div>
-    <TimeFrameSelectorPurchase :hasAccess="hasAccess" />
+    <TimeFrameSelectorPurchase
+      v-if="companyObject.data !== undefined"
+      :hasAccess="hasAccess"
+      :emailIdentifier="companyObject.data.emailIdentifier"
+      :companyId="companyObject.data.id"
+    />
   </div>
 </template>
 
@@ -49,9 +55,6 @@ Chart.register(...registerables, zoomPlugin)
 export default defineComponent({
   components: { LineChart, TimeFrameSelectorPurchase },
   props: {
-    companyId: {
-      required: true,
-    },
     companyName: {
       type: String,
     },
@@ -66,6 +69,9 @@ export default defineComponent({
     },
     chartView: {
       type: String,
+    },
+    companyObject: {
+      type: Object,
     },
   },
   data: () => {
@@ -82,6 +88,8 @@ export default defineComponent({
   },
 
   setup(props) {
+    // console.log('cool', props.companyObject)
+    // console.log('yo', this.companyObject.data.emailIdentifier)
     const store = inject('vuex-store')
     const chartRef = ref()
     const gradRef = ref()
@@ -89,8 +97,6 @@ export default defineComponent({
     // SETUP data and options
 
     onMounted(() => {
-      chartRef.value.chartInstance.toBase64Image()
-
       var canvas = document.getElementById('line-chart')
       var ctx = canvas.getContext('2d')
       var gradient = ctx.createLinearGradient(0, 0, 0, 300) // value at the end alters height of gradient
@@ -99,7 +105,6 @@ export default defineComponent({
 
       gradRef.value = gradient
     })
-
     const chartData = computed(() => ({
       datasets: [
         {
@@ -107,7 +112,7 @@ export default defineComponent({
           fill: true,
           backgroundColor: gradRef.value,
           data: dataSetsRef.value
-            .filter((data) => data.company == props.companyId)
+            .filter((data) => data.company == props.companyObject.data.id)
             .map((data) => data.monthly)
             .flat(),
         },
@@ -139,7 +144,11 @@ export default defineComponent({
 
   methods: {
     async getAccessibleDatasets() {
-      ChartDataService.getChartData(this, this.companyId)
+      ChartDataService.getChartData(
+        this,
+        this.companyObject.data.id,
+        this.companyObject.data.emailIdentifier
+      )
     },
 
     toggleView(chartType) {
