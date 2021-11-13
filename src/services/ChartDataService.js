@@ -1,7 +1,6 @@
 import axios from 'axios'
 export default {
   async getChartData(component, companyId, identifier, selectedYear = '2021') {
-    console.log('yep', identifier)
     if (companyId !== '' && selectedYear) {
       let initialChartData = await axios({
         method: 'get',
@@ -32,7 +31,6 @@ export default {
   },
 
   async getCompany(companyId) {
-    console.log('????', companyId)
     let indexedCompany = await axios({
       method: 'get',
       url: `${process.env.VUE_APP_API_URL}/api/get-company`,

@@ -105,7 +105,6 @@ export default defineComponent({
 
       gradRef.value = gradient
     })
-    console.log('hello', props.companyObject) // does not load on page load
     const chartData = computed(() => ({
       datasets: [
         {
@@ -145,7 +144,6 @@ export default defineComponent({
 
   methods: {
     async getAccessibleDatasets() {
-      console.log('no')
       ChartDataService.getChartData(
         this,
         this.companyObject.data.id,
