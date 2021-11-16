@@ -8,7 +8,7 @@
       <li
         v-for="(year, index) in yearsChoice"
         :key="year"
-        @click="getAvailableDates(year)"
+        @click="getAvailableDates(year, true)"
       >
         <span
           class="year-select-link"
@@ -59,7 +59,6 @@
         Not enough credits -
         <router-link :to="{ name: 'dashboard' }">Buy more </router-link>
       </div>
-      {{ chartHasLoaded }}
     </div>
   </div>
 </template>
@@ -86,9 +85,6 @@ export default {
     companyId: {
       type: Number,
     },
-    chartLoaded: {
-      type: Boolean,
-    },
   },
   data: function () {
     return {
@@ -98,9 +94,6 @@ export default {
     }
   },
   computed: {
-    chartHasLoaded() {
-      return this.chartLoadedWatcher(this.chartLoaded)
-    },
     purchasedMonths() {
       return this.monthsAvailable.filter((month) =>
         this.hasAccess.includes(month.id)
@@ -154,31 +147,31 @@ export default {
     ...mapState(['company', ['currentCompany'], 'selectedDataSets']),
     ...mapState('datasetAccess', ['accessIDsByCompany']),
   },
-  watch: {
-    chartLoadedWatcher(loaded) {
-      if (loaded) {
-        this.getAvailableDates()
-      }
-    },
-  },
+
   created() {
     this.getAccess()
     this.$store.dispatch('selectedDataSets/clearDatasetCart')
   },
+  mounted() {
+    this.getAvailableDates()
+  },
   methods: {
-    async getAvailableDates(year = dayjs('1/1/2021').year()) {
+    async getAvailableDates(year = dayjs('1/1/2021').year(), refresh = false) {
       this.$store.dispatch('selectedDataSets/clearDatasetCart')
       const currentCompanyId =
         this.$route.params.id || this.$store.getters['company/getCompanyId']
       this.monthsAvailable = ['loading'] // clear month UI
       this.selectedYear = year
 
-      // ChartDataService.getChartData(
-      //   this,
-      //   currentCompanyId,
-      //   this.emailIdentifier,
-      //   this.selectedYear
-      // )
+      // Vuex state year update
+      // Use this year on Chart get data
+      this.$store
+        .dispatch('selectedDataSetsV2/updateSelectedYear', this.selectedYear)
+        .then(() => {
+          if (refresh) {
+            this.$emit('myEvent')
+          }
+        })
 
       let monthData = await axios({
         method: 'post',
@@ -255,6 +248,12 @@ export default {
           this.getAccess()
           this.$store.dispatch('credits/fetchBalance')
           this.getAvailableDates(this.selectedYear)
+          ChartDataService.getChartData(
+            this,
+            0, //TODO: remove this param?
+            this.emailIdentifier,
+            this.selectedYear
+          )
         })
         .catch((error) => {
           if (error.response.status == 433) {
