@@ -14,11 +14,11 @@
       </div>
     </div>
     <TimeFrameSelectorPurchase
-      v-if="companyObject.data !== undefined"
+      v-if="companyObject.data !== undefined && chartLoaded"
       :hasAccess="hasAccess"
       :emailIdentifier="companyObject.data.emailIdentifier"
       :companyId="companyObject.data.id"
-      :chartLoaded="chartLoaded"
+      @myEvent="getAccessibleDatasets()"
     />
   </div>
 </template>
@@ -86,7 +86,7 @@ export default defineComponent({
     }
   },
   computed: {
-    ...mapState('selectedDataSetsV2', ['currentActiveDataSet']),
+    ...mapState('selectedDataSetsV2', ['currentActiveDataSet', 'currentYear']),
   },
 
   setup(props) {
@@ -95,7 +95,7 @@ export default defineComponent({
     const store = inject('vuex-store')
     const chartRef = ref()
     const gradRef = ref()
-    const dataSetsRef = ref(store.state.selectedDataSetsV2.currentActiveDataSet)
+    const dataSetsRef = ref([])
     // SETUP data and options
 
     onMounted(() => {
@@ -106,6 +106,7 @@ export default defineComponent({
       gradient.addColorStop(1, 'rgba(255,255,255,.8)')
 
       gradRef.value = gradient
+      dataSetsRef.value = store.state.selectedDataSetsV2.currentActiveDataSet
     })
     const chartData = computed(() => ({
       datasets: [
@@ -147,10 +148,12 @@ export default defineComponent({
 
   methods: {
     async getAccessibleDatasets() {
+      // console.log('sending', this.currentYear)
       ChartDataService.getChartData(
         this,
         this.companyObject.data.id,
-        this.companyObject.data.emailIdentifier
+        this.companyObject.data.emailIdentifier,
+        this.currentYear
       )
     },
 
