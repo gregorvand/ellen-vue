@@ -59,6 +59,7 @@
         Not enough credits -
         <router-link :to="{ name: 'dashboard' }">Buy more </router-link>
       </div>
+      {{ chartHasLoaded }}
     </div>
   </div>
 </template>
@@ -85,6 +86,9 @@ export default {
     companyId: {
       type: Number,
     },
+    chartLoaded: {
+      type: Boolean,
+    },
   },
   data: function () {
     return {
@@ -94,6 +98,9 @@ export default {
     }
   },
   computed: {
+    chartHasLoaded() {
+      return this.chartLoadedWatcher(this.chartLoaded)
+    },
     purchasedMonths() {
       return this.monthsAvailable.filter((month) =>
         this.hasAccess.includes(month.id)
@@ -147,9 +154,16 @@ export default {
     ...mapState(['company', ['currentCompany'], 'selectedDataSets']),
     ...mapState('datasetAccess', ['accessIDsByCompany']),
   },
+  watch: {
+    chartLoadedWatcher(loaded) {
+      console.log('happened?')
+      if (loaded) {
+        this.getAvailableDates()
+      }
+    },
+  },
   created() {
     this.getAccess()
-    this.getAvailableDates()
     this.$store.dispatch('selectedDataSets/clearDatasetCart')
   },
   methods: {
@@ -160,12 +174,12 @@ export default {
       this.monthsAvailable = ['loading'] // clear month UI
       this.selectedYear = year
 
-      ChartDataService.getChartData(
-        this,
-        currentCompanyId,
-        this.emailIdentifier,
-        this.selectedYear
-      )
+      // ChartDataService.getChartData(
+      //   this,
+      //   currentCompanyId,
+      //   this.emailIdentifier,
+      //   this.selectedYear
+      // )
 
       let monthData = await axios({
         method: 'post',

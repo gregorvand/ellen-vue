@@ -18,6 +18,7 @@
       :hasAccess="hasAccess"
       :emailIdentifier="companyObject.data.emailIdentifier"
       :companyId="companyObject.data.id"
+      :chartLoaded="chartLoaded"
     />
   </div>
 </template>
@@ -81,6 +82,7 @@ export default defineComponent({
       monthsAvailable: [],
       hasAccess: [],
       fetchedUserAccessData: false,
+      chartLoaded: false,
     }
   },
   computed: {
@@ -137,6 +139,7 @@ export default defineComponent({
       },
     }).then(({ data }) => {
       this.selectedCompanies = data.companies
+      this.chartLoaded = true
     })
     this.getAccessibleDatasets()
     this.$store.dispatch('selectedCompanies/clearCompanySelection') // ideally state becomes saved companies
