@@ -156,7 +156,6 @@ export default {
   },
   watch: {
     chartLoadedWatcher(loaded) {
-      console.log('happened?')
       if (loaded) {
         this.getAvailableDates()
       }
