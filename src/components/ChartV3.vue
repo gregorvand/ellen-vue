@@ -18,7 +18,7 @@
       :hasAccess="hasAccess"
       :emailIdentifier="companyObject.data.emailIdentifier"
       :companyId="companyObject.data.id"
-      @myEvent="getAccessibleDatasets()"
+      @chartUpdateRequired="getAccessibleDatasets()"
     />
   </div>
 </template>
