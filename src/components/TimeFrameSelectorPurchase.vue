@@ -169,7 +169,7 @@ export default {
         .dispatch('selectedDataSetsV2/updateSelectedYear', this.selectedYear)
         .then(() => {
           if (refresh) {
-            this.$emit('myEvent')
+            this.$emit('chartUpdateRequired')
           }
         })
 
@@ -244,16 +244,11 @@ export default {
           this.$store.dispatch('notification/add', notification, {
             root: true,
           })
-          this.$emit('data-subscribed')
+          // this.$emit('data-subscribed')
+          this.$emit('chartUpdateRequired')
           this.getAccess()
           this.$store.dispatch('credits/fetchBalance')
           this.getAvailableDates(this.selectedYear)
-          ChartDataService.getChartData(
-            this,
-            0, //TODO: remove this param?
-            this.emailIdentifier,
-            this.selectedYear
-          )
         })
         .catch((error) => {
           if (error.response.status == 433) {
