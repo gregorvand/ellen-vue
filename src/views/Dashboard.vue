@@ -24,18 +24,7 @@
         <div class="dashboard left inner-container">
           <h2>FOLLOWED PRIVATE COMPANIES</h2>
           <ul class="followed-companies" ref="scrollingEl">
-            <li v-for="company in filteredPrivateCompanies" :key="company.id">
-              <CompanySelector
-                :company="company"
-                v-bind:disableCheckBox="true"
-              />
-            </li>
-          </ul>
-        </div>
-        <div class="dashboard right inner-container">
-          <h2>FOLLOWED PUBLIC COMPANIES</h2>
-          <ul class="followed-companies" ref="scrollingEl">
-            <li v-for="company in filteredPublicCompanies" :key="company.id">
+            <li v-for="company in followedCompanies" :key="company.id">
               <CompanySelector
                 :company="company"
                 v-bind:disableCheckBox="true"
@@ -74,7 +63,7 @@ export default {
   },
   computed: {
     filteredPrivateCompanies() {
-      return this.followedCompanies.filter((company) => !company.ticker)
+      return this.followedCompanies.filter((company) => console.log(company))
     },
     filteredPublicCompanies() {
       return this.followedCompanies.filter((company) => company.ticker)
@@ -157,6 +146,10 @@ export default {
   height: 300px;
   width: 100%;
   padding: 20px 20px 0 0;
+
+  @include breakpoint(large up) {
+    width: 50%;
+  }
 
   .company-selector {
     width: 100%;

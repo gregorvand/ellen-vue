@@ -41,7 +41,7 @@ export const actions = {
 
 export const getters = {
   userFollowsCompany: (state) => (id) => {
-    return state.followedCompanies.find((company) => company.id === id)
+    return state.followedCompanies.find((company) => company.id === id) || false
   },
   userFollowedCompanies: (state) => {
     return state.followedCompanies
