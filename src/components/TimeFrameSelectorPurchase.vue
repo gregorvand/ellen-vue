@@ -139,7 +139,7 @@ export default {
     },
     hasAccess() {
       return this.accessIDsByCompany.filter((dataset) => {
-        console.log(dataset, dataset.emailIdentifier, this.emailIdentifier)
+        // console.log(dataset, dataset.emailIdentifier, this.emailIdentifier)
         return dataset.companyId == this.emailIdentifier
       })
     },
@@ -198,12 +198,12 @@ export default {
     async getAccess() {
       const currentCompanyId =
         this.$route.params.id || this.$store.getters['company/getCompanyId']
-      console.log(
-        'sending2',
-        currentCompanyId,
-        this.emailIdentifier,
-        this.selectedYear
-      )
+      // console.log(
+      //   'sending2',
+      //   currentCompanyId,
+      //   this.emailIdentifier,
+      //   this.selectedYear
+      // )
       ChartDataService.getChartData(
         this,
         currentCompanyId,
@@ -215,10 +215,8 @@ export default {
       )
 
       if (access.data.length > 0) {
-        console.log('did this..')
         this.$store.dispatch('datasetAccess/storeDatasetAccess', access)
       }
-      console.log('accesssss?', access)
       return access
     },
 
