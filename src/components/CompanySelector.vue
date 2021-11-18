@@ -32,8 +32,7 @@
         >
       </div>
       <div class="company-type">
-        <span v-if="!isPublicCompany">Proprietary Insights </span>
-        <span v-else>Earnings alerts charts</span>
+        <span>Proprietary Insights </span>
       </div>
     </div>
     <div class="company-checkbox">
