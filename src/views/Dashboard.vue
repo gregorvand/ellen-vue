@@ -63,7 +63,7 @@ export default {
   },
   computed: {
     filteredPrivateCompanies() {
-      return this.followedCompanies.filter((company) => console.log(company))
+      return this.followedCompanies.filter((company) => company)
     },
     filteredPublicCompanies() {
       return this.followedCompanies.filter((company) => company.ticker)
