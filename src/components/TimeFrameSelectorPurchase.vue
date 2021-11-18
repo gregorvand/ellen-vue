@@ -103,7 +103,7 @@ export default {
       const currentCompanyId =
         this.$route.params.id || this.$store.getters['company/getCompanyId']
       let companyDataSets = this.accessIDsByCompany.filter((dataset) => {
-        return dataset.companyId == currentCompanyId
+        return dataset.companyId == this.emailIdentifier
       })
 
       return (
@@ -138,10 +138,9 @@ export default {
         : false
     },
     hasAccess() {
-      const currentCompanyId =
-        this.$route.params.id || this.$store.getters['company/getCompanyId']
       return this.accessIDsByCompany.filter((dataset) => {
-        return dataset.companyId == currentCompanyId
+        console.log(dataset, dataset.emailIdentifier, this.emailIdentifier)
+        return dataset.companyId == this.emailIdentifier
       })
     },
     ...mapState(['company', ['currentCompany'], 'selectedDataSets']),
@@ -199,17 +198,27 @@ export default {
     async getAccess() {
       const currentCompanyId =
         this.$route.params.id || this.$store.getters['company/getCompanyId']
+      console.log(
+        'sending2',
+        currentCompanyId,
+        this.emailIdentifier,
+        this.selectedYear
+      )
       ChartDataService.getChartData(
         this,
         currentCompanyId,
-        this.emaildentifier,
+        this.emailIdentifier,
         this.selectedYear
       )
-      const access = await ChartDataService.userAccessRecord(currentCompanyId)
+      const access = await ChartDataService.userAccessRecord(
+        this.emailIdentifier
+      )
 
       if (access.data.length > 0) {
+        console.log('did this..')
         this.$store.dispatch('datasetAccess/storeDatasetAccess', access)
       }
+      console.log('accesssss?', access)
       return access
     },
 
@@ -223,6 +232,7 @@ export default {
         url: `${process.env.VUE_APP_API_URL}/api/dataset-access/charge`,
         data: {
           companyId: this.companyId,
+          identifier: this.emailIdentifier,
           datasetIdArray: dataToPurchase,
         },
       })
@@ -248,7 +258,6 @@ export default {
           this.$emit('chartUpdateRequired')
           this.getAccess()
           this.$store.dispatch('credits/fetchBalance')
-          this.getAvailableDates(this.selectedYear)
         })
         .catch((error) => {
           if (error.response.status == 433) {

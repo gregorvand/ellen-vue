@@ -18,12 +18,12 @@ export default {
     }
   },
 
-  async userAccessRecord(companyId) {
+  async userAccessRecord(identifier) {
     let userAccessArray = await axios({
       method: 'get',
       url: `${process.env.VUE_APP_API_URL}/api/dataset-access/company-by-user`,
       params: {
-        companyId: companyId,
+        identifier: identifier,
       },
     })
 

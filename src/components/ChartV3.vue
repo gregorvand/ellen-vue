@@ -149,12 +149,18 @@ export default defineComponent({
   methods: {
     async getAccessibleDatasets() {
       // console.log('sending', this.currentYear)
-      ChartDataService.getChartData(
-        this,
+      console.log(
+        'sending1',
         this.companyObject.data.id,
         this.companyObject.data.emailIdentifier,
         this.currentYear
-      )
+      ),
+        ChartDataService.getChartData(
+          this,
+          this.companyObject.data.id,
+          this.companyObject.data.emailIdentifier,
+          this.currentYear
+        )
     },
 
     toggleView(chartType) {

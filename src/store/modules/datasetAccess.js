@@ -21,7 +21,7 @@ export const actions = {
       return datasetAccess.datasetId
     })
     const accessObject = {
-      companyId: payload.data[0]?.companyId,
+      companyId: payload.data[0]?.emailIdentifier,
       datasetIds: accessIds,
     }
     commit('PUSH_ACCESS', accessObject)
