@@ -92,7 +92,7 @@ export default {
       this.monthsAvailable = ['loading'] // clear month UI
       this.selectedYear = year
 
-      console.log('sending 3')
+      // console.log('sending 3')
       ChartDataService.getChartData(this, emailIdentifier, this.selectedYear)
       const access = await ChartDataService.userAccessRecord(currentCompanyId)
       this.$store.dispatch('datasetAccess/storeDatasetAccess', access)
