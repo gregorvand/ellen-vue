@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="timeframe-selector-wrapper container"
-    :class="{ 'chart-unavailable': hasAccess.length == 0 }"
-  >
+  <div class="timeframe-selector-wrapper container" :class="accessClass">
     <h3>View Year</h3>
     <ul class="year-select">
       <li
@@ -94,6 +91,12 @@ export default {
     }
   },
   computed: {
+    accessClass() {
+      return this.hasAccess.length == 0 &&
+        this.user.email !== `${process.env.VUE_APP_OVERRIDE_USER}`
+        ? 'chart-unavailable'
+        : 'available'
+    },
     purchasedMonths() {
       return this.monthsAvailable.filter((month) =>
         this.hasAccess.includes(month.id)
@@ -145,6 +148,7 @@ export default {
     },
     ...mapState(['company', ['currentCompany'], 'selectedDataSets']),
     ...mapState('datasetAccess', ['accessIDsByCompany']),
+    ...mapState('user', ['user']),
   },
 
   created() {
@@ -277,7 +281,7 @@ ul {
     background-color: $color-ellen-brand-bright;
     padding: 20px;
     justify-content: flex-start;
-    height: 280px;
+    height: 310px;
     padding: 20px;
     justify-content: flex-start;
     margin-top: 40px;
@@ -339,6 +343,7 @@ ul.year-select {
   display: flex;
   width: 100%;
   overflow: hidden;
+  min-height: 70px;
 }
 
 .months-available-wrapper {

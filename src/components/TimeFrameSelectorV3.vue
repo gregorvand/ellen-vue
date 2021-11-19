@@ -125,7 +125,7 @@ ul {
     background-color: $color-ellen-brand-bright;
     padding: 20px;
     justify-content: flex-start;
-    height: 280px;
+    height: 310px;
     padding: 20px;
     justify-content: flex-start;
     margin-top: 40px;
@@ -187,6 +187,7 @@ ul.year-select {
   display: flex;
   width: 100%;
   overflow: hidden;
+  min-height: 70px;
 }
 
 .months-available-wrapper {
