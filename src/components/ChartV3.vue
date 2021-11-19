@@ -152,7 +152,7 @@ export default defineComponent({
       //   this.companyObject.data.id,
       //   this.companyObject.data.emailIdentifier,
       //   this.currentYear
-      // ),
+      // )
       ChartDataService.getChartData(
         this,
         this.companyObject.data.id,
