@@ -198,18 +198,6 @@ export default {
     async getAccess() {
       const currentCompanyId =
         this.$route.params.id || this.$store.getters['company/getCompanyId']
-      // console.log(
-      //   'sending2',
-      //   currentCompanyId,
-      //   this.emailIdentifier,
-      //   this.selectedYear
-      // )
-      ChartDataService.getChartData(
-        this,
-        currentCompanyId,
-        this.emailIdentifier,
-        this.selectedYear
-      )
       const access = await ChartDataService.userAccessRecord(
         this.emailIdentifier
       )
@@ -235,14 +223,7 @@ export default {
         },
       })
         .then(async (datasets) => {
-          ChartDataService.getChartData(
-            this,
-            this.company.currentCompany.id,
-            this.emailIdentifier,
-            this.selectedYear
-          )
           this.$store.dispatch('selectedDataSets/clearDatasetCart')
-
           const addedData = datasets.data
           const suffix = addedData.length > 1 ? 'months' : 'month'
           const notification = {
@@ -252,7 +233,6 @@ export default {
           this.$store.dispatch('notification/add', notification, {
             root: true,
           })
-          // this.$emit('data-subscribed')
           this.$emit('chartUpdateRequired')
           this.getAccess()
           this.$store.dispatch('credits/fetchBalance')
