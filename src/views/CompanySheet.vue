@@ -6,12 +6,10 @@
           {{ companyObject.data.nameIdentifier }}
         </h1>
         <h4 v-if="companyObject.data !== undefined">
-          {{ companyDomain }}
+          {{ companyDomain }} <br />
         </h4>
         <h1 v-else><BaseLoadingSpinner /></h1>
       </div>
-
-      <span v-if="company.ticker">Symbol: {{ company.ticker }}</span>
       <div>
         <span class="key-line"></span>
         <!-- v if company is Edison -->
@@ -46,11 +44,8 @@ export default {
     })
   },
   computed: {
-    company() {
-      return this.$store.state.company.currentCompany
-    },
     companyDomain() {
-      let emailSplit = this.companyObject.data.emailIdentifier.split('@')
+      let emailSplit = this.companyObject?.data.emailIdentifier.split('@')
       return emailSplit[1]
     },
   },

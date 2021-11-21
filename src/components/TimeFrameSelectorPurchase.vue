@@ -87,7 +87,7 @@ export default {
     return {
       selectedYear: '', // set initially by getAccessibleDataset
       monthsAvailable: [],
-      yearsChoice: [2015, 2016, 2017, 2018, 2019, 2020, 2021],
+      yearsChoice: [2017, 2018, 2019, 2020, 2021],
     }
   },
   computed: {
