@@ -43,7 +43,6 @@ import { Chart, registerables } from 'chart.js'
 import zoomPlugin from 'chartjs-plugin-zoom'
 
 import 'chartjs-adapter-date-fns'
-// import TimeFrameSelector from './TimeFrameSelectorV3.vue'
 import TimeFrameSelectorPurchase from './TimeFrameSelectorPurchase.vue'
 import axios from 'axios'
 import { mapState } from 'vuex'
