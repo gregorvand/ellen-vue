@@ -3,7 +3,7 @@
     <h4>Your selected companies</h4>
     <ul class="selected-companies-key">
       <li>
-        <span class="key key-private">A</span> ELLEN’s inrivalled sales
+        <span class="key key-private">A</span> ELLEN’s unrivalled sales
         insights, updated weekly
       </li>
       <li>

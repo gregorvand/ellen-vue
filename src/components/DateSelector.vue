@@ -17,7 +17,12 @@
         <label :for="assignID">
           {{ readableDate }}
 
-          <input :id="assignID" type="checkbox" @click="addToCart" />
+          <input
+            :id="assignID"
+            ref="inputCheckbox"
+            type="checkbox"
+            @click="addToCart"
+          />
         </label>
       </div>
       <div class="checkbox-spacer" v-else>
@@ -70,6 +75,7 @@ export default {
           .set('year', this.date.year),
       },
       toPurchase: [],
+      checkedStatus: this.checkedStatus,
     }
   },
   computed: {
@@ -104,8 +110,8 @@ export default {
           this.assignID || false
         )
       },
-      set() {
-        return false
+      set(value) {
+        this.checked = value
       },
     },
     ...mapState(['company', 'selectedDataSets']),
@@ -168,12 +174,19 @@ export default {
             this.assignID
           )
     },
+    async setChecked() {
+      this.$refs.inputCheckbox.checked = true
+    },
   },
 }
 </script>
 
 <style lang="scss" scoped>
 .date-selector-wrapper {
+  height: 50px;
+  display: flex;
+  align-items: center;
+
   &:first-of-type {
     .date-selector {
       margin-left: 0;
@@ -214,7 +227,7 @@ export default {
 }
 
 .date-selector {
-  margin: 0 5px;
+  margin: 0;
 
   input {
     display: none;

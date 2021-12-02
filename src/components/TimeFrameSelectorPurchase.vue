@@ -16,7 +16,10 @@
       </li>
     </ul>
     <h3>Purchase months</h3>
-    <div class="chart-timeframe-selector">
+    <div class="chart-timeframe-selector" ref="timeframeSelector">
+      <button v-if="monthsAvailable[0] != 'loading'" @click="selectAllMonths">
+        Select all months
+      </button>
       <div
         v-if="monthsAvailable[0] != 'loading'"
         class="months-available-wrapper"
@@ -29,6 +32,7 @@
           :monthIsAccessble="hasAccess"
           :purchaseMode="true"
           :companyId="companyId"
+          ref="selectorBox"
         />
 
         <span class="data-not-available" v-if="monthsAvailable.length == 0"
@@ -212,6 +216,27 @@ export default {
       return access
     },
 
+    selectAllMonths() {
+      console.log('clicked..')
+      // clear out cart in case anything selected
+      this.$store.dispatch('selectedDataSets/clearDatasetCart')
+
+      // get all available month's IDs
+      let allMonths = this.monthsAvailable.map((dataset) => {
+        return dataset.id
+      })
+
+      // add all months to cart store
+      // allMonths.forEach((assignId) => {
+      //   this.$store.dispatch('selectedDataSets/addDatasetToCart', assignId)
+      // })
+
+      this.$refs.selectorBox.forEach((DateSelector) => {
+        DateSelector.setChecked()
+        DateSelector.addToCart()
+      })
+    },
+
     async multiPurchase() {
       let dataToPurchase = await this.$store.getters[
         'selectedDataSets/datasetCart'
@@ -344,10 +369,16 @@ ul.year-select {
   width: 100%;
   overflow: hidden;
   min-height: 70px;
+  align-items: flex-start;
+  flex-direction: column;
+
+  button {
+    margin: 10px 20px 10px 0;
+  }
 }
 
 .months-available-wrapper {
-  height: 70px;
+  height: auto;
   display: flex;
   justify-content: flex-start;
   width: 100%;
@@ -355,9 +386,11 @@ ul.year-select {
   overflow-y: hidden;
   align-items: center;
   transform: translateY(0);
+  flex-wrap: wrap;
 
   @include breakpoint(medium up) {
-    height: 50px;
+    width: 60%;
+    height: 100px;
     padding-bottom: 10px;
   }
 
