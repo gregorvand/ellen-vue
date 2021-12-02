@@ -28,6 +28,7 @@ export const mutations = {
 
 export const actions = {
   doSearchQuery({ commit }, currentQuery) {
+    let amplifier = currentQuery.split('')
     const searchQuery = {
       from: 0,
       size: 100,
@@ -36,8 +37,8 @@ export const actions = {
           must: [
             {
               query_string: {
-                fields: ['companyName', 'ticker'],
-                query: `${currentQuery} ` || '',
+                fields: ['companyName'],
+                query: `${currentQuery}*` || '',
               },
             },
           ],
