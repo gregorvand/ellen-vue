@@ -17,7 +17,10 @@
     </ul>
     <h3>Purchase months</h3>
     <div class="chart-timeframe-selector" ref="timeframeSelector">
-      <button v-if="monthsAvailable[0] != 'loading'" @click="selectAllMonths">
+      <button
+        v-if="monthsAvailable[0] != 'loading' && lockedMonths.length > 0"
+        @click="selectAllMonths"
+      >
         Select all months
       </button>
       <div
