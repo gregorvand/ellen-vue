@@ -146,7 +146,6 @@ export default {
     },
     hasAccess() {
       return this.accessIDsByCompany.filter((dataset) => {
-        // console.log(dataset, dataset.emailIdentifier, this.emailIdentifier)
         return dataset.companyId == this.emailIdentifier
       })
     },
@@ -217,7 +216,6 @@ export default {
     },
 
     selectAllMonths() {
-      console.log('clicked..')
       // clear out cart in case anything selected
       this.$store.dispatch('selectedDataSets/clearDatasetCart')
 
