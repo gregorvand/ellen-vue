@@ -36,8 +36,8 @@ export const actions = {
           must: [
             {
               query_string: {
-                fields: ['companyName', 'ticker'],
-                query: `${currentQuery} ` || '',
+                fields: ['companyName'],
+                query: `${currentQuery}*` || '',
               },
             },
           ],
