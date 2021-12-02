@@ -28,7 +28,6 @@ export const mutations = {
 
 export const actions = {
   doSearchQuery({ commit }, currentQuery) {
-    let amplifier = currentQuery.split('')
     const searchQuery = {
       from: 0,
       size: 100,
