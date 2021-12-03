@@ -17,7 +17,10 @@
     </ul>
     <h3>Purchase months</h3>
     <div class="chart-timeframe-selector" ref="timeframeSelector">
-      <button v-if="monthsAvailable[0] != 'loading'" @click="selectAllMonths">
+      <button
+        v-if="monthsAvailable[0] != 'loading' && lockedMonths.length > 0"
+        @click="selectAllMonths"
+      >
         Select all months
       </button>
       <div
@@ -378,7 +381,7 @@ ul.year-select {
 .months-available-wrapper {
   height: auto;
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-around;
   width: 100%;
   overflow-x: scroll;
   overflow-y: hidden;
@@ -394,7 +397,7 @@ ul.year-select {
 
   &.active {
     animation: data-enter-up 1s forwards;
-    justify-content: flex-start;
+    justify-content: space-around;
   }
 
   .data-not-available {
@@ -402,6 +405,19 @@ ul.year-select {
     color: $color-ellen-dark;
     width: 100%;
     display: flex;
+  }
+}
+
+.chart-unavailable {
+  &.timeframe-selector-wrapper {
+    height: 350px;
+  }
+
+  .months-available-wrapper {
+    height: 60px;
+    flex-wrap: unset;
+    justify-content: flex-start;
+    width: 100%;
   }
 }
 
@@ -424,6 +440,7 @@ ul.year-select {
     width: 100%;
     max-width: none;
     line-height: 1;
+    background-color: #75c3ff;
   }
 
   .credit-cost {
