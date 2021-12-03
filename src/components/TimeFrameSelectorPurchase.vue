@@ -380,24 +380,29 @@ ul.year-select {
 
 .months-available-wrapper {
   height: auto;
-  display: flex;
-  justify-content: space-around;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   width: 100%;
   overflow-x: scroll;
   overflow-y: hidden;
   align-items: center;
   transform: translateY(0);
-  flex-wrap: wrap;
 
   @include breakpoint(medium up) {
+    display: flex;
     width: 60%;
     height: 100px;
     padding-bottom: 10px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
   }
 
   &.active {
     animation: data-enter-up 1s forwards;
-    justify-content: space-around;
+
+    @include breakpoint(small only) {
+      justify-content: space-between;
+    }
   }
 
   .data-not-available {
@@ -414,6 +419,7 @@ ul.year-select {
   }
 
   .months-available-wrapper {
+    display: flex;
     height: 60px;
     flex-wrap: unset;
     justify-content: flex-start;
