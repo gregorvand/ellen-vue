@@ -1,14 +1,13 @@
 <template>
   <div class="home">
-    <p class="home-intro">
-      <strong>ELLEN</strong> provides unrivalled retail insights, tools, and
-      automatic updates to benchmark your business against market leaders
-    </p>
+    <div class="title-banner-group">
+      <h1>eCommerce</h1>
+      <h2>Benchmarking & Insights</h2>
+    </div>
 
     <section class="home-components">
       <SearchForm :showCheckbox="true" />
       <SelectedCompanies />
-      <CategoryList />
       <BaseSaveButton v-if="loggedIn" />
 
       <p v-if="!loggedIn">Now we just need a couple of details</p>
@@ -33,12 +32,13 @@ export default {
     SelectedCompanies,
     SearchForm,
     RegisterUser,
-    CategoryList,
   },
 }
 </script>
 
 <style lang="scss" scoped>
+$outer-max-width: 1024px;
+$inner-max-width: 700px;
 .home-components {
   display: flex;
   flex-direction: column;
@@ -48,7 +48,7 @@ export default {
   justify-items: center;
   align-items: center;
   width: 100%;
-  max-width: 700px;
+  max-width: $outer-max-width;
 
   > *,
   form input {
@@ -56,9 +56,19 @@ export default {
   }
 }
 
-.search-component {
-  background-color: $color-ellen-brand;
+.title-banner-group {
+  line-height: 1;
+  text-align: left;
+  width: 100%;
+  max-width: $inner-max-width;
   padding: 0 $mobile-padding;
+  margin: 0 auto;
+  margin-top: 20px;
+}
+
+.search-component {
+  padding: 0 $mobile-padding;
+  max-width: $inner-max-width;
 }
 
 .home-intro {

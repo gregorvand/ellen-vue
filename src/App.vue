@@ -10,6 +10,13 @@ import AppNav from '@/components/AppNav.vue'
 // import NotificationContainer from '@/components/NotificationContainer.vue'
 
 export default {
+  name: 'Ellen',
+  metaInfo: {
+    // if no subcomponents specify a metaInfo.title, this title will be used
+    title: 'Insights | Benchmarking',
+    // all titles will be injected into this template
+    titleTemplate: '%s :: ELLEN',
+  },
   components: {
     AppNav,
     // NotificationContainer,
