@@ -8,6 +8,14 @@
         v-model="currentQuery"
         placeholder="Search for a company"
       />
+      <div v-if="showSuggest" class="pinned-absolute-right">
+        <a
+          class="small-link"
+          href="https://wsgp9kcvel1.typeform.com/to/FdUJCtON"
+          target="_blank"
+          >Can't find a company? Suggest here</a
+        >
+      </div>
 
       <div v-if="showCheckbox">
         <ul class="companies-results" v-if="results.length > 0 && activeForm">
@@ -61,6 +69,9 @@ export default {
     },
   },
   computed: {
+    showSuggest() {
+      return this.$route.name === 'home' ? true : false
+    },
     ...mapState('search', ['results']),
     ...mapState('selectedCompanies', ['selectedCompanies']),
   },
