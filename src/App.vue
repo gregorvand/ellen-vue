@@ -39,6 +39,7 @@ export default {
   justify-content: center;
 
   @include breakpoint(small only) {
+    padding: 10px;
     padding-bottom: $mobile-footer-nav-height + 20px;
   }
 

@@ -1,33 +1,35 @@
 <template>
   <div class="register-form-wrapper">
     <form @submit.prevent="register">
-      <label for="email"> Email </label>
-      <input
-        v-model="email"
-        type="email"
-        name="email"
-        value
-        placeholder="Email"
-      />
+      <!-- <label for="email"> Email </label> -->
 
-      <label for="password"> Password </label>
-      <input
-        v-model="password"
-        type="password"
-        name="password"
-        value
-        placeholder="Choose password (minimum 8 characters)"
-      />
+      <div class="flex-wrapper">
+        <input
+          v-model="email"
+          type="email"
+          name="email"
+          value
+          placeholder="Email"
+        />
 
-      <span class="register-payment-blurb"
-        >payment details will be added at the next step</span
-      >
+        <!-- <label for="password"> Password </label> -->
+        <input
+          v-model="password"
+          type="password"
+          name="password"
+          value
+          placeholder="Choose password (minimum 8 characters)"
+        />
 
-      <button type="submit" name="button">Register</button>
+        <button type="submit" name="button">Register</button>
+      </div>
+      <div class="flex-wrapper">
+        <p>{{ error }}</p>
+      </div>
 
-      <p>{{ error }}</p>
-
-      <router-link to="/login"> Already have an account? Login. </router-link>
+      <router-link class="margin-top" to="/login">
+        Already have an account? Login.
+      </router-link>
     </form>
   </div>
 </template>
@@ -58,7 +60,11 @@ export default {
           this.$router.push({ name: 'dashboard' })
         })
         .catch((err) => {
-          this.error = err.response.data.message
+          let errorMessages = err.response.data.message.errors.map((error) => {
+            return error.message
+          })
+          this.error = errorMessages
+          console.log(err.response.data)
         })
     },
   },
@@ -81,6 +87,25 @@ export default {
   margin: 0 auto;
 }
 
+.register-form-wrapper {
+  max-width: 700px;
+
+  .flex-wrapper {
+    width: 100%;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    button,
+    input {
+      margin: 0 5px;
+      height: 50px;
+    }
+  }
+}
 label {
   @extend %body-font-family;
   width: 100%;

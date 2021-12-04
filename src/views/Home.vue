@@ -1,17 +1,31 @@
 <template>
   <div class="home">
     <div class="title-banner-group">
-      <h1>eCommerce</h1>
-      <h2>Benchmarking & Insights</h2>
+      <h2>eCommerce</h2>
+      <h1>Benchmarking & Insights</h1>
     </div>
 
     <section class="home-components">
       <SearchForm :showCheckbox="true" />
+      <h3>Your selected companies</h3>
       <SelectedCompanies />
       <BaseSaveButton v-if="loggedIn" />
 
-      <p v-if="!loggedIn">Now we just need a couple of details</p>
+      <p v-if="!loggedIn">
+        Save your company list above and access the insights
+      </p>
       <RegisterUser v-if="!loggedIn" v-bind:captureName="false" />
+    </section>
+    <section class="full-width-banner brand-banner">
+      <span>what are</span
+      ><img
+        src="@/assets/ELLENv2logo.svg"
+        class="logo"
+        alt="welcome to ELLEN insights"
+      /><span>insights?</span>
+    </section>
+    <section>
+      <img src="@/assets/ellen_chart_example.png" />
     </section>
   </div>
 </template>
@@ -22,7 +36,6 @@ import RegisterUser from '@/views/RegisterUser.vue'
 
 import SelectedCompanies from '@/components/SelectedCompanies.vue'
 import SearchForm from '@/components/SearchForm.vue'
-import CategoryList from '@/components/CategoryList.vue'
 
 export default {
   computed: {
@@ -37,8 +50,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$outer-max-width: 1024px;
-$inner-max-width: 700px;
 .home-components {
   display: flex;
   flex-direction: column;
@@ -48,8 +59,6 @@ $inner-max-width: 700px;
   justify-items: center;
   align-items: center;
   width: 100%;
-  max-width: $outer-max-width;
-
   > *,
   form input {
     border-radius: $border-radius;
@@ -61,13 +70,11 @@ $inner-max-width: 700px;
   text-align: left;
   width: 100%;
   max-width: $inner-max-width;
-  padding: 0 $mobile-padding;
   margin: 0 auto;
   margin-top: 20px;
 }
 
 .search-component {
-  padding: 0 $mobile-padding;
   max-width: $inner-max-width;
 }
 
@@ -78,7 +85,15 @@ $inner-max-width: 700px;
 
 .register-form-wrapper {
   width: 100%;
-  padding: $mobile-padding;
-  background-color: $color-ellen-light-gray;
+  display: flex;
+  flex-direction: row;
+}
+
+.brand-banner {
+  margin-top: 40px;
+  background-color: $color-ellen-brand;
+  > * {
+    margin: 0 5px;
+  }
 }
 </style>

@@ -1,16 +1,6 @@
 <template>
   <div class="selected-companies-wrapper">
-    <h4>Your selected companies</h4>
-    <ul class="selected-companies-key">
-      <li>
-        <span class="key key-private">A</span> ELLEN’s unrivalled sales
-        insights, updated weekly
-      </li>
-      <li>
-        <span class="key key-public">P</span> Automated alerts and updates for
-        public company information
-      </li>
-    </ul>
+    <div class="pattern-background" :style="patternProps"></div>
     <div class="selected-companies">
       <ul
         v-if="selectedCompanies.length > 0"
@@ -38,6 +28,13 @@ export default {
   computed: {
     ...mapState('selectedCompanies', ['selectedCompanies']),
   },
+  data: function () {
+    return {
+      patternProps: {
+        backgroundImage: `url(${require('@/assets/ellen_pattern.svg')})`,
+      },
+    }
+  },
   updated: function () {
     try {
       this.$refs.scrollingEl.scrollTop = this.$refs.scrollingEl.scrollHeight
@@ -50,14 +47,20 @@ export default {
 .selected-companies {
   display: flex;
   width: 100%;
-  background-color: $color-ellen-light-gray;
   border: solid $color-ellen-light-gray thin;
-  height: 200px;
+  height: 240px;
   flex-direction: column;
   position: relative;
+  max-width: 700px;
+  padding: 30px;
+  border-radius: $border-radius;
+  margin: 0 auto;
+  position: relative;
+  background-color: $color-white;
 
   &-wrapper {
     width: 100%;
+    position: relative;
   }
 
   @include breakpoint(large up) {
@@ -75,6 +78,7 @@ export default {
 }
 
 h4 {
+  @extend %subheading;
   text-align: center;
   justify-content: center;
 }
@@ -98,9 +102,9 @@ ul {
 ul.selected-companies-listing {
   margin: 0;
   > li {
-    border-bottom: solid $color-ellen-dark-gray thin;
-
-    margin: 0;
+    border: solid $color-ellen-light-gray thin;
+    border-radius: $border-radius;
+    margin: 5px 0;
 
     > div {
       height: 62px;
@@ -146,6 +150,10 @@ li {
     width: 100%;
     justify-content: space-around;
     align-items: center;
+  }
+
+  .company-selector {
+    width: 100%;
   }
 }
 </style>
