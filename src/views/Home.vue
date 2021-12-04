@@ -28,9 +28,47 @@
       /><span>insights?</span>
     </section>
     <section class="full-width chart-example">
+      <h3>Interactive charts: Average orders per month</h3>
       <img src="@/assets/ellen_chart_example.png" />
+
+      <div class="insights-list-wrapper">
+        <div class="pattern-background" :style="patternProps"></div>
+        <h3>Additional metrics (coming soon)</h3>
+        <ul class="insights-list list-no-bullets">
+          <li>
+            <img src="@/assets/checked.svg" class="" alt="insights list 1" />
+            <span>AOV</span>
+          </li>
+          <li>
+            <img
+              src="@/assets/checked.svg"
+              class="logo"
+              alt="insights list 2"
+            />
+            <span>Trending SKUs</span>
+          </li>
+          <li>
+            <img
+              src="@/assets/checked.svg"
+              class="logo"
+              alt="insights list 3"
+            />
+            <span>Loyalty: frequency, recency, monetary</span>
+          </li>
+          <li>
+            <img
+              src="@/assets/checked.svg"
+              class="logo"
+              alt="insights list 4"
+            />
+            <span>Companies with similar customers</span>
+          </li>
+        </ul>
+      </div>
     </section>
-    <RegisterUser v-if="!loggedIn" v-bind:captureName="false" />
+    <section class="final-register">
+      <RegisterUser v-if="!loggedIn" v-bind:captureName="false" />
+    </section>
   </div>
 </template>
 
@@ -43,6 +81,13 @@ import SelectedCompanies from '@/components/SelectedCompanies.vue'
 import SearchForm from '@/components/SearchForm.vue'
 
 export default {
+  data: function () {
+    return {
+      patternProps: {
+        backgroundImage: `url(${require('@/assets/ellen_pattern.svg')})`,
+      },
+    }
+  },
   computed: {
     ...authComputed,
     ...mapState('selectedCompanies', ['selectedCompanies']),
@@ -111,6 +156,44 @@ export default {
     > img {
       height: 100%;
     }
+  }
+}
+
+.insights-list {
+  height: 30px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  max-width: 750px;
+  margin: 0 auto;
+
+  li {
+    display: flex;
+    flex-direction: row;
+  }
+  img,
+  span {
+    margin: 5px 5px 0;
+    display: flex;
+  }
+
+  &-wrapper {
+    height: 200px;
+    padding: 20px;
+    position: relative;
+
+    h3 {
+      padding: 15px;
+    }
+  }
+}
+
+.final-register {
+  width: 100%;
+
+  .register-form-wrapper {
+    width: 100%;
+    max-width: unset;
   }
 }
 </style>

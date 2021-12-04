@@ -144,4 +144,10 @@ input {
   font-size: $small-label-font-size;
   margin: 10px auto;
 }
+
+.final-register {
+  form {
+    max-width: $inner-max-width + 70px;
+  }
+}
 </style>
