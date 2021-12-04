@@ -71,7 +71,6 @@ export default {
         })
     },
     scrollToTop() {
-      console.log('called')
       window.scrollTo({
         top: 0,
         behavior: 'smooth',
