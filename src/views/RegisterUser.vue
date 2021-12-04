@@ -27,7 +27,11 @@
         <p>{{ error }}</p>
       </div>
 
-      <router-link class="margin-top" to="/login">
+      <router-link
+        class="margin-top small-link"
+        @click.native="scrollToTop"
+        to="/login"
+      >
         Already have an account? Login.
       </router-link>
     </form>
@@ -65,6 +69,13 @@ export default {
           })
           this.error = errorMessages
         })
+    },
+    scrollToTop() {
+      console.log('called')
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      })
     },
   },
   computed: {

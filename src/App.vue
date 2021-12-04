@@ -52,6 +52,10 @@ export default {
   @include breakpoint(small only) {
     padding: 10px;
     padding-bottom: $mobile-footer-nav-height + 20px;
+
+    &.home {
+      padding: 0;
+    }
   }
 
   > div {

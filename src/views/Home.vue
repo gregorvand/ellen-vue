@@ -118,15 +118,23 @@ export default {
 
 .title-banner-group {
   line-height: 1;
-  text-align: left;
+  text-align: center;
   width: 100%;
   max-width: $inner-max-width;
   margin: 0 auto;
   margin-top: 20px;
+
+  @include breakpoint(medium up) {
+    text-align: left;
+  }
 }
 
 .search-component {
   max-width: $inner-max-width;
+
+  @include breakpoint(small only) {
+    padding: 10px;
+  }
 }
 
 .home-intro {
@@ -150,11 +158,10 @@ export default {
 
 .chart-example {
   @include breakpoint(small only) {
-    height: 150vw;
     padding-bottom: 20px;
 
     > img {
-      height: 100%;
+      height: 100vw;
     }
   }
 }
@@ -162,7 +169,7 @@ export default {
 .insights-list {
   height: 30px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   width: 100%;
   max-width: 750px;
   margin: 0 auto;
@@ -177,10 +184,26 @@ export default {
     display: flex;
   }
 
+  @include breakpoint(medium up) {
+    grid-template-columns: 1fr 1fr;
+  }
+
   &-wrapper {
-    height: 200px;
-    padding: 20px;
+    height: 300px;
     position: relative;
+
+    .pattern-background {
+      background-size: 250%;
+
+      @include breakpoint(medium up) {
+        background-size: 250%;
+      }
+    }
+
+    @include breakpoint(medium up) {
+      height: 200px;
+      padding: 20px;
+    }
 
     h3 {
       padding: 15px;

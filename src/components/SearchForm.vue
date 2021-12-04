@@ -8,7 +8,7 @@
         v-model="currentQuery"
         placeholder="Search for a company"
       />
-      <div v-if="showSuggest" class="pinned-absolute-right">
+      <div v-if="showSuggest" class="pinned-absolute-right suggest-link">
         <a
           class="small-link"
           href="https://wsgp9kcvel1.typeform.com/to/FdUJCtON"
@@ -121,6 +121,12 @@ export default {
 
   .company-selector {
     width: 100%;
+  }
+
+  .suggest-link {
+    @include breakpoint(small only) {
+      position: relative;
+    }
   }
 }
 

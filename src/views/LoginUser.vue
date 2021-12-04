@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div class="title-banner-group">
+      <h1>Login</h1>
+    </div>
     <form @submit.prevent="login">
       <label for="email"> Email: </label>
       <input v-model="email" type="email" name="email" value />
@@ -11,7 +14,7 @@
 
       <p>{{ error }}</p>
 
-      <router-link to="/register">
+      <router-link to="/register" class="small-link">
         Don't have an account? Register.
       </router-link>
     </form>
