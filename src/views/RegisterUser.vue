@@ -64,7 +64,6 @@ export default {
             return error.message
           })
           this.error = errorMessages
-          console.log(err.response.data)
         })
     },
   },
