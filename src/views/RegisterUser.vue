@@ -3,7 +3,7 @@
     <form @submit.prevent="register">
       <!-- <label for="email"> Email </label> -->
 
-      <div class="flex-wrapper">
+      <div class="flex-wrapper mobile-column">
         <input
           v-model="email"
           type="email"
@@ -18,7 +18,7 @@
           type="password"
           name="password"
           value
-          placeholder="Choose password (minimum 8 characters)"
+          placeholder="Choose password (min 8 characters)"
         />
 
         <button type="submit" name="button">Register</button>
@@ -89,6 +89,8 @@ export default {
 
 .register-form-wrapper {
   max-width: 700px;
+  background-color: $color-ellen-brand-bright;
+  padding: 30px;
 
   .flex-wrapper {
     width: 100%;
@@ -101,8 +103,16 @@ export default {
 
     button,
     input {
-      margin: 0 5px;
+      margin: 10px auto;
       height: 50px;
+
+      @include breakpoint(medium up) {
+        margin: 0 5px;
+      }
+    }
+
+    button {
+      width: 30%;
     }
   }
 }

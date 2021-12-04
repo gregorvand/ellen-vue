@@ -1,7 +1,10 @@
 <template>
   <div class="selected-companies-wrapper">
     <div class="pattern-background" :style="patternProps"></div>
-    <div class="selected-companies">
+    <div
+      class="selected-companies"
+      :class="{ open: selectedCompanies.length > 0 }"
+    >
       <ul
         v-if="selectedCompanies.length > 0"
         class="selected-companies-listing"
@@ -48,7 +51,7 @@ export default {
   display: flex;
   width: 100%;
   border: solid $color-ellen-light-gray thin;
-  height: 240px;
+  height: auto;
   flex-direction: column;
   position: relative;
   max-width: 700px;
@@ -56,7 +59,11 @@ export default {
   border-radius: $border-radius;
   margin: 0 auto;
   position: relative;
-  background-color: $color-white;
+  background-color: #ffffffe3;
+
+  &.open {
+    height: 240px;
+  }
 
   &-wrapper {
     width: 100%;
