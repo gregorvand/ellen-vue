@@ -58,8 +58,8 @@ $mobile-height: 50px;
     position: absolute;
     top: 0;
     left: 0;
-    animation: scroll-left 20s linear infinite;
-    width: 520px;
+    animation: scroll-left 25s linear infinite;
+    width: 650px;
 
     @include breakpoint(medium up) {
       height: 100%;
