@@ -44,6 +44,11 @@ import CompanySelector from '../components/CompanySelector'
 import SearchForm from '@/components/SearchForm'
 
 export default {
+  metaInfo: {
+    // if no subcomponents specify a metaInfo.title, this title will be used
+    title: 'My Dashboard',
+    // all titles will be injected into this template
+  },
   components: { CompanySelector, SearchForm },
   data() {
     return {

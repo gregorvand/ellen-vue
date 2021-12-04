@@ -1,16 +1,15 @@
 footer {
-  background-color: $color-ellen-dark;
+  background-color: $color-ellen-brand;
   width: 100%;
   display: flex;
-  margin-top: auto;
-
-  img {
-    max-width: 100px;
-    max-height: 100%;
-  }
   color: $color-white;
   display: flex;
   justify-content: space-evenly;
-  height: 45px;
+  height: 65px;
   align-items: center;
+  margin-top: auto;
+
+  img {
+    height: 20px;
+  }
 }

@@ -4,6 +4,7 @@ import router from './router'
 import store from './store/store'
 import CompositionAPI from '@vue/composition-api'
 import { provide } from '@vue/composition-api'
+import VueMeta from 'vue-meta'
 
 // Globally register all `_base`-prefixed components
 import '@/components/_globals'
@@ -11,6 +12,7 @@ import dayjs from 'dayjs'
 
 Vue.config.productionTip = false
 Vue.use(CompositionAPI)
+Vue.use(VueMeta)
 
 Vue.directive('click-outside', {
   bind: function (el, binding, vnode) {

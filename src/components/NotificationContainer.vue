@@ -7,8 +7,12 @@
         :notification="notification"
       />
       <div class="persistent-notification">
-        <span>Potential persistent notification area....</span>
-        <span>TaylorStitch +October 2</span>
+        <span
+          >Thanks for visiting. Create an account to save companies to your
+          dashboard. We are in beta, please do not share the site. Email
+          <a href="mailto:mac@ellen.me">mac@ellen.me</a>
+          with any questions
+        </span>
       </div>
     </div>
   </div>
@@ -54,7 +58,8 @@ $mobile-height: 50px;
     position: absolute;
     top: 0;
     left: 0;
-    animation: scroll-left 20s linear infinite;
+    animation: scroll-left 25s linear infinite;
+    width: 650px;
 
     @include breakpoint(medium up) {
       height: 100%;
@@ -68,7 +73,10 @@ $mobile-height: 50px;
       align-items: center;
 
       @include breakpoint(medium up) {
-        min-width: 100%;
+        > a {
+          margin: 0 5px;
+          display: flex;
+        }
       }
     }
   }

@@ -2,6 +2,15 @@
   <div id="app" :class="'app-wrapper ' + $route.name">
     <AppNav />
     <router-view :key="$route.fullPath" />
+    <footer>
+      <router-link to="/">
+        <img
+          src="@/assets/ELLENv2logo.svg"
+          class="logo"
+          alt="welcome to ELLEN insights"
+        />
+      </router-link>
+    </footer>
   </div>
 </template>
 
@@ -10,6 +19,13 @@ import AppNav from '@/components/AppNav.vue'
 // import NotificationContainer from '@/components/NotificationContainer.vue'
 
 export default {
+  name: 'Ellen',
+  metaInfo: {
+    // if no subcomponents specify a metaInfo.title, this title will be used
+    title: 'Insights | Benchmarking',
+    // all titles will be injected into this template
+    titleTemplate: '%s :: ELLEN',
+  },
   components: {
     AppNav,
     // NotificationContainer,
@@ -29,9 +45,12 @@ export default {
 .app-wrapper {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
+  height: auto;
+  min-height: 100vh;
 
   @include breakpoint(small only) {
+    padding: 10px;
     padding-bottom: $mobile-footer-nav-height + 20px;
   }
 
