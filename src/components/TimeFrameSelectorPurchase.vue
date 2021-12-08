@@ -274,7 +274,6 @@ export default {
             ).length > 0
           console.log(followed)
           if (!followed) {
-            console.log('also, following')
             axios({
               method: 'post',
               url: `${process.env.VUE_APP_API_URL}/api/users/update/companies`,
