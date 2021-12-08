@@ -96,7 +96,6 @@ export default {
           ],
         },
       }).then((data) => {
-        console.log(data)
         this.$refs.followButton.innerText = 'Followed!'
       })
     },
