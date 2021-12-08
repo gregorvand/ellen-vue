@@ -55,7 +55,7 @@ export default {
       selectedCompanies: [],
     }
   },
-  created() {
+  mounted() {
     axios
       .post(`${process.env.VUE_APP_API_URL}/api/dashboard`)
       .then(({ data }) => {

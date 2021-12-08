@@ -155,6 +155,7 @@ export default {
     ...mapState(['company', ['currentCompany'], 'selectedDataSets']),
     ...mapState('datasetAccess', ['accessIDsByCompany']),
     ...mapState('user', ['user']),
+    ...mapState('followedCompanies', ['followedCompanies']),
   },
 
   created() {
@@ -266,6 +267,24 @@ export default {
           this.$emit('chartUpdateRequired')
           this.getAccess()
           this.$store.dispatch('credits/fetchBalance')
+
+          const followed =
+            this.followedCompanies.filter(
+              (company) => company.id.toString() == this.companyId.toString()
+            ).length > 0
+          if (!followed) {
+            axios({
+              method: 'post',
+              url: `${process.env.VUE_APP_API_URL}/api/users/update/companies`,
+              data: {
+                selectedCompanies: [
+                  {
+                    companyEmail: this.emailIdentifier,
+                  },
+                ],
+              },
+            })
+          }
         })
         .catch((error) => {
           if (error.response.status == 433) {

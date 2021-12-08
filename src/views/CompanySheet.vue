@@ -7,12 +7,16 @@
         </h1>
         <h4 v-if="companyObject.data !== undefined">
           {{ companyDomain }} <br />
+          {{ companyObject.data.emailIdentifier }}
         </h4>
         <h1 v-else><BaseLoadingSpinner /></h1>
       </div>
       <div>
         <span class="key-line"></span>
         <!-- v if company is Edison -->
+        <button v-if="!isFollowed" @click="followUnfollow" ref="followButton">
+          Follow
+        </button>
         <span>Avg orders/month</span>
       </div>
     </div>
@@ -26,6 +30,8 @@
 <script>
 import LineChart from '@/components/ChartV3'
 import ChartDataService from '../services/ChartDataService'
+import { mapState } from 'vuex'
+import axios from 'axios'
 // import { computed } from 'vue-demi'
 
 export default {
@@ -38,6 +44,16 @@ export default {
       companyObject: {},
     }
   },
+  created() {
+    axios
+      .post(`${process.env.VUE_APP_API_URL}/api/dashboard`)
+      .then(({ data }) => {
+        this.$store.dispatch(
+          'followedCompanies/addAllFollowedCompanies',
+          data.companies
+        )
+      })
+  },
   beforeCreate() {
     ChartDataService.getCompany(this.$route.params.id).then((company) => {
       this.companyObject = company
@@ -47,6 +63,41 @@ export default {
     companyDomain() {
       let emailSplit = this.companyObject?.data.emailIdentifier.split('@')
       return emailSplit[1]
+    },
+    company() {
+      return {
+        companyEmail: this.companyObject.emailIdentifier,
+        companyName: this.companyObject.nameIdentifier,
+        id: this.companyObject.id,
+      }
+    },
+    isFollowed() {
+      return this.followedCompanies.filter(
+        (company) =>
+          company.id.toString() == this.companyObject?.data?.id.toString()
+      ).length > 0
+        ? true
+        : false
+    },
+    ...mapState('followedCompanies', ['followedCompanies']),
+  },
+  methods: {
+    followUnfollow() {
+      const companyObject = this.companyObject.data
+
+      axios({
+        method: 'post',
+        url: `${process.env.VUE_APP_API_URL}/api/users/update/companies`,
+        data: {
+          selectedCompanies: [
+            {
+              companyEmail: companyObject.emailIdentifier,
+            },
+          ],
+        },
+      }).then((data) => {
+        this.$refs.followButton.innerText = 'Followed!'
+      })
     },
   },
 }

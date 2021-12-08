@@ -89,12 +89,12 @@ function addCompany(component) {
 
 function removeCompany(component) {
   axios({
-    method: 'put',
-    url: `${process.env.VUE_APP_API_URL}/api/users/update/companies`,
+    method: 'post',
+    url: `${process.env.VUE_APP_API_URL}/api/users/remove/companies`,
     data: {
-      selectedCompany: component.company.id,
+      selectedCompany: component.company.companyEmail,
     },
-  }).then(() => {
+  }).then((data) => {
     const notification = {
       type: 'success',
       message: `No longer following ${component.company.companyName}`,
