@@ -272,7 +272,6 @@ export default {
             this.followedCompanies.filter(
               (company) => company.id.toString() == this.companyId.toString()
             ).length > 0
-          console.log(followed)
           if (!followed) {
             axios({
               method: 'post',
