@@ -44,6 +44,16 @@ export default {
       companyObject: {},
     }
   },
+  created() {
+    axios
+      .post(`${process.env.VUE_APP_API_URL}/api/dashboard`)
+      .then(({ data }) => {
+        this.$store.dispatch(
+          'followedCompanies/addAllFollowedCompanies',
+          data.companies
+        )
+      })
+  },
   beforeCreate() {
     ChartDataService.getCompany(this.$route.params.id).then((company) => {
       this.companyObject = company
