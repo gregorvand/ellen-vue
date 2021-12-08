@@ -92,9 +92,6 @@ export default {
           selectedCompanies: [
             {
               companyEmail: companyObject.emailIdentifier,
-              companyIndustry: companyObject.industry,
-              companyName: companyObject.nameIdentifier,
-              id: companyObject.id,
             },
           ],
         },
