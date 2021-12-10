@@ -43,7 +43,7 @@ export default {
   @include breakpoint(medium up) {
     grid-template-columns: 1fr 1fr 1fr;
 
-  // align widths of 3-across with the search bar etc
+    // align widths of 3-across with the search bar etc
     .company-selector {
       width: 226px;
     }
