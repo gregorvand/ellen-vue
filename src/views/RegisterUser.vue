@@ -135,7 +135,7 @@ label {
 input {
   border-radius: $border-radius;
   @extend %body-font-family;
-  line-height: 1;
+  line-height: normal;
   height: 42px;
   display: flex;
   width: 100%;
@@ -145,7 +145,8 @@ input {
     color: $color-ellen-dark-gray;
     font-size: rem-calc(12px);
     text-align: center;
-    padding-bottom: 6px;
+    margin: 0;
+    padding: 0;
   }
 }
 

@@ -35,13 +35,30 @@
       </div>
     </div>
     <div class="company-checkbox">
-      <input
-        v-if="!disableCheckBox && allowEdit"
-        class="select-company"
-        type="checkbox"
-        v-model="checked"
-        @click="selectCompany"
-      />
+      <label v-if="!checked"
+        ><span>Add</span>
+        <input
+          :name="company.id"
+          v-if="!disableCheckBox && allowEdit"
+          class="select-company"
+          type="checkbox"
+          v-model="checked"
+          @click="selectCompany"
+          :id="company.id"
+        />
+      </label>
+      <label v-else
+        ><span v-if="!disableCheckBox">Remove</span>
+        <input
+          :name="company.id"
+          v-if="!disableCheckBox && allowEdit"
+          class="select-company"
+          type="checkbox"
+          v-model="checked"
+          @click="selectCompany"
+          :id="company.id"
+        />
+      </label>
     </div>
   </div>
 </template>
@@ -238,6 +255,28 @@ span {
         justify-content: center;
         align-items: center;
       }
+    }
+  }
+
+  .company-checkbox {
+    label {
+      display: flex;
+      width: 70px;
+      justify-content: flex-end;
+      padding: 10px;
+
+      @include breakpoint(small only) {
+        padding: 10px 5px;
+        font-size: 13px;
+      }
+
+      &:hover {
+        color: $color-ellen-dark;
+        cursor: pointer;
+      }
+    }
+    input[type='checkbox'] {
+      display: none;
     }
   }
 }

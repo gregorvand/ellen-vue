@@ -25,7 +25,15 @@ export default {
     axios
       .get(`${process.env.VUE_APP_API_URL}/api/trending-companies`)
       .then(({ data }) => {
-        this.trendingCompanies = data
+        let searchFormatCompany = data.map((company) => {
+          return {
+            companyEmail: company.emailIdentifier,
+            companyIndustry: company.industry,
+            companyName: company.nameIdentifier,
+            id: company.id,
+          }
+        })
+        this.trendingCompanies = searchFormatCompany
       })
   },
 }
@@ -34,7 +42,8 @@ export default {
 <style lang="scss" scoped>
 .trending-companies {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
+  width: 100%;
 
   .company-selector {
     width: auto;
@@ -42,6 +51,7 @@ export default {
 
   @include breakpoint(medium up) {
     grid-template-columns: 1fr 1fr 1fr;
+    height: 90px;
 
     // align widths of 3-across with the search bar etc
     .company-selector {
