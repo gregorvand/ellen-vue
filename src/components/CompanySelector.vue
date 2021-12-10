@@ -28,7 +28,7 @@
         <span v-else class="company-selector-title"> {{ companyName }}</span>
       </div>
       <div v-else>
-        {{ companyName }}
+        <span class="company-selector-title">{{ companyName }}</span>
       </div>
       <div class="company-type">
         <span>Proprietary Insights </span>
@@ -157,6 +157,7 @@ span {
   flex-direction: row;
   padding: 5px;
   position: relative;
+  z-index: 2;
 
   a.company-selector-link {
     position: absolute;
