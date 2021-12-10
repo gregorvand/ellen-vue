@@ -14,10 +14,15 @@
       <p v-if="!loggedIn && selectedCompanies.length">
         Save your company list above and access the insights
       </p>
+
       <RegisterUser
         v-if="!loggedIn && selectedCompanies.length > 0"
         v-bind:captureName="false"
       />
+    </section>
+    <section>
+      <h3>Trending Companies</h3>
+      <TrendingCompanies />
     </section>
     <section class="full-width-banner brand-banner">
       <span>what are</span
@@ -78,6 +83,7 @@ import RegisterUser from '@/views/RegisterUser.vue'
 import { mapState } from 'vuex'
 
 import SelectedCompanies from '@/components/SelectedCompanies.vue'
+import TrendingCompanies from '@/components/TrendingCompanies.vue'
 import SearchForm from '@/components/SearchForm.vue'
 
 export default {
@@ -96,6 +102,7 @@ export default {
     SelectedCompanies,
     SearchForm,
     RegisterUser,
+    TrendingCompanies,
   },
 }
 </script>

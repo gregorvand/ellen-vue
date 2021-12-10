@@ -13,7 +13,7 @@
     >
     </router-link>
     <div class="company-details">
-      <div class="company-selector-label">
+      <div class="company-selector-label" v-if="loggedIn">
         <span v-if="!disableCheckBox" class="company-selector-title">
           <router-link
             class="company-text-link"
@@ -23,13 +23,12 @@
             }"
           >
             {{ companyName }}
-          </router-link></span
-        >
+          </router-link>
+        </span>
         <span v-else class="company-selector-title"> {{ companyName }}</span>
-
-        <span class="ticker-label" v-if="company.ticker"
-          >({{ company.ticker }})</span
-        >
+      </div>
+      <div v-else>
+        {{ companyName }}
       </div>
       <div class="company-type">
         <span>Proprietary Insights </span>
@@ -49,6 +48,7 @@
 
 <script>
 import CompanyService from '@/services/CompanyService.js'
+import { authComputed } from '@/store/helpers.js'
 export default {
   props: {
     company: {
@@ -116,6 +116,7 @@ export default {
     companyType() {
       return this.company.companyType == 'public' ? 'p' : 'a'
     },
+    ...authComputed,
   },
 }
 </script>
