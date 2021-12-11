@@ -1,3 +1,11 @@
+const firstDateofMonth = (tooltipItems) => {
+  let startDate
+  tooltipItems.forEach(function (tooltipItem) {
+    startDate = tooltipItem.dataset.data[tooltipItem.dataIndex].label
+  })
+  return `(from ${startDate})`
+}
+
 const defaultChartOptions = {
   scales: {
     y: {
@@ -37,6 +45,11 @@ const defaultChartOptions = {
   plugins: {
     legend: {
       display: false,
+    },
+    tooltip: {
+      callbacks: {
+        footer: firstDateofMonth,
+      },
     },
     zoom: {
       pan: {
