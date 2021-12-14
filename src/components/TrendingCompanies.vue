@@ -1,9 +1,12 @@
 <template>
-  <ul class="trending-companies">
-    <li v-for="company in trendingCompanies" :key="company.id">
-      <CompanySelector :company="company" />
-    </li>
-  </ul>
+  <div class="trending-companies">
+    <h3>Trending Companies</h3>
+    <ul class="trending-companies list">
+      <li v-for="company in trendingCompanies" :key="company.id">
+        <CompanySelector :company="company" />
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script>
@@ -41,27 +44,41 @@ export default {
 
 <style lang="scss" scoped>
 .trending-companies {
-  display: grid;
-  grid-template-columns: 1fr;
-  width: 100%;
+  margin: $global-margin auto;
 
-  .company-selector {
-    width: auto;
-  }
+  &.list {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
 
-  @include breakpoint(medium up) {
-    grid-template-columns: 1fr 1fr 1fr;
-    height: 90px;
-
-    // align widths of 3-across with the search bar etc
     .company-selector {
-      width: 226px;
+      width: auto;
+    }
+
+    @include breakpoint(medium up) {
+      grid-template-columns: 1fr 1fr 1fr;
+      height: 90px;
+
+      .additional-metrics & {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      // align widths of 3-across with the search bar etc
+      .company-selector {
+        width: 226px;
+      }
+    }
+
+    li {
+      height: 50px;
+      margin: 5px;
     }
   }
 
-  li {
-    height: 50px;
-    margin: 5px;
+  .additional-metrics & {
+    h3 {
+      display: none;
+    }
   }
 }
 </style>

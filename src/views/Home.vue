@@ -21,7 +21,6 @@
       />
     </section>
     <section>
-      <h3>Trending Companies</h3>
       <TrendingCompanies />
     </section>
     <section class="full-width-banner brand-banner">

@@ -24,11 +24,26 @@
       v-if="companyObject.data !== undefined"
       :companyObject="companyObject"
     />
+    <section class="additional-metrics">
+      <div class="inner-container">
+        <h4>Additional metrics</h4>
+        <img src="@/assets/additional_metrics.png" alt="hello" />
+        <h4>
+          Contact <a href="mailto:mac@ellen.me">mac@ellen.me</a> for access
+        </h4>
+      </div>
+      <div class="inner-container">
+        <h4>Trending Companies</h4>
+        <TrendingCompanies />
+      </div>
+    </section>
+    <div class="trending-companies-"></div>
   </div>
 </template>
 
 <script>
 import LineChart from '@/components/ChartV3'
+import TrendingCompanies from '@/components/TrendingCompanies'
 import ChartDataService from '../services/ChartDataService'
 import { mapState } from 'vuex'
 import axios from 'axios'
@@ -38,6 +53,7 @@ export default {
   name: 'CompanyView',
   components: {
     LineChart,
+    TrendingCompanies,
   },
   data: function () {
     return {
@@ -113,6 +129,33 @@ export default {
     flex-direction: row;
     justify-content: flex-start;
     text-align: left;
+  }
+}
+
+.additional-metrics {
+  margin: $global-margin auto;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+
+  .inner-container {
+    flex-direction: column;
+    width: 50%;
+  }
+
+  border-top: solid $color-ellen-dark-gray thin;
+  margin-top: $global-margin;
+
+  h4 {
+    color: $color-ellen-dark;
+    a {
+      color: $color-black;
+    }
+  }
+  img {
+    opacity: 0.4;
+    max-width: 450px;
+    width: 100%;
   }
 }
 </style>

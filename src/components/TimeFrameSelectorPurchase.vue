@@ -410,7 +410,7 @@ ul.year-select {
   @include breakpoint(medium up) {
     display: flex;
     width: 60%;
-    height: 100px;
+    height: auto;
     padding-bottom: 10px;
     flex-wrap: wrap;
     justify-content: flex-start;
