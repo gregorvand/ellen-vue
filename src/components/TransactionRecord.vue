@@ -45,7 +45,6 @@ export default {
       }
     },
     filterEmail(value) {
-      console.log(value)
       if (!value) {
         return '--'
       } else {
