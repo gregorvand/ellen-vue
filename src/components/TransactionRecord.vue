@@ -5,6 +5,7 @@
       <span>Amount</span>
       <span>Info</span>
       <span>Company</span>
+      <span>Transaction Date</span>
     </div>
     <div
       class="grid-table"
@@ -16,12 +17,14 @@
       <span v-if="transaction.emailIdentifier !== 'undefined'">{{
         transaction.emailIdentifier | filterEmail
       }}</span>
+      <span>{{ transaction.createdAt | formatDate }}</span>
     </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import dayjs from 'dayjs'
 export default {
   data: function () {
     return {
@@ -52,6 +55,10 @@ export default {
         return email[1]
       }
     },
+    formatDate(date) {
+      let readableDate = dayjs(date).format('MMMM DD, YYYY')
+      return readableDate
+    },
   },
 }
 </script>
@@ -70,7 +77,7 @@ export default {
 }
 .grid-table {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   width: 100%;
 
   span {
