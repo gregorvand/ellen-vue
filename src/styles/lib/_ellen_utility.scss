@@ -127,3 +127,16 @@ ul.list {
     &, li { list-style: none; }
   }
 }
+
+.not-tablet {
+  @include breakpoint(medium only) {
+    display: none;
+  }
+  @include breakpoint(small only) {
+    display: none;
+  }
+}
+
+.overflow-y {
+  overflow-y: scroll;
+}
