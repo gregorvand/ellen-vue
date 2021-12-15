@@ -145,6 +145,7 @@ h4 {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    width: 500px;
   }
 }
 
