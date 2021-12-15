@@ -7,7 +7,7 @@
         </h1>
         <h4 v-if="companyObject.data !== undefined">
           {{ companyDomain }} <br />
-          {{ companyObject.data.emailIdentifier }}
+          <!-- {{ companyObject.data.emailIdentifier }} -->
         </h4>
         <h1 v-else><BaseLoadingSpinner /></h1>
       </div>
