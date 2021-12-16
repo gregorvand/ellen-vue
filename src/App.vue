@@ -1,5 +1,6 @@
 <template>
   <div id="app" :class="'app-wrapper ' + $route.name">
+    <PaymentsModal />
     <AppNav />
     <router-view :key="$route.fullPath" />
     <footer>
@@ -16,6 +17,7 @@
 
 <script>
 import AppNav from '@/components/AppNav.vue'
+import PaymentsModal from '@/components/PaymentsModal.vue'
 // import NotificationContainer from '@/components/NotificationContainer.vue'
 
 export default {
@@ -28,6 +30,7 @@ export default {
   },
   components: {
     AppNav,
+    PaymentsModal,
     // NotificationContainer,
   },
 }

@@ -1,12 +1,19 @@
 <template>
-  <div>
-    <button @click="toggleMode('subscription')">Subscribe</button>
-    <button @click="toggleMode('single')">Single</button>
-    <div v-if="mode == 'single'">
-      <Payments />
-    </div>
-    <div v-if="mode == 'subscription'">
-      <PaymentsSubscription />
+  <div class="modal">
+    <button @click="close()">X</button>
+    <div class="container">
+      <div class="toggle-container">
+        <button @click="toggleMode('subscription')">Subscribe</button>
+        <button @click="toggleMode('single')">Single</button>
+      </div>
+      <div class="fixed-height">
+        <div v-if="mode == 'single'">
+          <Payments />
+        </div>
+        <div v-if="mode == 'subscription'">
+          <PaymentsSubscription />
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -32,4 +39,16 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.toggle-container {
+  display: flex;
+
+  button {
+    margin: 5px;
+  }
+}
+
+.fixed-height {
+  height: 300px;
+}
+</style>
