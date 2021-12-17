@@ -2,20 +2,24 @@
   <div>
     <div v-if="loggedIn" class="logoutButton" @click="logout">Logout</div>
     <TransactionRecord />
-    <PaymentsSubscription />
-    <CurrentPayments />
+    <div class="container max-800">
+      <CurrentPayments />
+    </div>
+    <div>
+      <button @click="openPayments"></button>
+    </div>
   </div>
 </template>
 
 <script>
 import CurrentPayments from '../components/CurrentPayments.vue'
 import TransactionRecord from '../components/TransactionRecord.vue'
-import PaymentsSubscription from '../components/PaymentsSubscription'
+// import PaymentsSubscription from '../components/PaymentsSubscription'
 import { mapState } from 'vuex'
 import { authComputed } from '@/store/helpers.js'
 
 export default {
-  components: { CurrentPayments, PaymentsSubscription, TransactionRecord },
+  components: { CurrentPayments, TransactionRecord },
   computed: {
     ...authComputed,
     ...mapState(['user']),
@@ -23,6 +27,9 @@ export default {
   methods: {
     logout() {
       this.$store.dispatch('user/logout')
+    },
+    openPayments() {
+      this.$store.dispatch('ui/togglePaymentModal', 'open')
     },
   },
 }

@@ -15,6 +15,7 @@ import * as earnings from '@/store/modules/earnings.js'
 import * as categories from '@/store/modules/categories.js'
 import * as selectedCategories from '@/store/modules/selectedCategories.js'
 import * as credits from '@/store/modules/credits.js'
+import * as ui from '@/store/modules/ui_state.js'
 
 Vue.use(Vuex)
 
@@ -34,6 +35,7 @@ export default new Vuex.Store({
     earnings,
     categories,
     credits,
+    ui,
   },
   state: {},
 })

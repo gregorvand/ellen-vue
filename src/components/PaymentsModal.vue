@@ -1,5 +1,5 @@
 <template>
-  <div class="modal payments" :class="status">
+  <div class="modal payments" :class="ui.payment_modal">
     <div class="container">
       <button class="close" @click="close()">X</button>
       <div class="toggle-container">
@@ -31,6 +31,7 @@
 <script>
 import PaymentsSingle from '@/components/PaymentsSingle'
 import PaymentsSubscription from '@/components/PaymentsSubscription'
+import { mapState } from 'vuex'
 export default {
   components: {
     PaymentsSubscription,
@@ -43,12 +44,15 @@ export default {
     }
   },
   methods: {
+    close() {
+      this.$store.dispatch('ui/togglePaymentModal', 'closed')
+    },
     toggleMode(mode) {
       this.mode = mode
     },
-    close() {
-      this.status = 'closed'
-    },
+  },
+  computed: {
+    ...mapState(['ui', 'payment_modal']),
   },
 }
 </script>
