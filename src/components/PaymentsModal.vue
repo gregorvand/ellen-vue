@@ -3,12 +3,12 @@
     <button @click="close()">X</button>
     <div class="container">
       <div class="toggle-container">
-        <button @click="toggleMode('subscription')">Subscribe</button>
         <button @click="toggleMode('single')">Single</button>
+        <button @click="toggleMode('subscription')">Subscribe</button>
       </div>
       <div class="fixed-height">
         <div v-if="mode == 'single'">
-          <Payments />
+          <PaymentsSingle />
         </div>
         <div v-if="mode == 'subscription'">
           <PaymentsSubscription />
@@ -19,12 +19,12 @@
 </template>
 
 <script>
-import Payments from '@/components/Payments'
+import PaymentsSingle from '@/components/PaymentsSingle'
 import PaymentsSubscription from '@/components/PaymentsSubscription'
 export default {
   components: {
     PaymentsSubscription,
-    Payments,
+    PaymentsSingle,
   },
   data: function () {
     return {
