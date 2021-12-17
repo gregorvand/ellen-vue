@@ -156,10 +156,10 @@ ul.list {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: rgba(221, 221, 221, 0.7);
 
   .container {
-    border: solid black 2px;
+    border: solid $color-ellen-light-gray 2px;
     display: flex;
     align-items: center;
     justify-content: center;

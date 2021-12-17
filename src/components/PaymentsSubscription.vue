@@ -1,6 +1,7 @@
 <template>
-  <div class="form-container">
-    <h3>Buy credits (Subscription)</h3>
+  <div class="payments form-container">
+    <h3>Credit Monthly Subscription</h3>
+    Select Number of Credits to add
     <div class="credit-selection">
       <div v-for="valueAmount in creditValues" :key="'radio-' + valueAmount.id">
         <input
@@ -16,8 +17,8 @@
     </div>
 
     <div class="stored-card-wrapper" v-if="!cardsLoading">
-      <div v-if="storedCards.length > 0">
-        Stored cards
+      Stored cards
+      <div class="overflow-y" v-if="storedCards.length > 0">
         <div v-for="storedCard in storedCards" :key="storedCard.id">
           <div class="card">
             <input
@@ -41,7 +42,7 @@
     </div>
     <div class="stripe-card-form">
       <div class="card-inputs" :class="{ hide: selectedCardId !== '' }">
-        <label>Card Number</label>
+        <label>Payment Card details</label>
         <!-- form populates from library -->
         <div id="card" class="card"></div>
         <span id="card-error">{{ cardError }}</span>
@@ -61,8 +62,11 @@
         <!-- TODO: API-based real-time cost of tokens? Could not see immediately how to do that -->
       </button>
       <span class="subscribe-blurb">
-        Can be cancelled at any time from your dashboard.</span
-      >
+        Can be cancelled at any time from your dashboard.
+        <br />
+        All payments and stored card details handled securley by
+        <a href="https://stripe.com/" target="_blank">Stripe</a>
+      </span>
     </div>
     <div v-if="isProcessing" class="loading-coin">
       <strong>Processing payment</strong>
@@ -236,134 +240,4 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
-.form-container {
-  position: relative;
-  width: 100%;
-  max-width: 500px;
-
-  .credit-selection {
-    display: flex;
-    width: 100%;
-    > div {
-      display: flex;
-      flex-basis: 45%;
-    }
-
-    > div {
-      color: black !important;
-
-      input {
-        color: black !important;
-      }
-
-      input[type='radio'] {
-        display: none;
-
-        &:checked {
-          + label {
-            background-color: $color-ellen-brand;
-          }
-        }
-      }
-    }
-  }
-
-  .card-inputs {
-    &.hide {
-      display: none;
-    }
-  }
-}
-
-.credit-selection {
-  label {
-    cursor: pointer;
-    display: flex;
-    border: solid $color-black 2px;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    margin: 2px;
-    border-radius: 5px;
-
-    &:hover {
-      background-color: $color-ellen-brand;
-    }
-  }
-}
-
-.summary {
-  text-align: left;
-}
-
-.subscribe-blurb {
-  font-size: 11px;
-}
-
-.stripe-card-form {
-  background-color: #fbfbfb;
-  padding: 10px;
-  border-radius: $border-radius;
-  width: 100%;
-
-  button {
-    width: 100%;
-    max-width: 100%;
-  }
-}
-
-.loading-coin {
-  top: 0;
-  width: 100%;
-  position: absolute;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  background-color: rgba(255, 255, 255, 0.9);
-
-  > img {
-    width: 100%;
-  }
-}
-
-.stored-card-wrapper {
-  min-height: 100px;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-
-  .card {
-    margin: 10px auto;
-    width: 250px;
-    display: flex;
-    height: 50px;
-    align-items: center;
-  }
-
-  input[type='radio'] {
-    display: none;
-  }
-  input + label {
-    background-color: $color-ellen-brand-bright;
-    border-radius: $border-radius;
-    padding: 10px;
-    margin: 10px;
-    width: 200px;
-    cursor: pointer;
-    border: solid 2px $color-ellen-dark;
-
-    &:hover {
-      background-color: $color-white;
-    }
-  }
-
-  input:checked + label {
-    background-color: $color-ellen-dark;
-    color: $color-ellen-brand-bright;
-  }
-}
-</style>
+<style scoped lang="scss"></style>
