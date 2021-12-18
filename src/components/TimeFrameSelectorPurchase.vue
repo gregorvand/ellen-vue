@@ -99,8 +99,7 @@ export default {
   },
   computed: {
     accessClass() {
-      return this.hasAccess.length == 0 &&
-        this.user.email !== `${process.env.VUE_APP_OVERRIDE_USER}`
+      return this.hasAccess.length == 0 && this.user.username !== 'admin'
         ? 'chart-unavailable'
         : 'available'
     },
