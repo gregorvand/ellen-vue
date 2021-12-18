@@ -18,7 +18,6 @@ export const mutations = {
 
 export const actions = {
   togglePaymentModal({ commit }, payload) {
-    console.log('togglePaymentModal', payload)
     commit('SET_PAYMENT_MODAL', payload)
   },
 }

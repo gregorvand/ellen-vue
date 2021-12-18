@@ -37,8 +37,6 @@ export const actions = {
       cardsAndSubsResult.data.cards
     )
 
-    console.log('combinedSubscriptionResult', combinedSubscriptionResult)
-
     commit('SET_CARDS_SUBS', combinedSubscriptionResult)
     commit('SET_CARDS', cardsAndSubsResult.data.cards)
   },
