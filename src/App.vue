@@ -1,6 +1,6 @@
 <template>
   <div id="app" :class="`app-wrapper ${$route.name}`">
-    <PaymentsModal v-if="loggedIn" @touchmove.prevent />
+    <PaymentsModal v-if="loggedIn" />
     <AppNav />
     <router-view :key="$route.fullPath" />
     <footer>
