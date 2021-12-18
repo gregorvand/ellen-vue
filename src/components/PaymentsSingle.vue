@@ -84,7 +84,7 @@ export default {
       chargeCredits: 0,
       creditValues: [
         // these will eventually come from API
-        { id: 1, value: 10, price: 30 },
+        { id: 1, value: 1, price: 1 },
         { id: 2, value: 20, price: 25 },
         { id: 3, value: 50, price: 20 },
         { id: 4, value: 100, price: 15 },
