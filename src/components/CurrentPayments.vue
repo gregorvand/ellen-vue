@@ -1,9 +1,9 @@
 <template>
   <div class="subscriptions-wrapper">
     <h3>Current Subscriptions</h3>
-    <div v-if="subscriptionsAndCards.length > 0">
+    <div v-if="cardsAndSubsResult.length > 0">
       <div
-        v-for="sub in subscriptionsAndCards"
+        v-for="sub in cardsAndSubsResult"
         :key="sub.id"
         class="subscription-wrapper"
       >
@@ -28,44 +28,21 @@
         </button>
       </div>
     </div>
-    <div v-if="subscriptionsAndCards.length <= 0 && !this.loading">
-      No active subscriptions
-    </div>
-    <div v-if="this.loading"><BaseLoadingSpinner /></div>
+    <div v-if="cardsAndSubsResult.length <= 0">No active subscriptions</div>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
-import { mergeById } from '@/helpers/data_utilities'
+import { mapState } from 'vuex'
 export default {
-  data() {
-    return {
-      subscriptionsAndCards: [],
-      loading: true,
-    }
+  computed: {
+    ...mapState('stripeData', ['cardsAndSubsResult']),
   },
   mounted() {
-    this.checkCardsAndSubscriptions()
+    this.$store.dispatch('stripeData/getCardsAndSubs')
   },
   methods: {
-    async checkCardsAndSubscriptions() {
-      const cardsAndSubsResult = await axios({
-        method: 'get',
-        url: `${process.env.VUE_APP_API_URL}/current-cards-subscriptions`,
-      })
-
-      // finds the associated card by payment ID and merges the result so that we have
-      // array of subscriptions and their payment method details in one place
-
-      const combinedSubscriptionResult = mergeById(
-        cardsAndSubsResult.data.subscriptions.data,
-        cardsAndSubsResult.data.cards
-      )
-
-      this.subscriptionsAndCards = combinedSubscriptionResult
-      this.loading = false
-    },
     async cancelSubscription(subId) {
       try {
         const cancelSubscription = await axios({
@@ -76,7 +53,7 @@ export default {
           },
         })
 
-        if (cancelSubscription.data.status == 'canceled') {
+        if (cancelSubscription.data) {
           this.checkCardsAndSubscriptions()
           const notification = {
             type: 'success',
@@ -132,10 +109,15 @@ h4 {
   }
 }
 
+$component-width: 100%;
+$component-max-width: 400px;
+
 .subscriptions-wrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  width: $component-width;
+  max-width: $component-max-width;
 
   .subscription-wrapper {
     border: solid $color-ellen-light-gray 2px;
@@ -145,7 +127,7 @@ h4 {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 500px;
+    max-width: $component-max-width;
   }
 }
 

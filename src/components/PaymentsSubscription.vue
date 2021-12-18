@@ -16,7 +16,7 @@
       </div>
     </div>
 
-    <div class="stored-card-wrapper" v-if="!cardsLoading">
+    <div class="stored-card-wrapper">
       Stored cards
       <div class="overflow-y" v-if="storedCards.length > 0">
         <div v-for="storedCard in storedCards" :key="storedCard.id">
@@ -36,9 +36,6 @@
         </div>
       </div>
       <div v-else>No stored cards, add a new one below</div>
-    </div>
-    <div class="stored-card-wrapper" v-else>
-      <BaseLoadingSpinner />
     </div>
     <div class="stripe-card-form">
       <div class="card-inputs" :class="{ hide: selectedCardId !== '' }">
@@ -97,7 +94,6 @@ export default {
       ],
       cardError: '',
       isProcessing: false,
-      storedCards: [],
       selectedCardId: '',
       cardsLoading: true,
     }
@@ -107,11 +103,12 @@ export default {
       return this.$stripe.elements()
     },
     ...mapState(['user', 'credits']),
+    ...mapState(['ui', 'payment_modal']),
     ...mapGetters('credits', ['currentCredits']),
+    ...mapState('stripeData', ['storedCards']),
   },
   mounted() {
     // Style Object documentation here: https://stripe.com/docs/js/appendix/style
-    this.getStoredCards()
     this.card = this.stripeElements.create('card', {
       iconStyle: 'solid',
       style: {
@@ -143,18 +140,7 @@ export default {
   },
   methods: {
     async getCreditPricing() {},
-    async getStoredCards() {
-      await this.createStripeCustomer()
-      const cardsAndSubsResult = await axios({
-        method: 'get',
-        url: `${process.env.VUE_APP_API_URL}/current-cards-subscriptions`,
-      })
-
-      this.storedCards = cardsAndSubsResult.data.cards
-      this.cardsLoading = false
-    },
     async chargeCard() {
-      await this.createStripeCustomer()
       const { token, error } = await this.$stripe.createToken(this.card)
 
       // error card input form unless user has since selected a stored card
@@ -222,19 +208,13 @@ export default {
           parseInt(currentBalance) + parseInt(this.chargeCredits.value)
         this.$store.dispatch('credits/setBalance', currentBalance)
 
+        this.$store.dispatch('ui/togglePaymentModal', 'closed')
         this.card.clear()
         this.cardError = ''
         this.chargeCredits = 0
         this.selectedCardId = ''
-        this.getStoredCards()
+        this.$store.dispatch('stripeData/getCardsAndSubs')
       }
-    },
-    async createStripeCustomer() {
-      // we create the customer when user clicks credits, since we can preempt we will then need the customer
-      return await axios({
-        method: 'post',
-        url: `${process.env.VUE_APP_API_URL}/create-stripe-customer`,
-      })
     },
   },
 }

@@ -2,11 +2,18 @@
   <div>
     <div v-if="loggedIn" class="logoutButton" @click="logout">Logout</div>
     <TransactionRecord />
-    <div class="container max-800">
-      <CurrentPayments />
-    </div>
-    <div>
-      <button @click="openPayments"></button>
+    <div class="container max-800 subscriptions-payments">
+      <div class="payment-control">
+        <h4>Credit Purchase</h4>
+        <p>
+          You can subscribe to credits every month or make one-off top ups.
+          <br />1 credit buys 1 month of data for a given company.
+        </p>
+        <button @click="openPayments">Subscribe / Top Up</button>
+      </div>
+      <div class="subscriptions-column">
+        <CurrentPayments />
+      </div>
     </div>
   </div>
 </template>
@@ -38,5 +45,33 @@ export default {
 <style lang="scss" scoped>
 .logoutButton {
   cursor: pointer;
+}
+
+.subscriptions-payments {
+  display: grid;
+  grid-template-columns: 1fr;
+
+  @include breakpoint(medium up) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  > div {
+    margin: 10px;
+  }
+}
+
+.payment-control {
+  height: 225px;
+  background-color: $color-ellen-light-gray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: $border-radius;
+  flex-direction: column;
+
+  p {
+    font-size: 13px;
+    padding: 0 70px;
+  }
 }
 </style>
