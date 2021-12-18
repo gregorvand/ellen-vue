@@ -88,6 +88,7 @@ export default {
         { id: 2, value: 20, price: 25 },
         { id: 3, value: 50, price: 20 },
         { id: 4, value: 100, price: 15 },
+        { id: 5, value: 1, price: 1 },
       ],
       cardError: '',
       isProcessing: false,
