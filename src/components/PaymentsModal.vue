@@ -95,10 +95,6 @@ button.close {
   display: flex;
   padding-bottom: 20px;
 
-  @include breakpoint(small only) {
-    margin-bottom: 30px;
-  }
-
   button {
     margin: 5px;
     background-color: transparent;

@@ -1,6 +1,8 @@
 <template>
   <div>
-    <div v-if="loggedIn" class="logoutButton" @click="logout">Logout</div>
+    <div v-if="loggedIn" class="logoutButton small-label" @click="logout">
+      Logout
+    </div>
     <TransactionRecord />
     <div class="container max-800 subscriptions-payments">
       <div class="payment-control">
@@ -45,6 +47,9 @@ export default {
 <style lang="scss" scoped>
 .logoutButton {
   cursor: pointer;
+  padding-right: 25px;
+  text-align: right;
+  padding-top: 10px;
 }
 
 .subscriptions-payments {
