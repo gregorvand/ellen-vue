@@ -35,7 +35,9 @@
           </div>
         </div>
       </div>
-      <div v-else>No stored cards, add a new one below</div>
+      <div v-else>
+        No stored cards, when you subscribe we will save your card details
+      </div>
     </div>
     <div class="stripe-card-form">
       <div class="card-inputs" :class="{ hide: selectedCardId !== '' }">

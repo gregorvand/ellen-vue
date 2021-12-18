@@ -11,7 +11,6 @@ import * as selectedDataSets from '@/store/modules/selectedDataSets.js'
 import * as selectedDataSetsV2 from '@/store/modules/selectedDataSetsV2.js'
 import * as userCompany from '@/store/modules/userCompany.js'
 import * as company from '@/store/modules/company.js'
-import * as earnings from '@/store/modules/earnings.js'
 import * as categories from '@/store/modules/categories.js'
 import * as selectedCategories from '@/store/modules/selectedCategories.js'
 import * as credits from '@/store/modules/credits.js'
@@ -33,7 +32,6 @@ export default new Vuex.Store({
     selectedDataSetsV2,
     userCompany,
     company,
-    earnings,
     categories,
     credits,
     ui,

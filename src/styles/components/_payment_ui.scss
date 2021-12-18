@@ -56,6 +56,10 @@
     border-radius: 5px;
     background-color: $color-ellen-gray-transparent;
 
+    @include breakpoint(small only) {
+      height: 50px;
+    }
+
     &:hover {
       border: solid $color-ellen-dark 2px;
     }

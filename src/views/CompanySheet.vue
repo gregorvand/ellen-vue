@@ -1,20 +1,25 @@
 <template>
   <div class="inner-container max-width">
-    <div class="container row">
+    <div class="container row mobile-column">
       <div class="company-sheet-name">
         <h1 v-if="companyObject.data">
           {{ companyObject.data.nameIdentifier }}
         </h1>
         <h4 v-if="companyObject.data !== undefined">
           {{ companyDomain }} <br />
-          <!-- {{ companyObject.data.emailIdentifier }} -->
+          {{ companyObject.data.emailIdentifier }}
         </h4>
         <h1 v-else><BaseLoadingSpinner /></h1>
       </div>
       <div>
         <span class="key-line"></span>
         <!-- v if company is Edison -->
-        <button v-if="!isFollowed" @click="followUnfollow" ref="followButton">
+        <button
+          v-if="!isFollowed"
+          @click="followUnfollow"
+          ref="followButton"
+          class="no-mobile"
+        >
           Follow
         </button>
         <span>Avg orders/month</span>
@@ -129,18 +134,31 @@ export default {
     flex-direction: row;
     justify-content: flex-start;
     text-align: left;
+
+    @include breakpoint(small only) {
+      flex-direction: column;
+      width: 100%;
+    }
   }
 }
 
 .additional-metrics {
   margin: $global-margin auto;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   width: 100%;
+
+  @include breakpoint(medium up) {
+    flex-direction: row;
+  }
 
   .inner-container {
     flex-direction: column;
-    width: 50%;
+    width: 100%;
+
+    @include breakpoint(medium up) {
+      width: 50%;
+    }
   }
 
   border-top: solid $color-ellen-dark-gray thin;

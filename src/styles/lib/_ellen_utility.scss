@@ -17,6 +17,12 @@ $inner-max-width: 700px;
     align-items: center;
     justify-content: space-between;
   }
+
+  &.mobile-column {
+    @include breakpoint(small only) {
+      flex-direction: column;
+    }
+  }
 }
 
 .global-max-width {
@@ -164,5 +170,11 @@ ul.list {
     align-items: center;
     justify-content: center;
     background-color: white;
+  }
+}
+
+.no-mobile {
+  @include breakpoint(small only) {
+    display: none;
   }
 }
