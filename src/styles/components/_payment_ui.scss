@@ -1,0 +1,157 @@
+.payments.form-container {
+  position: relative;
+
+  .credit-selection {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr 1fr;
+
+    > div {
+      display: flex;
+      flex-basis: 45%;
+    }
+
+    > div {
+      color: black !important;
+
+      input {
+        color: black !important;
+      }
+
+      input[type='radio'] {
+        display: none;
+
+        &:checked {
+          + label {
+            background-color: $color-ellen-brand;
+          }
+        }
+      }
+    }
+  }
+
+  .card-inputs {
+    height: 60px;
+
+    label {
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    &.hide {
+      display: none;
+    }
+  }
+}
+
+.credit-selection {
+  label {
+    cursor: pointer;
+    display: flex;
+    border: solid transparent 2px;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 2px;
+    border-radius: 5px;
+    background-color: $color-ellen-gray-transparent;
+
+    &:hover {
+      border: solid $color-ellen-dark 2px;
+    }
+  }
+}
+
+.summary {
+  text-align: left;
+}
+
+.subscribe-blurb {
+  font-size: 11px;
+  line-height: 1;
+  display: flex;
+  padding: 10px;
+  text-align: center;
+  height: 60px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.stripe-card-form {
+  background-color: #fbfbfb;
+  padding: 10px;
+  border-radius: $border-radius;
+  width: 100%;
+  height: 200px;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+
+  button {
+    width: 100%;
+    max-width: 100%;
+    font-size: rem-calc(14px);
+    padding: 10px 0;
+    height: 50px;
+  }
+}
+
+.loading-coin {
+  top: 0;
+  width: 100%;
+  position: absolute;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: rgba(255, 255, 255, 0.9);
+
+  > img {
+    width: 100%;
+  }
+}
+
+.stored-card-wrapper {
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 100%;
+  height: 100px;
+  margin-bottom: 10px;
+
+  div {
+    width: 100%;
+  }
+
+  .card {
+    margin: 10px auto;
+    width: 100%;
+    display: flex;
+    height: 20px;
+    align-items: center;
+  }
+
+  input[type='radio'] {
+    display: none;
+  }
+  input + label {
+    background-color: $color-ellen-brand-bright;
+    margin: 10px auto;
+    width: 100%;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $color-ellen-gray-transparent;
+    }
+  }
+
+  input:checked + label {
+    background-color: $color-ellen-dark;
+    color: $color-ellen-brand-bright;
+    border: solid 2px $color-ellen-dark;
+  }
+}

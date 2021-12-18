@@ -1,12 +1,12 @@
 <template>
   <div class="payments form-container">
-    <h3>Credit Monthly Subscription</h3>
+    <h3>Top up credits</h3>
     Select Number of Credits to add
     <div class="credit-selection">
       <div v-for="valueAmount in creditValues" :key="'radio-' + valueAmount.id">
         <input
           type="radio"
-          :value="valueAmount"
+          :value="{ valueAmount }"
           :id="'credit-selector-' + valueAmount.id"
           v-model="chargeCredits"
         />
@@ -46,22 +46,19 @@
       </div>
       <button
         id="custom-button"
-        @click="chargeCard"
+        @click="chargeCardSingle"
         :disabled="chargeCredits == 0"
       >
         <span v-if="chargeCredits == 0">Select Credits</span>
         <span v-else
-          >Subscribe ${{ chargeCredits.value * chargeCredits.price }} /month ({{
-            chargeCredits.value
-          }}
-          credits)</span
+          >Purchase {{ chargeCredits.valueAmount.value }} credits (${{
+            chargeCredits.valueAmount.value * chargeCredits.valueAmount.price
+          }})</span
         >
         <!-- TODO: API-based real-time cost of tokens? Could not see immediately how to do that -->
       </button>
       <span class="subscribe-blurb">
-        Can be cancelled at any time from your dashboard.
-        <br />
-        All payments and stored card details handled securley by
+        All payments handled securely by
         <a href="https://stripe.com/" target="_blank">Stripe</a>
       </span>
     </div>
@@ -103,12 +100,12 @@ export default {
       return this.$stripe.elements()
     },
     ...mapState(['user', 'credits']),
-    ...mapState(['ui', 'payment_modal']),
     ...mapGetters('credits', ['currentCredits']),
     ...mapState('stripeData', ['storedCards']),
   },
   mounted() {
     // Style Object documentation here: https://stripe.com/docs/js/appendix/style
+
     this.card = this.stripeElements.create('card', {
       iconStyle: 'solid',
       style: {
@@ -139,26 +136,20 @@ export default {
     this.card.destroy()
   },
   methods: {
-    async getCreditPricing() {},
-    async chargeCard() {
-      const { token, error } = await this.$stripe.createToken(this.card)
-
-      // error card input form unless user has since selected a stored card
-      if (error && this.selectedCardId === '') {
-        // handle error here
-        this.cardError = error.message
-        return
-      }
+    async chargeCardSingle() {
       this.isProcessing = true
-
       // handle the token
       // send it to your server
-      const createSubscription = await axios({
+
+      const amountToCharge =
+        this.chargeCredits.valueAmount.value *
+        this.chargeCredits.valueAmount.price
+
+      const createIntent = await axios({
         method: 'post',
-        url: `${process.env.VUE_APP_API_URL}/create-subscription`,
+        url: `${process.env.VUE_APP_API_URL}/create-payment-intent`,
         data: {
-          priceId: `${process.env.VUE_APP_STRIPE_SUBSCRIPTION_ID}`,
-          quantity: parseInt(this.chargeCredits.value),
+          chargeAmount: amountToCharge * 100,
         },
       })
 
@@ -166,22 +157,21 @@ export default {
 
       if (this.selectedCardId === '') {
         paymentMethod = {
-          payment_method: {
-            card: this.card,
-            billing_details: {
-              email: this.user.user.email,
-            },
+          card: this.card,
+          billing_details: {
+            email: this.user.user.email,
           },
         }
       } else {
-        paymentMethod = {
-          payment_method: this.selectedCardId,
-        }
+        paymentMethod = this.selectedCardId
       }
 
       const makeCharge = await this.$stripe.confirmCardPayment(
-        createSubscription.data.clientSecret,
-        paymentMethod
+        createIntent.data.clientSecret,
+        {
+          payment_method: paymentMethod,
+          receipt_email: 'gregor+receipt@ellen.me',
+        }
       )
 
       if (makeCharge.error) {
@@ -193,11 +183,10 @@ export default {
           root: true,
         })
         this.isProcessing = false
-        this.selectedCardId = ''
       } else {
         const notification = {
           type: 'success',
-          message: `${this.chargeCredits.value} credits added! 💰`,
+          message: `${this.chargeCredits.valueAmount.value} credits added! 💰`,
         }
         this.isProcessing = false
         this.$store.dispatch('notification/add', notification, {
@@ -205,7 +194,8 @@ export default {
         })
         let currentBalance = this.$store.getters['credits/currentCredits']
         currentBalance =
-          parseInt(currentBalance) + parseInt(this.chargeCredits.value)
+          parseInt(currentBalance) +
+          parseInt(this.chargeCredits.valueAmount.value)
         this.$store.dispatch('credits/setBalance', currentBalance)
 
         this.$store.dispatch('ui/togglePaymentModal', 'closed')

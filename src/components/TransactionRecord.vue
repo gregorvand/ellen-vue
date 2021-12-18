@@ -49,6 +49,7 @@ export default {
   filters: {
     plusMinus: function (value) {
       parseInt(value)
+      value = parseInt(value)
       if (value > 0) {
         return `+ ${value}`
       } else {

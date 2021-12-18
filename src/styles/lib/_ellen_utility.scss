@@ -24,6 +24,12 @@ $inner-max-width: 700px;
   margin: 0 auto;
 }
 
+.max-800 {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0;
+}
+
 .inner-container {
   max-width: $global-max-width;
   display: flex;
@@ -139,4 +145,24 @@ ul.list {
 
 .overflow-y {
   overflow-y: scroll;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(221, 221, 221, 0.7);
+
+  .container {
+    border: solid $color-ellen-light-gray 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+  }
 }

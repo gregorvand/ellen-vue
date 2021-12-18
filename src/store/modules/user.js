@@ -11,6 +11,7 @@ export const mutations = {
     state.user = userData
     localStorage.setItem('user', JSON.stringify(userData))
     axios.defaults.headers.common['Authorization'] = `Bearer ${userData.token}`
+    createStripeCustomer()
   },
   LOGOUT() {
     localStorage.removeItem('user')
@@ -51,4 +52,12 @@ export const getters = {
   userObject(state) {
     return state.user
   },
+}
+
+async function createStripeCustomer() {
+  // we create the customer when user clicks credits, since we can preempt we will then need the customer
+  return axios({
+    method: 'post',
+    url: `${process.env.VUE_APP_API_URL}/create-stripe-customer`,
+  })
 }
