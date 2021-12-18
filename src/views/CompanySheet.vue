@@ -174,6 +174,10 @@ export default {
     opacity: 0.4;
     max-width: 450px;
     width: 100%;
+
+    @include breakpoint(small only) {
+      padding: 10px;
+    }
   }
 }
 </style>

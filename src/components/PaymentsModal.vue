@@ -71,9 +71,10 @@ export default {
 .container {
   position: relative;
   max-width: 500px;
+  height: 100%;
 
-  @include breakpoint(small only) {
-    height: 100%;
+  @include breakpoint(medium up) {
+    height: 620px;
   }
 }
 
@@ -92,6 +93,7 @@ button.close {
 
 .toggle-container {
   display: flex;
+  padding-bottom: 20px;
 
   @include breakpoint(small only) {
     margin-bottom: 30px;

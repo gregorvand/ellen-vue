@@ -26,7 +26,9 @@
       <div
         v-if="monthsAvailable[0] != 'loading'"
         class="months-available-wrapper"
-        :class="{ active: monthsAvailable.length > 0 }"
+        :class="{
+          active: monthsAvailable.length > 0 && lockedMonths.length > 0,
+        }"
       >
         <DateSelector
           v-for="month in lockedMonths"
@@ -464,7 +466,7 @@ ul.year-select {
     width: 100%;
     max-width: none;
     line-height: 1;
-    background-color: #75c3ff;
+    background-color: #03599b;
   }
 
   .credit-cost {
