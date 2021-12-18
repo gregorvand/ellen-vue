@@ -399,7 +399,6 @@ ul.year-select {
 .months-available-wrapper {
   height: auto;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
   width: 100%;
   overflow-x: scroll;
   overflow-y: hidden;
@@ -417,6 +416,7 @@ ul.year-select {
 
   &.active {
     animation: data-enter-up 1s forwards;
+    grid-template-columns: repeat(4, 1fr);
 
     @include breakpoint(small only) {
       justify-content: space-between;

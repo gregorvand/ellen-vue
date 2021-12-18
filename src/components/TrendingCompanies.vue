@@ -44,11 +44,15 @@ export default {
 
 <style lang="scss" scoped>
 .trending-companies {
-  margin: $global-margin auto;
+  margin: 0 auto $global-margin auto;
+
+  @include breakpoint(medium up) {
+    margin: $global-margin auto;
+  }
 
   &.list {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
     width: 100%;
 
     .company-selector {

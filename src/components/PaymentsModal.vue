@@ -61,6 +61,7 @@ export default {
 .modal {
   &.open {
     display: flex;
+    z-index: 100;
   }
 
   &.closed {
@@ -70,6 +71,10 @@ export default {
 .container {
   position: relative;
   max-width: 500px;
+
+  @include breakpoint(small only) {
+    height: 100%;
+  }
 }
 
 button.close {
@@ -88,6 +93,10 @@ button.close {
 .toggle-container {
   display: flex;
 
+  @include breakpoint(small only) {
+    margin-bottom: 30px;
+  }
+
   button {
     margin: 5px;
     background-color: transparent;
@@ -103,7 +112,7 @@ button.close {
 
 .fixed-height {
   height: 400px;
-  width: 300px;
+  width: 100%;
 
   > div {
     width: 100%;

@@ -110,7 +110,11 @@ h4 {
   span {
     text-align: right;
     border-bottom: solid #efeffe thin;
-    font-size: rem-calc(14px);
+    font-size: rem-calc(11px);
+
+    @include breakpoint(medium up) {
+      font-size: rem-calc(14px);
+    }
   }
 
   &.headers {

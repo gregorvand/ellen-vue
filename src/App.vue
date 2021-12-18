@@ -1,5 +1,5 @@
 <template>
-  <div id="app" :class="'app-wrapper ' + $route.name">
+  <div id="app" :class="`app-wrapper ${$route.name}`">
     <PaymentsModal v-if="loggedIn" />
     <AppNav />
     <router-view :key="$route.fullPath" />
@@ -31,13 +31,11 @@ export default {
   components: {
     AppNav,
     PaymentsModal,
-    // NotificationContainer,
   },
   computed: {
     ...authComputed,
   },
 }
-// comment for deploy
 </script>
 <style lang="scss">
 @import './styles/global.scss';
@@ -54,9 +52,16 @@ export default {
   justify-content: flex-start;
   height: auto;
   min-height: 100vh;
+  z-index: 1;
+  position: relative;
+
+  // when payment modal open..
+  &.open {
+    overflow: hidden;
+  }
 
   @include breakpoint(small only) {
-    padding: 10px;
+    // padding: 10px;
     padding-bottom: $mobile-footer-nav-height + 20px;
 
     &.home {
