@@ -53,8 +53,8 @@ export default {
           },
         })
 
-        if (cancelSubscription.data) {
-          this.checkCardsAndSubscriptions()
+        if (cancelSubscription.data.status === 'canceled') {
+          this.$store.dispatch('stripeData/getCardsAndSubs')
           const notification = {
             type: 'success',
             message: `We have just canceled this subscription and no further payments will be taken`,

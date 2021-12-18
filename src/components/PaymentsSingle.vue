@@ -150,7 +150,7 @@ export default {
         method: 'post',
         url: `${process.env.VUE_APP_API_URL}/create-payment-intent`,
         data: {
-          chargeAmount: parseInt(amountToCharge),
+          chargeAmount: amountToCharge,
         },
       })
 
@@ -166,8 +166,6 @@ export default {
       } else {
         paymentMethod = this.selectedCardId
       }
-
-      console.log('well', paymentMethod)
 
       const makeCharge = await this.$stripe.confirmCardPayment(
         createIntent.data.clientSecret,
