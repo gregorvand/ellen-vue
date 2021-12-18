@@ -145,7 +145,6 @@ export default {
         this.chargeCredits.valueAmount.value *
         this.chargeCredits.valueAmount.price
 
-      console.log('want to charge', amountToCharge)
       const createIntent = await axios({
         method: 'post',
         url: `${process.env.VUE_APP_API_URL}/create-payment-intent`,
