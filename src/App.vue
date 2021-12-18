@@ -1,6 +1,6 @@
 <template>
   <div id="app" :class="'app-wrapper ' + $route.name">
-    <PaymentsModal />
+    <PaymentsModal v-if="loggedIn" />
     <AppNav />
     <router-view :key="$route.fullPath" />
     <footer>
@@ -19,7 +19,7 @@
 import AppNav from '@/components/AppNav.vue'
 import PaymentsModal from '@/components/PaymentsModal.vue'
 // import NotificationContainer from '@/components/NotificationContainer.vue'
-
+import { authComputed } from '@/store/helpers.js'
 export default {
   name: 'Ellen',
   metaInfo: {
@@ -32,6 +32,9 @@ export default {
     AppNav,
     PaymentsModal,
     // NotificationContainer,
+  },
+  computed: {
+    ...authComputed,
   },
 }
 // comment for deploy
