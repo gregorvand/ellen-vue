@@ -149,7 +149,7 @@ export default {
         method: 'post',
         url: `${process.env.VUE_APP_API_URL}/create-payment-intent`,
         data: {
-          chargeAmount: amountToCharge,
+          chargeAmount: amountToCharge * 100,
         },
       })
 
