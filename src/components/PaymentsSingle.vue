@@ -1,7 +1,10 @@
 <template>
   <div class="payments form-container">
     <h3>Top up credits</h3>
-    Select Number of Credits to add
+    <span class="small-label"
+      >Select Number of Credits to add :: 1 credit buys 1 month of data. All
+      price in USD</span
+    >
     <div class="credit-selection">
       <div v-for="valueAmount in creditValues" :key="'radio-' + valueAmount.id">
         <input
@@ -10,14 +13,17 @@
           :id="'credit-selector-' + valueAmount.id"
           v-model="chargeCredits"
         />
-        <label :for="'credit-selector-' + valueAmount.id">{{
-          valueAmount.value
-        }}</label>
+        <label :for="'credit-selector-' + valueAmount.id"
+          >{{ valueAmount.value
+          }}<span class="price-label"
+            >${{ valueAmount.value * valueAmount.price }}</span
+          ></label
+        >
       </div>
     </div>
 
     <div class="stored-card-wrapper">
-      Stored cards
+      <h4>Stored cards</h4>
       <div class="overflow-y" v-if="storedCards.length > 0">
         <div v-for="storedCard in storedCards" :key="storedCard.id">
           <div class="card">

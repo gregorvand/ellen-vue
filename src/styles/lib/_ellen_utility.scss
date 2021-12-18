@@ -140,6 +140,14 @@ ul.list {
   }
 }
 
+.small-label {
+  font-size: $small-label-font-size;
+  width: 100%;
+  text-align: center;
+  line-height: 1;
+  display: inline-block;
+}
+
 .not-tablet {
   @include breakpoint(medium only) {
     display: none;
