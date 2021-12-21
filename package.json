@@ -29,10 +29,12 @@
     "vue": "^2.6.14",
     "vue-chart-3": "^0.4.12",
     "vue-meta": "^2.4.0",
+    "vue-password-strength-meter": "^1.7.2",
     "vue-router": "^3.5.2",
     "vue2-touch-events": "^3.2.2",
     "vuejs-datepicker": "^1.6.2",
-    "vuex": "^3.4.0"
+    "vuex": "^3.4.0",
+    "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

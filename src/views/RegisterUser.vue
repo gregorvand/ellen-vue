@@ -11,19 +11,20 @@
           value
           placeholder="Email"
         />
-
-        <!-- <label for="password"> Password </label> -->
-        <input
+        <password
           v-model="password"
-          type="password"
-          name="password"
-          value
-          placeholder="Choose password (min 8 characters)"
+          @feedback="showFeedback"
+          defaultClass="ellen-input"
+          :secureLength="8"
+          :badge="false"
+          :placeholder="'Choose password'"
         />
 
         <button type="submit" name="button">Register</button>
       </div>
-      <div class="flex-wrapper">
+      <div class="flex-wrapper password-suggestions">
+        <span>{{ passSuggestions.suggestions[0] }}</span>
+        <span>{{ passSuggestions.warnings }}</span>
         <p>{{ error }}</p>
       </div>
 
@@ -40,14 +41,18 @@
 
 <script>
 import { mapState } from 'vuex'
+import Password from 'vue-password-strength-meter'
 export default {
+  components: { Password },
   data() {
     return {
       fname: '',
       lname: '',
       email: '',
-      password: '',
+      password: null,
       error: null,
+      suggestions: '',
+      warnings: '',
     }
   },
   methods: {
@@ -70,6 +75,12 @@ export default {
           this.error = errorMessages
         })
     },
+    showFeedback({ suggestions, warning }) {
+      console.log('🙏', suggestions)
+      this.suggestions = suggestions
+      console.log('⚠', warning)
+      this.warnings = warning
+    },
     scrollToTop() {
       window.scrollTo({
         top: 0,
@@ -78,6 +89,9 @@ export default {
     },
   },
   computed: {
+    passSuggestions() {
+      return { suggestions: this.suggestions, warnings: this.warnings }
+    },
     ...mapState('selectedCompanies', ['selectedCompanies']),
     ...mapState('selectedCategories', ['selectedCategories']),
     allSelectedCompanies() {
@@ -105,13 +119,20 @@ export default {
     width: 100%;
   }
 
+  .password-suggestions {
+    flex-direction: column;
+    font-size: 11px;
+    margin-top: 20px;
+  }
+
   form {
     display: flex;
     flex-direction: column;
     width: 100%;
 
     button,
-    input {
+    input,
+    .ellen-input {
       margin: 10px auto;
       height: 50px;
 
@@ -122,6 +143,10 @@ export default {
 
     button {
       width: 30%;
+    }
+
+    .Password__field {
+      color: red;
     }
   }
 }

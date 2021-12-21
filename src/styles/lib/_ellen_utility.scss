@@ -186,3 +186,12 @@ ul.list {
     display: none;
   }
 }
+
+.ellen-input, .Password {
+  height: 50px;
+  border-radius: $border-radius;
+  min-width: 250px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  text-align: center;
+}
