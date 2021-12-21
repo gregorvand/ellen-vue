@@ -14,13 +14,21 @@
         <password
           v-model="password"
           @feedback="showFeedback"
+          @score="showScore"
           defaultClass="ellen-input"
           :secureLength="8"
           :badge="false"
           :placeholder="'Choose password'"
         />
 
-        <button type="submit" name="button">Register</button>
+        <button
+          type="submit"
+          name="button"
+          :class="{ active: passwordScore > 2 }"
+          class="register-button"
+        >
+          Register
+        </button>
       </div>
       <div class="flex-wrapper password-suggestions">
         <span>{{ passSuggestions.suggestions[0] }}</span>
@@ -53,6 +61,7 @@ export default {
       error: null,
       suggestions: '',
       warnings: '',
+      passwordScore: 0,
     }
   },
   methods: {
@@ -76,10 +85,12 @@ export default {
         })
     },
     showFeedback({ suggestions, warning }) {
-      console.log('🙏', suggestions)
       this.suggestions = suggestions
-      console.log('⚠', warning)
       this.warnings = warning
+    },
+    showScore(score) {
+      console.log('💯', score)
+      this.passwordScore = score
     },
     scrollToTop() {
       window.scrollTo({
@@ -143,6 +154,16 @@ export default {
 
     button {
       width: 30%;
+    }
+
+    .register-button {
+      opacity: 0.5;
+      pointer-events: none;
+
+      &.active {
+        opacity: 1;
+        pointer-events: all;
+      }
     }
 
     .Password__field {
