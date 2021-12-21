@@ -11,19 +11,28 @@
           value
           placeholder="Email"
         />
-
-        <!-- <label for="password"> Password </label> -->
-        <input
+        <password
           v-model="password"
-          type="password"
-          name="password"
-          value
-          placeholder="Choose password (min 8 characters)"
+          @feedback="showFeedback"
+          @score="showScore"
+          defaultClass="ellen-input"
+          :secureLength="8"
+          :badge="false"
+          :placeholder="'Choose password'"
         />
 
-        <button type="submit" name="button">Register</button>
+        <button
+          type="submit"
+          name="button"
+          :class="{ active: passwordScore > 2 }"
+          class="register-button"
+        >
+          Register
+        </button>
       </div>
-      <div class="flex-wrapper">
+      <div class="flex-wrapper password-suggestions">
+        <span>{{ passSuggestions.suggestions[0] }}</span>
+        <span>{{ passSuggestions.warnings }}</span>
         <p>{{ error }}</p>
       </div>
 
@@ -40,14 +49,19 @@
 
 <script>
 import { mapState } from 'vuex'
+import Password from 'vue-password-strength-meter'
 export default {
+  components: { Password },
   data() {
     return {
       fname: '',
       lname: '',
       email: '',
-      password: '',
+      password: null,
       error: null,
+      suggestions: '',
+      warnings: '',
+      passwordScore: 0,
     }
   },
   methods: {
@@ -70,6 +84,13 @@ export default {
           this.error = errorMessages
         })
     },
+    showFeedback({ suggestions, warning }) {
+      this.suggestions = suggestions
+      this.warnings = warning
+    },
+    showScore(score) {
+      this.passwordScore = score
+    },
     scrollToTop() {
       window.scrollTo({
         top: 0,
@@ -78,6 +99,9 @@ export default {
     },
   },
   computed: {
+    passSuggestions() {
+      return { suggestions: this.suggestions, warnings: this.warnings }
+    },
     ...mapState('selectedCompanies', ['selectedCompanies']),
     ...mapState('selectedCategories', ['selectedCategories']),
     allSelectedCompanies() {
@@ -105,13 +129,20 @@ export default {
     width: 100%;
   }
 
+  .password-suggestions {
+    flex-direction: column;
+    font-size: 11px;
+    margin-top: 20px;
+  }
+
   form {
     display: flex;
     flex-direction: column;
     width: 100%;
 
     button,
-    input {
+    input,
+    .ellen-input {
       margin: 10px auto;
       height: 50px;
 
@@ -122,6 +153,20 @@ export default {
 
     button {
       width: 30%;
+    }
+
+    .register-button {
+      opacity: 0.5;
+      pointer-events: none;
+
+      &.active {
+        opacity: 1;
+        pointer-events: all;
+      }
+    }
+
+    .Password__field {
+      color: red;
     }
   }
 }
