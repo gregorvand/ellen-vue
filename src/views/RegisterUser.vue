@@ -89,7 +89,6 @@ export default {
       this.warnings = warning
     },
     showScore(score) {
-      console.log('💯', score)
       this.passwordScore = score
     },
     scrollToTop() {
