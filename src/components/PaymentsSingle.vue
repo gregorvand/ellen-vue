@@ -22,9 +22,9 @@
       </div>
     </div>
 
-    <div class="stored-card-wrapper">
+    <div class="stored-card-wrapper" v-if="storedCards.length > 0">
       <h4>Stored cards</h4>
-      <div class="overflow-y" v-if="storedCards.length > 0">
+      <div class="overflow-y">
         <div v-for="storedCard in storedCards" :key="storedCard.id">
           <div class="card">
             <input
@@ -40,9 +40,6 @@
             </label>
           </div>
         </div>
-      </div>
-      <div v-else>
-        No stored cards, when you subscribe we will save your card details
       </div>
     </div>
     <div class="stripe-card-form">
@@ -86,17 +83,17 @@ import axios from 'axios'
 import { mapState, mapGetters } from 'vuex'
 export default {
   data() {
+    const multiplier = 1.5
     return {
       token: null,
       card: null,
       chargeCredits: 0,
       creditValues: [
         // these will eventually come from API
-        { id: 1, value: 10, price: 30 },
-        { id: 2, value: 20, price: 25 },
-        { id: 3, value: 50, price: 20 },
-        { id: 4, value: 100, price: 15 },
-        { id: 5, value: 1, price: 1 },
+        { id: 1, value: 10, price: 30 * multiplier },
+        { id: 2, value: 20, price: 25 * multiplier },
+        { id: 3, value: 50, price: 20 * multiplier },
+        { id: 4, value: 100, price: 15 * multiplier },
       ],
       cardError: '',
       isProcessing: false,
