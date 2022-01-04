@@ -22,9 +22,9 @@
       </div>
     </div>
 
-    <div class="stored-card-wrapper">
+    <div class="stored-card-wrapper" v-if="storedCards.length > 0">
       <h4>Stored cards</h4>
-      <div class="overflow-y" v-if="storedCards.length > 0">
+      <div class="overflow-y">
         <div v-for="storedCard in storedCards" :key="storedCard.id">
           <div class="card">
             <input
@@ -40,9 +40,6 @@
             </label>
           </div>
         </div>
-      </div>
-      <div v-else>
-        No stored cards, when you subscribe we will save your card details
       </div>
     </div>
     <div class="stripe-card-form">

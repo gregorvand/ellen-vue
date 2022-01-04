@@ -21,9 +21,9 @@
         >
       </div>
     </div>
-    <div class="stored-card-wrapper">
+    <div class="stored-card-wrapper" v-if="storedCards.length > 0">
       <h4>Stored cards</h4>
-      <div class="overflow-y" v-if="storedCards.length > 0">
+      <div class="overflow-y">
         <div v-for="storedCard in storedCards" :key="storedCard.id">
           <div class="card">
             <input
@@ -40,7 +40,6 @@
           </div>
         </div>
       </div>
-      <div v-else>No stored cards, add a new one below</div>
     </div>
     <div class="stripe-card-form">
       <div class="card-inputs" :class="{ hide: selectedCardId !== '' }">
@@ -66,7 +65,7 @@
       <span class="subscribe-blurb">
         Can be cancelled at any time from your dashboard.
         <br />
-        All payments and stored card details handled securley by
+        All payments and stored card details handled securely by
         <a href="https://stripe.com/" target="_blank">Stripe</a>
       </span>
     </div>
