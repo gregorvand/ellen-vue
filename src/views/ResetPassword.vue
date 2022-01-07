@@ -67,7 +67,6 @@ export default {
         },
       })
         .then((res) => {
-          console.log(res)
           if (res.status == 200) {
             this.error = res.data.error
             this.showRedirect = true

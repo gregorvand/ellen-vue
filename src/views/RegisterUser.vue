@@ -68,7 +68,6 @@ export default {
   methods: {
     register() {
       if (this.passwordScore > 2) {
-        console.log('yep')
         this.$store
           .dispatch('user/register', {
             firstName: this.fname,
