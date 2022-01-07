@@ -9,6 +9,8 @@ import Dashboard from '@/views/Dashboard.vue'
 import Account from '@/views/Account.vue'
 import RegisterUser from '@/views/RegisterUser.vue'
 import LoginUser from '@/views/LoginUser.vue'
+import ForgotPassword from '@/views/ForgotPassword.vue'
+import ResetPassword from '@/views/ResetPassword.vue'
 import CompanySheet from '@/views/CompanySheet.vue'
 import EarningsFeed from '@/views/EarningsFeed.vue'
 
@@ -68,6 +70,16 @@ const routes = [
     path: '/login',
     name: 'login',
     component: LoginUser,
+  },
+  {
+    path: '/forgot-password',
+    name: 'forgot-password',
+    component: ForgotPassword,
+  },
+  {
+    path: '/reset-password/:token',
+    name: 'reset-password',
+    component: ResetPassword,
   },
   {
     path: '/company/:id',

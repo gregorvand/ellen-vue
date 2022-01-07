@@ -1,47 +1,51 @@
 <template>
   <div>
     <div class="title-banner-group">
-      <h1>Login</h1>
+      <h1>Forgot password</h1>
+      <p>Enter the email below that you used to sign up for Ellen.</p>
     </div>
-    <form @submit.prevent="login">
-      <label for="email"> Email: </label>
-      <input v-model="email" type="email" name="email" value />
+    <form @submit.prevent="forgotPassword">
+      <input
+        v-model="email"
+        type="email"
+        name="email"
+        value
+        placeholder="Your Ellen user email"
+      />
 
-      <label for="password"> Password: </label>
-      <input v-model="password" type="password" name="password" value />
+      <button type="submit" name="button">Request Password Reset</button>
 
-      <button type="submit" name="button">Login</button>
-
+      <p>{{ message }}</p>
       <p>{{ error }}</p>
 
       <router-link to="/register" class="small-link">
         Don't have an account? Register.
-      </router-link>
-      <router-link to="/forgot-password" class="small-link">
-        Forgotten your password?
       </router-link>
     </form>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   data() {
     return {
       email: '',
-      password: '',
       error: null,
+      message: null,
     }
   },
   methods: {
-    login() {
-      this.$store
-        .dispatch('user/login', {
-          email: this.email,
-          password: this.password,
-        })
-        .then(() => {
-          this.$router.push({ name: 'dashboard' })
+    forgotPassword() {
+      axios({
+        method: 'put',
+        url: `${process.env.VUE_APP_API_URL}/api/forgot-password`,
+        data: {
+          userEmail: this.email,
+        },
+      })
+        .then((res) => {
+          this.message = res.data.message
         })
         .catch((err) => {
           this.error = err?.response?.data || err
@@ -67,6 +71,11 @@ form {
     align-items: center;
     border: solid $color-ellen-dark 2px;
     border-radius: $border-radius;
+    text-align: center;
   }
+}
+
+button {
+  max-width: unset;
 }
 </style>

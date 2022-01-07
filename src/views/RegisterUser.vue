@@ -26,6 +26,7 @@
           name="button"
           :class="{ active: passwordScore > 2 }"
           class="register-button"
+          @click="register"
         >
           Register
         </button>
@@ -66,23 +67,30 @@ export default {
   },
   methods: {
     register() {
-      this.$store
-        .dispatch('user/register', {
-          firstName: this.fname,
-          lastName: this.lname,
-          email: this.email,
-          password: this.password,
-          userCompanies: this.$store.getters['selectedCompanies/userCompanies'],
-        })
-        .then(() => {
-          this.$router.push({ name: 'dashboard' })
-        })
-        .catch((err) => {
-          let errorMessages = err.response.data.message.errors.map((error) => {
-            return error.message
+      if (this.passwordScore > 2) {
+        this.$store
+          .dispatch('user/register', {
+            firstName: this.fname,
+            lastName: this.lname,
+            email: this.email,
+            password: this.password,
+            userCompanies:
+              this.$store.getters['selectedCompanies/userCompanies'],
           })
-          this.error = errorMessages
-        })
+          .then(() => {
+            this.$router.push({ name: 'dashboard' })
+          })
+          .catch((err) => {
+            let errorMessages = err.response.data.message.errors.map(
+              (error) => {
+                return error.message
+              }
+            )
+            this.error = errorMessages
+          })
+      } else {
+        this.error = 'Password is not strong enough'
+      }
     },
     showFeedback({ suggestions, warning }) {
       this.suggestions = suggestions

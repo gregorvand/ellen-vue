@@ -36,6 +36,8 @@ body {
   padding: 0em;
   margin: 0em;
   text-align: center;
+  display: flex;
+  flex-direction: column;
 
   * {
     box-sizing: border-box;
@@ -43,6 +45,7 @@ body {
 
   @include breakpoint(medium up) {
     padding-top: $nav-height;
+    box-sizing: border-box;
   }
 }
 
