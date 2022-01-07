@@ -51,9 +51,9 @@ export default {
   flex-direction: column;
   justify-content: flex-start;
   height: auto;
-  min-height: 100vh;
   z-index: 1;
   position: relative;
+  flex: 1;
 
   // when payment modal open..
   &.open {
