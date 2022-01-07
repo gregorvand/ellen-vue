@@ -60,7 +60,7 @@ export default {
     resetPassword() {
       axios({
         method: 'put',
-        url: `${process.env.VUE_APP_API_URL}/reset-password`,
+        url: `${process.env.VUE_APP_API_URL}/api/reset-password`,
         data: {
           resetLink: this.$route.params.token,
           newPassword: this.password,

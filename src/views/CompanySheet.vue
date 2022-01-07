@@ -7,7 +7,9 @@
         </h1>
         <h4 v-if="companyObject.data !== undefined">
           {{ companyDomain }} <br />
-          {{ companyObject.data.emailIdentifier }}
+          <span v-if="this.user.username == 'admin'">{{
+            companyObject.data.emailIdentifier
+          }}</span>
         </h4>
         <h1 v-else><BaseLoadingSpinner /></h1>
       </div>
@@ -101,6 +103,7 @@ export default {
         : false
     },
     ...mapState('followedCompanies', ['followedCompanies']),
+    ...mapState('user', ['user']),
   },
   methods: {
     followUnfollow() {
