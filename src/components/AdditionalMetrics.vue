@@ -2,7 +2,7 @@
   <div>
     <div class="datapoint-row">
       <h4 class="small-label">AVG ORDER VALUE (US$)</h4>
-      <div>{{ aov }}</div>
+      <div class="aov">{{ aov }}</div>
     </div>
     <div class="datapoint-row">
       <h4 class="small-label">TOP SKUS</h4>
@@ -64,6 +64,10 @@ export default {
   > h4 {
     text-align: left;
     color: $color-ellen-dark;
+  }
+
+  .aov {
+    text-transform: capitalize;
   }
 }
 </style>
