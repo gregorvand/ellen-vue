@@ -33,7 +33,6 @@ export default {
   },
   methods: {
     getAov() {
-      console.log('yep', this.companyObject.data.emailIdentifier)
       this.$store.dispatch(
         'datapoints/fetchAov',
         this.companyObject.data.emailIdentifier
