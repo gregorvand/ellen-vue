@@ -20,7 +20,6 @@ export const mutations = {
 
 export const actions = {
   fetchAov({ commit }, payload) {
-    console.log('aov...', payload)
     axios({
       method: 'post',
       url: `${process.env.VUE_APP_API_URL}/api/aov`,
@@ -29,7 +28,6 @@ export const actions = {
       },
     })
       .then((aov) => {
-        console.log('aov result', aov)
         let aovResult
         if (aov.data == '') {
           commit('SET_AOV', 'coming soon')
