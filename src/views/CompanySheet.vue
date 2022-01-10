@@ -33,8 +33,11 @@
     />
     <section class="additional-metrics">
       <div class="inner-container">
-        <h4>Additional metrics</h4>
-        <img src="@/assets/additional_metrics.png" alt="hello" />
+        <h4>Additional metrics - Latest Full Month</h4>
+        <AdditionalMetrics
+          v-if="companyObject.data !== undefined"
+          :companyObject="companyObject"
+        />
         <h4>
           Contact <a href="mailto:mac@ellen.me">mac@ellen.me</a> for access
         </h4>
@@ -51,16 +54,17 @@
 <script>
 import LineChart from '@/components/ChartV3'
 import TrendingCompanies from '@/components/TrendingCompanies'
+import AdditionalMetrics from '@/components/AdditionalMetrics'
 import ChartDataService from '../services/ChartDataService'
 import { mapState } from 'vuex'
 import axios from 'axios'
-// import { computed } from 'vue-demi'
 
 export default {
   name: 'CompanyView',
   components: {
     LineChart,
     TrendingCompanies,
+    AdditionalMetrics,
   },
   data: function () {
     return {

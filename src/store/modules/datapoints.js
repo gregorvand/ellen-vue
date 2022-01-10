@@ -20,19 +20,26 @@ export const mutations = {
 
 export const actions = {
   fetchAov({ commit }, payload) {
+    console.log('aov...', payload)
     axios({
-      method: 'get',
+      method: 'post',
       url: `${process.env.VUE_APP_API_URL}/api/aov`,
       data: {
         from_domain: payload,
       },
     })
       .then((aov) => {
-        commit('SET_AOV', parseInt(aov.aov_value))
+        console.log('aov result', aov)
+        let aovResult
+        if (aov.data == '') {
+          commit('SET_AOV', 'coming soon')
+        } else {
+          commit('SET_AOV', aov.data.aov_value.toFixed(2))
+        }
       })
       .catch((err) => {})
   },
-  setBalance({ commit }, aov) {
-    commit('SET_AOV', aov)
+  setBalance({ commit }, aovResult) {
+    commit('SET_AOV', aovResult)
   },
 }
