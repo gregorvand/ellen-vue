@@ -29,7 +29,6 @@ export const actions = {
     })
       .then((aov) => {
         let aovResult
-        console.log(aov)
         if (aov.data == '') {
           commit('SET_AOV', 'coming soon')
         } else {
