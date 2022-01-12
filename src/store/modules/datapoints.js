@@ -29,13 +29,16 @@ export const actions = {
     })
       .then((aov) => {
         let aovResult
+        console.log(aov)
         if (aov.data == '') {
           commit('SET_AOV', 'coming soon')
         } else {
           commit('SET_AOV', aov.data.aov_value.toFixed(2))
         }
       })
-      .catch((err) => {})
+      .catch((err) => {
+        commit('SET_AOV', 'Puchase data to unlock AOV')
+      })
   },
   setBalance({ commit }, aovResult) {
     commit('SET_AOV', aovResult)

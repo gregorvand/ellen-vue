@@ -268,6 +268,7 @@ export default {
           this.$emit('chartUpdateRequired')
           this.getAccess()
           this.$store.dispatch('credits/fetchBalance')
+          this.$store.dispatch('datapoints/fetchAov', this.emailIdentifier)
 
           const followed =
             this.followedCompanies.filter(
