@@ -1,14 +1,11 @@
 <template>
   <div class="home">
-    <div class="title-banner-group">
-      <h2>eCommerce</h2>
-      <h1>Benchmarking & Insights</h1>
-    </div>
+    <HomeHero />
 
     <section class="home-components">
+      <h2>Search from thousands of eCommerce companies</h2>
       <SearchForm :showCheckbox="true" />
-      <h3 class="margin-top">Your selected companies</h3>
-      <SelectedCompanies />
+      <SelectedCompanies v-if="!loggedIn && selectedCompanies.length > 0" />
       <BaseSaveButton v-if="loggedIn" />
 
       <p v-if="!loggedIn && selectedCompanies.length">
@@ -81,6 +78,7 @@ import { authComputed } from '@/store/helpers.js'
 import RegisterUser from '@/views/RegisterUser.vue'
 import { mapState } from 'vuex'
 
+import HomeHero from '@/components/HomeHero.vue'
 import SelectedCompanies from '@/components/SelectedCompanies.vue'
 import TrendingCompanies from '@/components/TrendingCompanies.vue'
 import SearchForm from '@/components/SearchForm.vue'
@@ -98,6 +96,7 @@ export default {
     ...mapState('selectedCompanies', ['selectedCompanies']),
   },
   components: {
+    HomeHero,
     SelectedCompanies,
     SearchForm,
     RegisterUser,
@@ -116,6 +115,7 @@ export default {
   justify-items: center;
   align-items: center;
   width: 100%;
+  margin-top: 40px;
   > *,
   form input {
     border-radius: $border-radius;
