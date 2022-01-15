@@ -78,7 +78,7 @@ export default {
               this.$store.getters['selectedCompanies/userCompanies'],
           })
           .then(() => {
-            this.$router.push({ name: 'dashboard' })
+            this.$router.push({ name: 'onboarding' })
           })
           .catch((err) => {
             let errorMessages = err.response.data.message.errors.map(
@@ -144,6 +144,10 @@ export default {
       width: auto;
       height: 50px;
     }
+
+    .ellen-input {
+      width: 100%;
+    }
   }
 
   .password-suggestions {
@@ -155,6 +159,7 @@ export default {
   form {
     display: flex;
     flex-direction: column;
+    width: 100%;
 
     button,
     input,
