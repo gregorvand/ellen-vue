@@ -44,7 +44,7 @@ export default {
 
 <style lang="scss" scoped>
 .trending-companies {
-  margin: 0 auto $global-margin auto;
+  margin: 20px auto $global-margin auto;
 
   @include breakpoint(medium up) {
     margin: $global-margin auto;

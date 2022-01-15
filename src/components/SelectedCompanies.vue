@@ -1,5 +1,6 @@
 <template>
   <div class="selected-companies-wrapper">
+    <h3 class="margin-top">Your selected companies</h3>
     <div class="pattern-background" :style="patternProps"></div>
     <div
       class="selected-companies"
