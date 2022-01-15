@@ -4,12 +4,25 @@ footer {
   display: flex;
   color: $color-white;
   display: flex;
-  justify-content: space-evenly;
   height: 65px;
-  align-items: center;
   margin-top: auto;
+  align-items: center;
+
+  justify-content: flex-start;
+    * {
+      margin: 0 10px;
+    }
 
   img {
     height: 20px;
+  }
+
+  a, .small-label {
+    color: $color-ellen-brand-dark;
+    display: flex;
+  }
+
+  .small-label {
+    width: auto;
   }
 }

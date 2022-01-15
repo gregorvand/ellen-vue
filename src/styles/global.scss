@@ -2,21 +2,21 @@
 $color-white: #ffffff;
 $color-black: #000000;
 $color-ellen-dark: #05769C;
-$color-ellen-brand: #FFFBDB;
+$color-ellen-brand: #C0E0DE;
 $color-ellen-error: rgb(216, 75, 75);
 $color-ellen-light-gray: #F9F9F9;
 $color-ellen-dark-gray: #C0B8B8;
 $color-ellen-white-transparent: rgba(255, 255, 255, 0.5);
 $color-ellen-gray-transparent: rgba(246, 246, 246, 0.7);
 $color-ellen-brand-bright: #F0F8FF;
-$color-ellen-brand-dark: #0d139c;
+$color-ellen-brand-dark: #162521;
 
 // global variables
 $mobile-padding: 15px;
 $border-radius: 5px;
 $mobile-footer-nav-height: 60px;
 $nav-height: 120px;
-$nav-height-mobile: 100px;
+$nav-height-mobile: 60px;
 
 // fonts
 @import './helpers/.helpers';

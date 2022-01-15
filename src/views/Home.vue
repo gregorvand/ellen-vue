@@ -68,6 +68,7 @@
       </div>
     </section>
     <section class="final-register">
+      <h2>Sign Up to start accessing our insights</h2>
       <RegisterUser v-if="!loggedIn" v-bind:captureName="false" />
     </section>
   </div>

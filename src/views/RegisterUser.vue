@@ -137,6 +137,15 @@ export default {
     width: 100%;
   }
 
+  .Password {
+    width: 100%;
+    height: 70px;
+    @include breakpoint(medium up) {
+      width: auto;
+      height: 50px;
+    }
+  }
+
   .password-suggestions {
     flex-direction: column;
     font-size: 11px;
@@ -146,13 +155,13 @@ export default {
   form {
     display: flex;
     flex-direction: column;
-    width: 100%;
 
     button,
     input,
     .ellen-input {
       margin: 10px auto;
       height: 50px;
+      width: 100%;
 
       @include breakpoint(medium up) {
         margin: 0 5px;

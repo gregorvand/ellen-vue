@@ -11,6 +11,8 @@
           alt="welcome to ELLEN insights"
         />
       </router-link>
+      <a class="small-label" href="mailto:mac@ellen.me">Contact</a>
+      <span class="small-label">All Rights Reserved, Ellen Inc.</span>
     </footer>
   </div>
 </template>

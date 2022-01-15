@@ -12,4 +12,7 @@
   padding: 2.5px;
   font-weight: 600;
 
+  @include breakpoint(small only) {
+    font-size: 10px;
+  }
 }

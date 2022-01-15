@@ -21,12 +21,25 @@ export default {}
 
 <style lang="scss" scoped>
 .hero {
-  height: 445px;
+  height: auto;
+  padding: 20px;
   width: 100%;
-  background-color: #c0e0de;
+  background-color: $color-ellen-brand-dark;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+
+  @include breakpoint(medium up) {
+    flex-direction: row;
+    height: 35vh;
+    max-height: 445px;
+  }
+
+  &,
+  * {
+    color: $color-white;
+  }
 }
 
 .left,
@@ -34,15 +47,25 @@ export default {}
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 50%;
+  width: 100%;
   text-align: left;
   /* align-items: center; */
-  height: 100%;
-  padding: 0px 5%;
+  height: auto;
+
   max-width: 600px;
 
   img {
-    max-width: 500px;
+    display: none;
+  }
+
+  @include breakpoint(medium up) {
+    width: 50%;
+    padding: 0px 5%;
+
+    img {
+      display: flex;
+      max-width: 75%;
+    }
   }
 }
 
