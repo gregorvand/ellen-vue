@@ -36,7 +36,6 @@ export const actions = {
         }
       })
       .catch((err) => {
-        console.log(err)
         commit('SET_AOV', 'Puchase data to unlock AOV')
       })
   },
