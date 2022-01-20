@@ -1,8 +1,10 @@
 <template>
   <div>
     <div class="datapoint-row">
-      <h4 class="small-label">AVG ORDER VALUE (US$)</h4>
-      <div class="aov">{{ aov }}</div>
+      <h4 class="small-label">
+        AVG ORDER VALUE (Trailing {{ aov.trailing }} months)
+      </h4>
+      <div class="aov">US$ {{ parseFloat(aov.aov_value).toFixed(2) }}</div>
     </div>
     <div class="datapoint-row">
       <h4 class="small-label">TOP SKUS</h4>
