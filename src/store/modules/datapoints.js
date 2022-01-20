@@ -32,7 +32,7 @@ export const actions = {
         if (aov.data == '') {
           commit('SET_AOV', 'coming soon')
         } else {
-          commit('SET_AOV', aov.data.aov_value.toFixed(2))
+          commit('SET_AOV', aov.data)
         }
       })
       .catch((err) => {
