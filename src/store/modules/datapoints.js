@@ -36,7 +36,7 @@ export const actions = {
         }
       })
       .catch((err) => {
-        commit('SET_AOV', 'Puchase data to unlock AOV')
+        commit('SET_AOV', { message: 'Puchase data to unlock AOV' })
       })
   },
   setBalance({ commit }, aovResult) {
