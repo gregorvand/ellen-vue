@@ -43,7 +43,6 @@ export const actions = {
       })
   },
   fetchAct({ commit }, payload) {
-    console.log(payload)
     axios({
       method: 'post',
       url: `${process.env.VUE_APP_API_URL}/api/act`,
