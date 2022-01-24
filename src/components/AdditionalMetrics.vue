@@ -10,15 +10,18 @@
       </div>
     </div>
     <div class="datapoint-row">
+      <h4 class="small-label">
+        AVG FREQ. PER USER (Orders/customer over 3 months)
+      </h4>
+      <div v-if="act.message">{{ act.message }}</div>
+      <div v-else class="aov">{{ act.act_value }}</div>
+    </div>
+    <div class="datapoint-row">
       <h4 class="small-label">TOP SKUS</h4>
       <div>Coming Soon</div>
     </div>
     <div class="datapoint-row">
       <h4 class="small-label">AVG UNITS PER ORDER</h4>
-      <div>Coming Soon</div>
-    </div>
-    <div class="datapoint-row">
-      <h4 class="small-label">AVG FREQ. PER USER</h4>
       <div>Coming Soon</div>
     </div>
   </div>
@@ -34,7 +37,7 @@ export default {
     },
   },
   computed: {
-    ...mapState('datapoints', ['aov']),
+    ...mapState('datapoints', ['aov', 'act']),
   },
   methods: {
     getAov() {
@@ -43,9 +46,16 @@ export default {
         this.companyObject.data.emailIdentifier
       )
     },
+    getAct() {
+      this.$store.dispatch(
+        'datapoints/fetchAct',
+        this.companyObject.data.emailIdentifier
+      )
+    },
   },
   created() {
     this.getAov()
+    this.getAct()
   },
 }
 </script>
