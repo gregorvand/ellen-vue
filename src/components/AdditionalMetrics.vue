@@ -11,7 +11,7 @@
     </div>
     <div class="datapoint-row">
       <h4 class="small-label">
-        AVG FREQ. PER USER (Orders/customer over 3 months)
+        AVG FREQ. PER USER (Orders/customer over 4 months)
       </h4>
       <div v-if="act.message">{{ act.message }}</div>
       <div v-else class="aov">{{ act.act_value }}</div>
