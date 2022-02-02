@@ -5,13 +5,8 @@ export const namespaced = true
 export const state = () => ({
   aov: 'loading',
   act: 'loading',
+  tsi: 'loading',
 })
-
-export const getters = {
-  currentPeriodAov: (state) => {
-    return state.act
-  },
-}
 
 export const mutations = {
   SET_AOV(state, aov) {
@@ -19,6 +14,9 @@ export const mutations = {
   },
   SET_ACT(state, act) {
     state.act = act
+  },
+  SET_TSI(state, tsi) {
+    state.tsi = tsi
   },
 }
 
@@ -60,6 +58,23 @@ export const actions = {
       .catch((err) => {
         commit('SET_ACT', {
           message: 'Puchase data to unlock Avg. Customer Orders',
+        })
+      })
+  },
+  fetchTsi({ commit }, payload) {
+    axios({
+      method: 'post',
+      url: `${process.env.VUE_APP_API_URL}/api/tsi`,
+      data: {
+        from_domain: payload,
+      },
+    })
+      .then((tsi) => {
+        commit('SET_TSI', tsi.data.tsi_list)
+      })
+      .catch((err) => {
+        commit('SET_TSI', {
+          message: 'Puchase data to unlock highest selling SKUs',
         })
       })
   },

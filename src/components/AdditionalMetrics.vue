@@ -11,14 +11,19 @@
     </div>
     <div class="datapoint-row">
       <h4 class="small-label">
-        AVG FREQ. PER USER (Orders/customer over 4 months)
+        AVG FREQ. PER USER (Orders/customer over {{ aov.trailing }} months)
       </h4>
       <div v-if="act.message">{{ act.message }}</div>
       <div v-else class="aov">{{ act.act_value }}</div>
     </div>
     <div class="datapoint-row">
-      <h4 class="small-label">TOP SKUS</h4>
-      <div>Coming Soon</div>
+      <h4 class="small-label">Top SKUs sold over {{ aov.trailing }} months</h4>
+      <div v-for="(item, index) in tsi" v-bind:key="index">
+        <div class="list-item-text">
+          <span class="fixed-width"> {{ index + 1 }}.</span>
+          {{ item.item_description | downcase }}
+        </div>
+      </div>
     </div>
     <div class="datapoint-row">
       <h4 class="small-label">AVG UNITS PER ORDER</h4>
@@ -37,7 +42,7 @@ export default {
     },
   },
   computed: {
-    ...mapState('datapoints', ['aov', 'act']),
+    ...mapState('datapoints', ['aov', 'act', 'tsi']),
   },
   methods: {
     getAov() {
@@ -52,10 +57,22 @@ export default {
         this.companyObject.data.emailIdentifier
       )
     },
+    getTsi() {
+      this.$store.dispatch(
+        'datapoints/fetchTsi',
+        this.companyObject.data.emailIdentifier
+      )
+    },
   },
   created() {
     this.getAov()
     this.getAct()
+    this.getTsi()
+  },
+  filters: {
+    downcase: function (string) {
+      return string.toLowerCase()
+    },
   },
 }
 </script>
@@ -83,6 +100,20 @@ export default {
 
   .aov {
     text-transform: capitalize;
+  }
+
+  .list-item-text {
+    font-size: 13px;
+    line-height: 1;
+    text-transform: capitalize;
+    display: flex;
+    margin: 2px 0;
+
+    .fixed-width {
+      width: 20px;
+      text-align: left;
+      padding-right: 5px;
+    }
   }
 }
 </style>
