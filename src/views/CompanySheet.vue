@@ -33,7 +33,7 @@
     />
     <section class="additional-metrics">
       <div class="inner-container">
-        <h4>Additional metrics - Latest Full Month</h4>
+        <h4>Additional metrics</h4>
         <AdditionalMetrics
           v-if="companyObject.data !== undefined"
           :companyObject="companyObject"
@@ -44,10 +44,9 @@
       </div>
       <div class="inner-container">
         <h4>Trending Companies</h4>
-        <TrendingCompanies />
+        <TrendingCompanies :parentClass="'company-sheet'" />
       </div>
     </section>
-    <div class="trending-companies-"></div>
   </div>
 </template>
 
@@ -165,6 +164,11 @@ export default {
 
     @include breakpoint(medium up) {
       width: 50%;
+    }
+
+    h4 {
+      text-align: left;
+      padding-top: 10px;
     }
   }
 

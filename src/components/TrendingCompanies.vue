@@ -1,5 +1,5 @@
 <template>
-  <div class="trending-companies">
+  <div class="trending-companies" :class="parentClass">
     <h3>Trending Companies</h3>
     <ul class="trending-companies list">
       <li v-for="company in trendingCompanies" :key="company.id">
@@ -16,6 +16,11 @@ import CompanySelector from '../components/CompanySelector'
 
 export default {
   components: { CompanySelector },
+  props: {
+    parentClass: {
+      type: String,
+    },
+  },
   computed: {
     ...mapState('followedCompanies', ['followedCompanies']),
   },
@@ -82,6 +87,12 @@ export default {
   .additional-metrics & {
     h3 {
       display: none;
+    }
+  }
+
+  &.companies-sheet {
+    li {
+      margin: 0 !important;
     }
   }
 }
