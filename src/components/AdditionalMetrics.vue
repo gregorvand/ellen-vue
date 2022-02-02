@@ -18,7 +18,9 @@
     </div>
     <div class="datapoint-row">
       <h4 class="small-label">TOP SKUS</h4>
-      <div>Coming Soon</div>
+      <div v-for="(item, index) in tsi" v-bind:key="index">
+        <span class="list-item-text">{{ item.item_description }}</span>
+      </div>
     </div>
     <div class="datapoint-row">
       <h4 class="small-label">AVG UNITS PER ORDER</h4>
@@ -37,7 +39,7 @@ export default {
     },
   },
   computed: {
-    ...mapState('datapoints', ['aov', 'act']),
+    ...mapState('datapoints', ['aov', 'act', 'tsi']),
   },
   methods: {
     getAov() {
@@ -52,10 +54,17 @@ export default {
         this.companyObject.data.emailIdentifier
       )
     },
+    getTsi() {
+      this.$store.dispatch(
+        'datapoints/fetchTsi',
+        this.companyObject.data.emailIdentifier
+      )
+    },
   },
   created() {
     this.getAov()
     this.getAct()
+    this.getTsi()
   },
 }
 </script>
@@ -83,6 +92,11 @@ export default {
 
   .aov {
     text-transform: capitalize;
+  }
+
+  .list-item-text {
+    font-size: 12px;
+    line-height: 1;
   }
 }
 </style>
