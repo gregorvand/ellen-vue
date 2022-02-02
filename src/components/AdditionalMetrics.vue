@@ -71,7 +71,9 @@ export default {
   },
   filters: {
     downcase: function (string) {
-      return string.toLowerCase()
+      if (string) {
+        return string.toLowerCase()
+      }
     },
   },
 }
