@@ -32,7 +32,7 @@ export default {}
 
   @include breakpoint(medium up) {
     flex-direction: row;
-    height: 35vh;
+    height: 50vh;
     max-height: 445px;
   }
 
