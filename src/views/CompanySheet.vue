@@ -33,7 +33,7 @@
     />
     <section class="additional-metrics">
       <div class="inner-container">
-        <h4>Additional metrics - Latest Full Month</h4>
+        <h4>Additional metrics</h4>
         <AdditionalMetrics
           v-if="companyObject.data !== undefined"
           :companyObject="companyObject"
@@ -166,6 +166,11 @@ export default {
     @include breakpoint(medium up) {
       width: 50%;
     }
+
+    h4 {
+      text-align: left;
+      padding-top: 10px;
+    }
   }
 
   border-top: solid $color-ellen-dark-gray thin;
@@ -177,6 +182,7 @@ export default {
       color: $color-black;
     }
   }
+
   img {
     opacity: 0.4;
     max-width: 450px;
@@ -185,6 +191,10 @@ export default {
     @include breakpoint(small only) {
       padding: 10px;
     }
+  }
+
+  .trending-companies {
+    margin: 0;
   }
 }
 </style>
