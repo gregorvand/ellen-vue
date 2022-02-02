@@ -11,15 +11,17 @@
     </div>
     <div class="datapoint-row">
       <h4 class="small-label">
-        AVG FREQ. PER USER (Orders/customer over 4 months)
+        AVG FREQ. PER USER (Orders/customer over {{ aov.trailing }} months)
       </h4>
       <div v-if="act.message">{{ act.message }}</div>
       <div v-else class="aov">{{ act.act_value }}</div>
     </div>
     <div class="datapoint-row">
-      <h4 class="small-label">TOP SKUS</h4>
+      <h4 class="small-label">Top SKUs sold over {{ aov.trailing }} months</h4>
       <div v-for="(item, index) in tsi" v-bind:key="index">
-        <span class="list-item-text">{{ item.item_description }}</span>
+        <span class="list-item-text"
+          >{{ index + 1 }}. {{ item.item_description | downcase }}</span
+        >
       </div>
     </div>
     <div class="datapoint-row">
@@ -66,6 +68,11 @@ export default {
     this.getAct()
     this.getTsi()
   },
+  filters: {
+    downcase: function (string) {
+      return string.toLowerCase()
+    },
+  },
 }
 </script>
 
@@ -97,6 +104,7 @@ export default {
   .list-item-text {
     font-size: 12px;
     line-height: 1;
+    text-transform: capitalize;
   }
 }
 </style>

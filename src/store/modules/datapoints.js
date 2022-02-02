@@ -8,12 +8,6 @@ export const state = () => ({
   tsi: 'loading',
 })
 
-// export const getters = {
-//   currentPeriodAov: (state) => {
-//     return state.act
-//   },
-// }
-
 export const mutations = {
   SET_AOV(state, aov) {
     state.aov = aov
