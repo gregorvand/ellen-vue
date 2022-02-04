@@ -208,6 +208,7 @@ export default defineComponent({
   justify-content: center;
   opacity: 0.2;
   padding-bottom: 50px;
+  padding-left: 50px;
 }
 
 .chart-loading-frame {
