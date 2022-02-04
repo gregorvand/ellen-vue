@@ -1,6 +1,13 @@
 <template>
   <div class="chart-wrapper global-max-width">
     <div class="chart-frame">
+      <div class="watermark">
+        <img
+          src="@/assets/ELLENv2logo.svg"
+          class="logo"
+          alt="welcome to ELLEN insights"
+        />
+      </div>
       <LineChart
         ref="chartRef"
         :chartData="chartData"
@@ -189,6 +196,18 @@ export default defineComponent({
       opacity: 0.2;
     }
   }
+}
+
+.watermark {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.2;
+  padding-bottom: 50px;
 }
 
 .chart-loading-frame {
