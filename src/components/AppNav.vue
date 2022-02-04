@@ -238,6 +238,10 @@ export default {
         margin: 10px;
       }
     }
+
+    .onboarding & {
+      display: none;
+    }
   }
 
   .user-details {
