@@ -17,7 +17,11 @@
         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%"
       ></iframe>
     </div>
-    <a href="">View our terms of use for our data</a>
+    <a @click="openTerms" class="small-link" target="_blank">
+      View our platform & data Terms of Use
+      <br />(required to proceed)
+    </a>
+
     <div class="checkbox-container">
       <label for="shopify">
         I am a Shopify merchant with an active account</label
@@ -33,13 +37,13 @@
 
     <h3
       class="continue-button"
-      :class="{ active: shopifyChecked && termsChecked }"
+      :class="{ active: allTermsPassed }"
       @click="continueToDashboard"
     >
-      <span v-if="shopifyChecked && termsChecked"
-        >Continue to your dashboard ></span
+      <span v-if="allTermsPassed">Continue to your dashboard ></span>
+      <span v-else
+        >Almost there - read and accept the above terms to proceed</span
       >
-      <span v-else>Almost there - accept the above terms to proceed</span>
     </h3>
   </div>
 </template>
@@ -50,6 +54,7 @@ export default {
     return {
       shopifyChecked: false,
       termsChecked: false,
+      termsRead: false,
     }
   },
   methods: {
@@ -57,6 +62,18 @@ export default {
       if (this.shopifyChecked && this.termsChecked) {
         this.$router.push({ name: 'dashboard' })
       }
+    },
+    readTerms() {
+      this.termsRead = true
+    },
+    openTerms() {
+      this.termsRead = true
+      window.open('/terms', '_blank')
+    },
+  },
+  computed: {
+    allTermsPassed() {
+      return this.shopifyChecked && this.termsChecked && this.termsRead
     },
   },
 }
@@ -69,6 +86,9 @@ export default {
 
 a {
   color: $color-ellen-dark;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 10px;
 }
 
 .loom-style {
@@ -76,6 +96,11 @@ a {
   width: 630px;
   position: relative;
   margin-bottom: 20px;
+
+  @include breakpoint(small only) {
+    height: 230px;
+    width: 90%;
+  }
 }
 
 .checkbox-container {

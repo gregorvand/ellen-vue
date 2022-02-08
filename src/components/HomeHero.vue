@@ -5,7 +5,7 @@
       <h1>Benchmarking & Insights</h1>
       <p>
         We record and analyze millions of purchases from de-identified U.S.
-        consumers every day.
+        consumers every day from some of the most popular DTC brands.
       </p>
       <h3>Stay competitive with affordable insights.</h3>
     </div>

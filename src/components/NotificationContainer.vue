@@ -81,7 +81,8 @@ $mobile-height: 50px;
     }
   }
 
-  .home & {
+  .home,
+  .terms & {
     display: none;
   }
 }
