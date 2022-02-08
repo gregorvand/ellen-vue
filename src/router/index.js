@@ -14,6 +14,7 @@ import ForgotPassword from '@/views/ForgotPassword.vue'
 import ResetPassword from '@/views/ResetPassword.vue'
 import CompanySheet from '@/views/CompanySheet.vue'
 import EarningsFeed from '@/views/EarningsFeed.vue'
+import Static from '@/views/Static.vue'
 
 import Vue2TouchEvents from 'vue2-touch-events'
 
@@ -99,6 +100,11 @@ const routes = [
     name: 'earnings',
     component: EarningsFeed,
     meta: { requiresAuth: true },
+  },
+  {
+    path: '/terms',
+    name: 'terms',
+    component: Static,
   },
   // {
   //   path: '/payments',

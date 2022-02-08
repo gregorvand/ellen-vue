@@ -80,6 +80,11 @@ $mobile-height: 50px;
       }
     }
   }
+
+  .home,
+  .terms & {
+    display: none;
+  }
 }
 
 .scroll-wrapper {
