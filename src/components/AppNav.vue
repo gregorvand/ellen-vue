@@ -87,7 +87,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  height: $nav-height-mobile;
+  height: $nav-height-mobile + 10px;
 
   @include breakpoint(medium up) {
     height: $nav-height;
@@ -103,7 +103,7 @@ export default {
     background-position: 0 0;
     position: absolute;
     width: 100%;
-    height: $nav-height-mobile;
+    height: $nav-height-mobile + 10px;
     background-size: cover;
     opacity: 0.2;
 
@@ -118,6 +118,8 @@ export default {
     grid-area: logo;
     padding: 10px;
     background-color: $color-white;
+    height: 70px;
+    align-items: center;
 
     h1 {
       margin-left: 15px;
@@ -134,7 +136,7 @@ export default {
 
   &-right {
     grid-area: user;
-    padding: 10px;
+    padding: 0 10px;
   }
 
   &-main {
@@ -166,7 +168,6 @@ export default {
     }
 
     h1.tagline {
-      display: none;
       font-size: rem-calc(18px);
       color: $color-ellen-dark-gray;
       text-align: left;
@@ -188,7 +189,7 @@ export default {
     padding: 0;
     align-items: center;
     position: relative;
-    z-index: base-index(top);
+    z-index: base-index(middle);
     position: relative;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-areas: 'login notifications user';

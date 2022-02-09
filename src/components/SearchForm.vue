@@ -90,7 +90,8 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100px;
-  z-index: base_index(top);
+  position: relative;
+  z-index: base_index(super);
 
   form {
     margin-bottom: 0 !important;

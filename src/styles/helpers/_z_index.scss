@@ -12,7 +12,7 @@
 $base_index_factor: 10;
 
 @function base_index($element) {
-  $elements: bottom, middle, top;
+  $elements: bottom, middle, top, super;
   @return index($elements, $element) * $base_index_factor;
 }
 

@@ -84,6 +84,7 @@ $global-margin: 20px;
 
 .full-width {
   width: 100%;
+  justify-content: center;
 
   &-banner {
     width: 100%;
@@ -190,8 +191,12 @@ ul.list {
 .ellen-input, .Password {
   height: 50px;
   border-radius: $border-radius;
-  min-width: 250px;
+  min-width: 315px;
   font-family: "Poppins", sans-serif;
   font-weight: 400;
   text-align: center;
+
+  @include breakpoint(medium up) {
+    min-width: 250px;
+  }
 }

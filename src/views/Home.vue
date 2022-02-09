@@ -19,11 +19,20 @@
     </section>
     <section>
       <TrendingCompanies />
+    </section>
+    <section class="full-width">
       <MarketingBlocks />
     </section>
 
     <section class="final-register">
-      <h2>Sign Up to start accessing our insights</h2>
+      <div v-if="!loggedIn">
+        <h2>Sign Up to start accessing our insights</h2>
+        <p>
+          We will add 10 credits of data (10 months, any company) in your
+          account when you sign up. <br />
+          No card needed.
+        </p>
+      </div>
       <RegisterUser v-if="!loggedIn" v-bind:captureName="false" />
     </section>
   </div>
@@ -177,10 +186,24 @@ export default {
 
 .final-register {
   width: 100%;
+  padding: 20px 0;
 
   .register-form-wrapper {
     width: 100%;
     max-width: unset;
   }
+
+  p {
+    font-size: 14px;
+  }
+}
+
+.full-width-banner {
+  height: auto;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-content: center;
+  align-items: center;
 }
 </style>
