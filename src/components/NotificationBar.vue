@@ -47,7 +47,7 @@ export default {
   background-color: $color-white;
   position: relative;
   line-height: 1;
-  z-index: 10;
+  z-index: base_index(top);
 
   p {
     margin: 0;

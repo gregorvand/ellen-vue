@@ -87,7 +87,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  height: $nav-height-mobile;
+  height: $nav-height-mobile + 10px;
 
   @include breakpoint(medium up) {
     height: $nav-height;
@@ -103,7 +103,7 @@ export default {
     background-position: 0 0;
     position: absolute;
     width: 100%;
-    height: $nav-height-mobile;
+    height: $nav-height-mobile + 10px;
     background-size: cover;
     opacity: 0.2;
 
@@ -116,6 +116,10 @@ export default {
     display: flex;
     flex-direction: row;
     grid-area: logo;
+    padding: 10px;
+    background-color: $color-white;
+    height: 70px;
+    align-items: center;
 
     h1 {
       margin-left: 15px;
@@ -132,6 +136,7 @@ export default {
 
   &-right {
     grid-area: user;
+    padding: 0 10px;
   }
 
   &-main {
@@ -139,7 +144,7 @@ export default {
     background-color: $color-ellen-white-transparent;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
+    padding: 0;
     height: 70px;
     display: grid;
     position: relative;
@@ -163,7 +168,6 @@ export default {
     }
 
     h1.tagline {
-      display: none;
       font-size: rem-calc(18px);
       color: $color-ellen-dark-gray;
       text-align: left;

@@ -20,55 +20,19 @@
     <section>
       <TrendingCompanies />
     </section>
-    <section class="full-width-banner brand-banner">
-      <span>what are</span
-      ><img
-        src="@/assets/ELLENv2logo.svg"
-        class="logo"
-        alt="welcome to ELLEN insights"
-      /><span>insights?</span>
+    <section class="full-width">
+      <MarketingBlocks />
     </section>
-    <section class="full-width chart-example">
-      <h3>Interactive charts: Average orders per month</h3>
-      <img src="@/assets/ellen_chart_example.png" />
 
-      <div class="insights-list-wrapper">
-        <div class="pattern-background" :style="patternProps"></div>
-        <h3>Additional metrics (coming soon)</h3>
-        <ul class="insights-list list-no-bullets">
-          <li>
-            <img src="@/assets/checked.svg" class="" alt="insights list 1" />
-            <span>AOV</span>
-          </li>
-          <li>
-            <img
-              src="@/assets/checked.svg"
-              class="logo"
-              alt="insights list 2"
-            />
-            <span>Trending SKUs</span>
-          </li>
-          <li>
-            <img
-              src="@/assets/checked.svg"
-              class="logo"
-              alt="insights list 3"
-            />
-            <span>Loyalty: frequency, recency, monetary</span>
-          </li>
-          <li>
-            <img
-              src="@/assets/checked.svg"
-              class="logo"
-              alt="insights list 4"
-            />
-            <span>Companies with similar customers</span>
-          </li>
-        </ul>
-      </div>
-    </section>
     <section class="final-register">
-      <h2>Sign Up to start accessing our insights</h2>
+      <div v-if="!loggedIn">
+        <h2>Sign Up to start accessing our insights</h2>
+        <p>
+          We will add 10 credits of data (10 months, any company) in your
+          account when you sign up. <br />
+          No card needed.
+        </p>
+      </div>
       <RegisterUser v-if="!loggedIn" v-bind:captureName="false" />
     </section>
   </div>
@@ -83,6 +47,7 @@ import HomeHero from '@/components/HomeHero.vue'
 import SelectedCompanies from '@/components/SelectedCompanies.vue'
 import TrendingCompanies from '@/components/TrendingCompanies.vue'
 import SearchForm from '@/components/SearchForm.vue'
+import MarketingBlocks from '@/components/MarketingBlocks.vue'
 
 export default {
   data: function () {
@@ -102,6 +67,7 @@ export default {
     SearchForm,
     RegisterUser,
     TrendingCompanies,
+    MarketingBlocks,
   },
 }
 </script>
@@ -220,10 +186,24 @@ export default {
 
 .final-register {
   width: 100%;
+  padding: 20px 0;
 
   .register-form-wrapper {
     width: 100%;
     max-width: unset;
   }
+
+  p {
+    font-size: 14px;
+  }
+}
+
+.full-width-banner {
+  height: auto;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-content: center;
+  align-items: center;
 }
 </style>

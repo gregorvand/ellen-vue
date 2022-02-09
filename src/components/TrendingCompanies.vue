@@ -84,5 +84,16 @@ export default {
       display: none;
     }
   }
+
+  .home & {
+    &.list {
+      max-width: 720px;
+      li {
+        justify-content: center;
+        align-items: center;
+        display: flex;
+      }
+    }
+  }
 }
 </style>

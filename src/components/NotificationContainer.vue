@@ -38,7 +38,7 @@ $mobile-height: 50px;
   width: 100%;
   left: 0;
   color: white;
-  z-index: 100;
+  z-index: base_index(middle);
   grid-area: notifications;
   overflow: hidden;
   background-color: $color-white;
@@ -81,7 +81,7 @@ $mobile-height: 50px;
     }
   }
 
-  .home,
+  .home &,
   .terms & {
     display: none;
   }
