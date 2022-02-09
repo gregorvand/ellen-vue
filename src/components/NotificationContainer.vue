@@ -8,9 +8,8 @@
       />
       <div class="persistent-notification">
         <span
-          >Thanks for visiting. Create an account to save companies to your
-          dashboard. We are in beta, please do not share the site. Email
-          <a href="mailto:mac@ellen.me">mac@ellen.me</a>
+          >Just added... Athletic Greens, Hydrant, Magic Spoon and many more.
+          Email <a href="mailto:mac@ellen.me">mac@ellen.me</a>
           with any questions
         </span>
       </div>
