@@ -85,6 +85,7 @@ export default {
     ChartDataService.getCompany(this.$route.params.id).then((company) => {
       this.companyObject = company
     })
+    this.$store.dispatch('selectedDataSetsV2/updateSelectedYear', '2021')
   },
   computed: {
     companyDomain() {

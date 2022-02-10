@@ -256,59 +256,61 @@
 
     <h3 style="text-align: justify"><a></a>8. Prohibited Conduct</h3>
 
-    <p style="text-align: justify">BY USING THE SERVICE YOU AGREE NOT TO:</p>
-    <p>
-    <ul>
-      <li>
-        use the Service for any illegal purpose or in violation of any local,
-        state, national, or international law;
-      </li>
-      <li>
-        violate, or encourage others to violate, any right of a third party,
-        including by infringing or misappropriating any third party intellectual
-        property right;
-      </li>
-      <li>
-        interfere with security-related features of the Service, including by:
-        (i) disabling or circumventing features that prevent or limit use or
-        copying of any content; (ii) reverse engineering or otherwise attempting
-        to discover the source code of any portion of the Service except to the
-        extent that the activity is expressly permitted by applicable law; or
-        (iii) hacking, password “mining” or using any other illegitimate means
-        of interference;
-      </li>
-      <li>modify or create derivatives of any part of the Service;</li>
-      <li>
-        interfere with the operation of the Service or any user’s enjoyment of
-        the Service, including by: (i) uploading or otherwise disseminating any
-        virus, adware, spyware, worm, or other malicious code; (ii) making any
-        unsolicited offer or advertisement to another user of the Service; (iii)
-        collecting personal information about another user or third party
-        without consent; or (iv) interfering with or disrupting any network,
-        equipment, or server connected to or used to provide the Service;
-      </li>
-      <li>
-        perform any fraudulent activity including impersonating any person or
-        entity, claiming a false affiliation, accessing any other Service
-        account without permission, or falsifying your age or date of birth;
-      </li>
-      <li>
-        take action that imposes an unreasonable or disproportionately large
-        load on the infrastructure of the Service of Ellen’s systems or
-        networks, or any systems or networks connected to the Service or Ellen;
-      </li>
-      <li>
-        sell or otherwise transfer the access granted under these Terms or any
-        Materials (as defined in Section 6) or any right or ability to view,
-        access, or use any Materials; or
-      </li>
-      <li>
-        attempt to do any of the acts described in this Section 9 or assist or
-        permit any person in engaging in any of the acts described in this
-        Section 9.
-      </li>
-    </ul>
-    </p>
+    <div>
+      <p style="text-align: justify">BY USING THE SERVICE YOU AGREE NOT TO:</p>
+      <ul>
+        <li>
+          use the Service for any illegal purpose or in violation of any local,
+          state, national, or international law;
+        </li>
+        <li>
+          violate, or encourage others to violate, any right of a third party,
+          including by infringing or misappropriating any third party
+          intellectual property right;
+        </li>
+        <li>
+          interfere with security-related features of the Service, including by:
+          (i) disabling or circumventing features that prevent or limit use or
+          copying of any content; (ii) reverse engineering or otherwise
+          attempting to discover the source code of any portion of the Service
+          except to the extent that the activity is expressly permitted by
+          applicable law; or (iii) hacking, password “mining” or using any other
+          illegitimate means of interference;
+        </li>
+        <li>modify or create derivatives of any part of the Service;</li>
+        <li>
+          interfere with the operation of the Service or any user’s enjoyment of
+          the Service, including by: (i) uploading or otherwise disseminating
+          any virus, adware, spyware, worm, or other malicious code; (ii) making
+          any unsolicited offer or advertisement to another user of the Service;
+          (iii) collecting personal information about another user or third
+          party without consent; or (iv) interfering with or disrupting any
+          network, equipment, or server connected to or used to provide the
+          Service;
+        </li>
+        <li>
+          perform any fraudulent activity including impersonating any person or
+          entity, claiming a false affiliation, accessing any other Service
+          account without permission, or falsifying your age or date of birth;
+        </li>
+        <li>
+          take action that imposes an unreasonable or disproportionately large
+          load on the infrastructure of the Service of Ellen’s systems or
+          networks, or any systems or networks connected to the Service or
+          Ellen;
+        </li>
+        <li>
+          sell or otherwise transfer the access granted under these Terms or any
+          Materials (as defined in Section 6) or any right or ability to view,
+          access, or use any Materials; or
+        </li>
+        <li>
+          attempt to do any of the acts described in this Section 9 or assist or
+          permit any person in engaging in any of the acts described in this
+          Section 9.
+        </li>
+      </ul>
+    </div>
 
     <h3 style="text-align: justify">
       <a></a>10. Digital Millennium Copyright Act
@@ -334,34 +336,34 @@
       Service infringe intellectual property rights must include the following
       information:
     </p>
-    <p>
-    <ul>
-      <li>
-        an electronic or physical signature of the person authorized to act on
-        behalf of the owner of the copyright or other right being infringed;
-      </li>
-      <li>
-        a description of the copyrighted work or other intellectual property
-        that you claim has been infringed;
-      </li>
-      <li>
-        a description of the material that you claim is infringing and where it
-        is located on the Service;
-      </li>
-      <li>your address, telephone number, and email address;</li>
-      <li>
-        a statement by you that you have a good faith belief that the use of the
-        materials on the Service of which you are complaining is not authorized
-        by the copyright owner, its agent, or the law; and
-      </li>
-      <li>
-        a statement by you that the above information in your notice is accurate
-        and that, under penalty of perjury, you are the copyright or
-        intellectual property owner or authorized to act on the copyright or
-        intellectual property owner's behalf.
-      </li>
-    </ul>
-    </p>
+    <div>
+      <ul>
+        <li>
+          an electronic or physical signature of the person authorized to act on
+          behalf of the owner of the copyright or other right being infringed;
+        </li>
+        <li>
+          a description of the copyrighted work or other intellectual property
+          that you claim has been infringed;
+        </li>
+        <li>
+          a description of the material that you claim is infringing and where
+          it is located on the Service;
+        </li>
+        <li>your address, telephone number, and email address;</li>
+        <li>
+          a statement by you that you have a good faith belief that the use of
+          the materials on the Service of which you are complaining is not
+          authorized by the copyright owner, its agent, or the law; and
+        </li>
+        <li>
+          a statement by you that the above information in your notice is
+          accurate and that, under penalty of perjury, you are the copyright or
+          intellectual property owner or authorized to act on the copyright or
+          intellectual property owner's behalf.
+        </li>
+      </ul>
+    </div>
 
     <p style="text-align: justify">10.2 Repeat Infringers</p>
     <p style="text-align: justify">
@@ -703,4 +705,9 @@
 export default {}
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+div {
+  max-width: 1024px;
+  margin: 0 auto;
+}
+</style>
