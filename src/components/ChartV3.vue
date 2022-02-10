@@ -159,6 +159,7 @@ export default defineComponent({
       //   this.companyObject.data.emailIdentifier,
       //   this.currentYear
       // )
+      console.log('i think the year is ', this.currentYear)
       ChartDataService.getChartData(
         this,
         this.companyObject.data.id,
