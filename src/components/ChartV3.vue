@@ -152,14 +152,6 @@ export default defineComponent({
 
   methods: {
     async getAccessibleDatasets() {
-      // console.log('sending', this.currentYear)
-      // console.log(
-      //   'sending1',
-      //   this.companyObject.data.id,
-      //   this.companyObject.data.emailIdentifier,
-      //   this.currentYear
-      // )
-      console.log('i think the year is ', this.currentYear)
       ChartDataService.getChartData(
         this,
         this.companyObject.data.id,
