@@ -269,6 +269,8 @@ export default {
           this.getAccess()
           this.$store.dispatch('credits/fetchBalance')
           this.$store.dispatch('datapoints/fetchAov', this.emailIdentifier)
+          this.$store.dispatch('datapoints/fetchAct', this.emailIdentifier)
+          this.$store.dispatch('datapoints/fetchTsi', this.emailIdentifier)
 
           const followed =
             this.followedCompanies.filter(
