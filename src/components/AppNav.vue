@@ -171,6 +171,7 @@ export default {
       font-size: rem-calc(18px);
       color: $color-ellen-dark-gray;
       text-align: left;
+      display: none;
 
       @include breakpoint(large up) {
         display: flex;
