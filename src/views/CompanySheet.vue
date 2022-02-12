@@ -38,9 +38,6 @@
           v-if="companyObject.data !== undefined"
           :companyObject="companyObject"
         />
-        <h4>
-          Contact <a href="mailto:mac@ellen.me">mac@ellen.me</a> for access
-        </h4>
       </div>
       <div class="inner-container">
         <h4>Trending Companies</h4>
@@ -48,6 +45,7 @@
       </div>
     </section>
     <div class="trending-companies-"></div>
+    <MarketShare />
   </div>
 </template>
 
@@ -56,6 +54,7 @@ import LineChart from '@/components/ChartV3'
 import TrendingCompanies from '@/components/TrendingCompanies'
 import AdditionalMetrics from '@/components/AdditionalMetrics'
 import ChartDataService from '../services/ChartDataService'
+import MarketShare from '@/components/MarketShare'
 import { mapState } from 'vuex'
 import axios from 'axios'
 
@@ -65,6 +64,7 @@ export default {
     LineChart,
     TrendingCompanies,
     AdditionalMetrics,
+    MarketShare,
   },
   data: function () {
     return {
