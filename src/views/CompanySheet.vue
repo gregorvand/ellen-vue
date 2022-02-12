@@ -38,9 +38,6 @@
           v-if="companyObject.data !== undefined"
           :companyObject="companyObject"
         />
-        <h4>
-          Contact <a href="mailto:mac@ellen.me">mac@ellen.me</a> for access
-        </h4>
       </div>
       <div class="inner-container">
         <h4>Trending Companies</h4>

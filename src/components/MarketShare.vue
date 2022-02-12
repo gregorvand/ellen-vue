@@ -34,6 +34,9 @@ export default {
   components: { LineChart },
 
   data() {
+    const month_one = 'October 2021'
+    const month_two = 'November 2021'
+    const month_three = 'December 2021'
     return {
       computed: {
         gradient() {
@@ -54,9 +57,9 @@ export default {
             label: 'Magic Spoon',
             backgroundColor: '#FFFBDB ',
             data: [
-              { x: 'October', y: 79.51 },
-              { x: 'November', y: 80.34 },
-              { x: 'December', y: 77.3 },
+              { x: month_one, y: 79.51 },
+              { x: month_two, y: 80.34 },
+              { x: month_three, y: 77.3 },
             ],
           },
           {
@@ -65,9 +68,9 @@ export default {
             fill: true,
             label: 'Catalina Crunch',
             data: [
-              { x: 'October', y: 10.2 },
-              { x: 'November', y: 10.41 },
-              { x: 'December', y: 10.73 },
+              { x: month_one, y: 10.2 },
+              { x: month_two, y: 10.41 },
+              { x: month_three, y: 10.73 },
             ],
           },
           {
@@ -76,9 +79,9 @@ export default {
             fill: true,
             label: 'Schoolyard Snacks',
             data: [
-              { x: 'October', y: 10.29 },
-              { x: 'November', y: 9.25 },
-              { x: 'December', y: 11.98 },
+              { x: month_one, y: 10.29 },
+              { x: month_two, y: 9.25 },
+              { x: month_three, y: 11.98 },
             ],
           },
         ],
