@@ -113,7 +113,6 @@ export default defineComponent({
       dataSetsRef.value = store.state.selectedDataSetsV2.currentActiveDataSet
     })
 
-    console.log(dataSetsRef.value)
     const chartData = computed(() => ({
       datasets: [
         {
