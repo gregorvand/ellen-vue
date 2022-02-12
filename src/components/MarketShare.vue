@@ -125,6 +125,8 @@ export default {
   width: 100%;
   padding: 20px;
   position: relative;
+  border-radius: $border-radius;
+  margin: $global-margin + 40px auto;
 
   h3 {
     position: absolute;
