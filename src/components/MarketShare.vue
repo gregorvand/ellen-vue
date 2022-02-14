@@ -12,8 +12,8 @@
         <p>
           Coming soon
           <br />
-          Contact our team for bespoke market share reports for a basket of
-          competitors
+          Contact our team for custom market share reports to see how you're
+          tracking versus your competitors.
         </p>
         <h4>DTC Breakfast Cereal leaders</h4>
       </div>
@@ -57,7 +57,7 @@ export default {
             label: 'Magic Spoon',
             backgroundColor: '#FFFBDB ',
             data: [
-              { x: month_one, y: 79.51 },
+              { x: month_one, y: 79.5 },
               { x: month_two, y: 80.34 },
               { x: month_three, y: 77.3 },
             ],
@@ -70,7 +70,7 @@ export default {
             data: [
               { x: month_one, y: 10.2 },
               { x: month_two, y: 10.41 },
-              { x: month_three, y: 10.73 },
+              { x: month_three, y: 10.72 },
             ],
           },
           {
@@ -79,7 +79,7 @@ export default {
             fill: true,
             label: 'Schoolyard Snacks',
             data: [
-              { x: month_one, y: 10.29 },
+              { x: month_one, y: 10.3 },
               { x: month_two, y: 9.25 },
               { x: month_three, y: 11.98 },
             ],
@@ -102,6 +102,9 @@ export default {
             ticks: {
               min: 0,
               max: 100,
+              autoSkip: true,
+              maxTicksLimit: 100,
+              stepSize: 10,
               callback: function (value) {
                 return value + '%'
               },
@@ -112,6 +115,7 @@ export default {
             },
           },
         },
+        maintainAspectRatio: false,
       },
       // options: defaultChartOptions,
     }
@@ -130,6 +134,7 @@ export default {
 
   h3 {
     position: absolute;
+    left: 0;
     display: flex;
     height: 100%;
     width: 100%;
@@ -141,6 +146,7 @@ export default {
   }
 
   .chart-frame {
+    min-height: 500px;
     p {
       font-size: 12px;
     }
