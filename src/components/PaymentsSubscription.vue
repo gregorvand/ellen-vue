@@ -1,10 +1,5 @@
 <template>
   <div class="payments form-container">
-    <h3>Credit Monthly Subscription</h3>
-    <span class="small-label"
-      >Select Number of Credits to add :: 1 credit buys 1 month of data. All
-      price in USD</span
-    >
     <div class="credit-selection">
       <div v-for="valueAmount in creditValues" :key="'radio-' + valueAmount.id">
         <input
@@ -13,9 +8,11 @@
           :id="'credit-selector-' + valueAmount.id"
           v-model="chargeCredits"
         />
-        <label :for="'credit-selector-' + valueAmount.id"
-          >{{ valueAmount.value
-          }}<span class="price-label"
+        <label class="selector-label" :for="'credit-selector-' + valueAmount.id"
+          ><h3>{{ valueAmount.title }}</h3>
+          <h4>{{ valueAmount.product }}</h4>
+          <p class="blurb">{{ valueAmount.blurb }}</p>
+          <span class="price-label"
             >${{ valueAmount.value * valueAmount.price }}/mo</span
           ></label
         >
@@ -53,7 +50,7 @@
         @click="chargeCard"
         :disabled="chargeCredits == 0"
       >
-        <span v-if="chargeCredits == 0">Select Credits</span>
+        <span v-if="chargeCredits == 0">Select Plan</span>
         <span v-else
           >Subscribe ${{ chargeCredits.value * chargeCredits.price }} /month ({{
             chargeCredits.value
@@ -91,10 +88,23 @@ export default {
       chargeCredits: 0,
       creditValues: [
         // these will eventually come from API
-        { id: 1, value: 10, price: 30 },
-        { id: 2, value: 20, price: 25 },
-        { id: 3, value: 50, price: 20 },
-        { id: 4, value: 100, price: 15 },
+        {
+          id: 1,
+          value: 10,
+          price: 30,
+          title: 'Starter',
+          product: '10 credits',
+          blurb: `e.g. Follow 5 companies each month and have 5 remaining credits to explore historical data.`,
+        },
+        {
+          id: 2,
+          value: 30,
+          price: 20,
+          title: 'Pro',
+          product: '30 credits',
+          blurb:
+            'e.g. Follow 10 companies each month and have 20 remaining credits to explore historical data.',
+        },
       ],
       cardError: '',
       isProcessing: false,
@@ -224,4 +234,20 @@ export default {
 }
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+h3 {
+  font-size: 17px;
+}
+h4 {
+  font-size: 24px;
+}
+.selector-label {
+  flex-direction: column;
+  font-size: 12px;
+  padding: 20px;
+}
+
+.container {
+  max-width: 60vw;
+}
+</style>

@@ -45,7 +45,7 @@ export default {
   },
   methods: {
     close() {
-      this.$store.dispatch('ui/togglePaymentModal', 'closed')
+      // this.$store.dispatch('ui/togglePaymentModal', 'closed')
     },
     toggleMode(mode) {
       this.mode = mode
@@ -70,7 +70,7 @@ export default {
 }
 .container {
   position: relative;
-  max-width: 500px;
+  max-width: 600px;
   height: 100%;
 
   @include breakpoint(medium up) {
@@ -93,7 +93,10 @@ button.close {
 
 .toggle-container {
   display: flex;
-  padding-bottom: 20px;
+  padding: 5px;
+  border: solid $color-ellen-gray-transparent thin;
+  border-radius: 50px;
+  background-color: $color-ellen-brand;
 
   button {
     margin: 5px;
@@ -103,21 +106,22 @@ button.close {
     border-radius: 0px;
 
     &.active {
-      border-bottom: solid $color-ellen-dark 3px;
+      background-color: $color-ellen-dark;
+      border-radius: 50px;
+      color: $color-white;
     }
   }
 }
 
 .fixed-height {
   height: 400px;
-  width: 100%;
+  width: 90%;
 
   > div {
     width: 100%;
   }
 
   @include breakpoint(medium up) {
-    width: 380px;
     align-items: center;
     justify-content: center;
     display: flex;
