@@ -16,6 +16,7 @@
           Top Up
         </button>
       </div>
+      <span class="upsell"> Subscribe and save 40%</span>
       <div class="fixed-height">
         <div v-if="mode == 'single'">
           <PaymentsSingle />
@@ -70,7 +71,7 @@ export default {
 }
 .container {
   position: relative;
-  max-width: 500px;
+  max-width: 600px;
   height: 100%;
 
   @include breakpoint(medium up) {
@@ -93,7 +94,10 @@ button.close {
 
 .toggle-container {
   display: flex;
-  padding-bottom: 20px;
+  padding: 5px;
+  border: solid rgb(238 238 238) thin;
+  border-radius: 50px;
+  background-color: $color-ellen-light-gray;
 
   button {
     margin: 5px;
@@ -103,25 +107,33 @@ button.close {
     border-radius: 0px;
 
     &.active {
-      border-bottom: solid $color-ellen-dark 3px;
+      background-color: $color-ellen-dark;
+      border-radius: 50px;
+      color: $color-white;
     }
   }
 }
 
 .fixed-height {
   height: 400px;
-  width: 100%;
+  width: 90%;
 
   > div {
     width: 100%;
   }
 
   @include breakpoint(medium up) {
-    width: 380px;
     align-items: center;
     justify-content: center;
     display: flex;
     height: 500px;
   }
+}
+
+.upsell {
+  font-size: 12px;
+  background-color: hsl(55deg 100% 88%);
+  margin: 2px auto;
+  padding: 1px;
 }
 </style>

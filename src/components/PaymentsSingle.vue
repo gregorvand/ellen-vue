@@ -1,21 +1,18 @@
 <template>
   <div class="payments form-container">
-    <h3>Top up credits</h3>
-    <span class="small-label"
-      >Select Number of Credits to add :: 1 credit buys 1 month of data. All
-      price in USD</span
-    >
     <div class="credit-selection">
       <div v-for="valueAmount in creditValues" :key="'radio-' + valueAmount.id">
         <input
           type="radio"
-          :value="{ valueAmount }"
+          :value="valueAmount"
           :id="'credit-selector-' + valueAmount.id"
           v-model="chargeCredits"
         />
-        <label :for="'credit-selector-' + valueAmount.id"
-          >{{ valueAmount.value
-          }}<span class="price-label"
+        <label class="selector-label" :for="'credit-selector-' + valueAmount.id"
+          ><h3>{{ valueAmount.title }}</h3>
+          <h4>{{ valueAmount.product }}</h4>
+          <p class="blurb">{{ valueAmount.blurb }}</p>
+          <span class="price-label"
             >${{ valueAmount.value * valueAmount.price }}</span
           ></label
         >
@@ -56,8 +53,8 @@
       >
         <span v-if="chargeCredits == 0">Select Credits</span>
         <span v-else
-          >Purchase {{ chargeCredits.valueAmount.value }} credits (${{
-            chargeCredits.valueAmount.value * chargeCredits.valueAmount.price
+          >Purchase {{ chargeCredits.value }} credits (${{
+            chargeCredits.value * chargeCredits.price
           }})</span
         >
         <!-- TODO: API-based real-time cost of tokens? Could not see immediately how to do that -->
@@ -83,18 +80,20 @@ import axios from 'axios'
 import { mapState, mapGetters } from 'vuex'
 export default {
   data() {
-    const multiplier = 1.5
+    const multiplier = 1.65
+    const optionOne = {
+      id: 1,
+      value: 10,
+      price: 30 * multiplier,
+      title: 'Top Up',
+      product: '10 credits',
+      blurb: `e.g. Access 5 companies and have 5 remaining credits to explore historical data.`,
+    }
     return {
       token: null,
       card: null,
-      chargeCredits: 0,
-      creditValues: [
-        // these will eventually come from API
-        { id: 1, value: 10, price: 30 * multiplier },
-        { id: 2, value: 20, price: 25 * multiplier },
-        { id: 3, value: 50, price: 20 * multiplier },
-        { id: 4, value: 100, price: 15 * multiplier },
-      ],
+      chargeCredits: optionOne,
+      creditValues: [optionOne],
       cardError: '',
       isProcessing: false,
       selectedCardId: '',
@@ -216,4 +215,24 @@ export default {
 }
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+h3 {
+  font-size: 17px;
+}
+h4 {
+  font-size: 24px;
+}
+.selector-label {
+  flex-direction: column;
+  font-size: 12px;
+  padding: 20px;
+}
+
+.container {
+  max-width: 60vw;
+}
+
+.payments.form-container .credit-selection {
+  grid-template-columns: 1fr;
+}
+</style>

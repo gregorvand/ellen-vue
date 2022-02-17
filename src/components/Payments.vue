@@ -27,7 +27,7 @@
         @click="chargeCard"
         :disabled="chargeCredits == 0"
       >
-        <span v-if="chargeCredits == 0">Select Credits</span>
+        <span v-if="chargeCredits == 0">Select Plan</span>
         <span v-else>Pay ${{ chargeCredits * 30 }}</span>
         <!-- TODO: API-based real-time cost of tokens !-->
       </button>
