@@ -16,6 +16,7 @@
           Top Up
         </button>
       </div>
+      <span class="upsell"> Subscribe and save 40%</span>
       <div class="fixed-height">
         <div v-if="mode == 'single'">
           <PaymentsSingle />
@@ -45,7 +46,7 @@ export default {
   },
   methods: {
     close() {
-      // this.$store.dispatch('ui/togglePaymentModal', 'closed')
+      this.$store.dispatch('ui/togglePaymentModal', 'closed')
     },
     toggleMode(mode) {
       this.mode = mode
@@ -94,9 +95,9 @@ button.close {
 .toggle-container {
   display: flex;
   padding: 5px;
-  border: solid $color-ellen-gray-transparent thin;
+  border: solid rgb(238 238 238) thin;
   border-radius: 50px;
-  background-color: $color-ellen-brand;
+  background-color: $color-ellen-light-gray;
 
   button {
     margin: 5px;
@@ -127,5 +128,12 @@ button.close {
     display: flex;
     height: 500px;
   }
+}
+
+.upsell {
+  font-size: 12px;
+  background-color: hsl(55deg 100% 88%);
+  margin: 2px auto;
+  padding: 1px;
 }
 </style>

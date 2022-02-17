@@ -180,6 +180,13 @@ ul.list {
     justify-content: center;
     background-color: white;
   }
+
+  .fixed-height {
+    @include breakpoint(small only) {
+      height: 80vh;
+      margin: 10px auto;
+    }
+  }
 }
 
 .no-mobile {

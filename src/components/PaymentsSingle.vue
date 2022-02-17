@@ -4,7 +4,7 @@
       <div v-for="valueAmount in creditValues" :key="'radio-' + valueAmount.id">
         <input
           type="radio"
-          :value="{ valueAmount }"
+          :value="valueAmount"
           :id="'credit-selector-' + valueAmount.id"
           v-model="chargeCredits"
         />
@@ -13,7 +13,7 @@
           <h4>{{ valueAmount.product }}</h4>
           <p class="blurb">{{ valueAmount.blurb }}</p>
           <span class="price-label"
-            >${{ valueAmount.value * valueAmount.price }}/mo</span
+            >${{ valueAmount.value * valueAmount.price }}</span
           ></label
         >
       </div>
@@ -53,8 +53,8 @@
       >
         <span v-if="chargeCredits == 0">Select Credits</span>
         <span v-else
-          >Purchase {{ chargeCredits.valueAmount.value }} credits (${{
-            chargeCredits.valueAmount.value * chargeCredits.valueAmount.price
+          >Purchase {{ chargeCredits.value }} credits (${{
+            chargeCredits.value * chargeCredits.price
           }})</span
         >
         <!-- TODO: API-based real-time cost of tokens? Could not see immediately how to do that -->
@@ -80,22 +80,20 @@ import axios from 'axios'
 import { mapState, mapGetters } from 'vuex'
 export default {
   data() {
-    const multiplier = 1.5
+    const multiplier = 1.65
+    const optionOne = {
+      id: 1,
+      value: 10,
+      price: 30 * multiplier,
+      title: 'Top Up',
+      product: '10 credits',
+      blurb: `e.g. Access 5 companies and have 5 remaining credits to explore historical data.`,
+    }
     return {
       token: null,
       card: null,
-      chargeCredits: 0,
-      creditValues: [
-        // these will eventually come from API
-        {
-          id: 1,
-          value: 10,
-          price: 30 * multiplier,
-          title: 'Starter',
-          product: '10 credits',
-          blurb: `e.g. Follow 5 companies each month and have 5 remaining credits to explore historical data.`,
-        },
-      ],
+      chargeCredits: optionOne,
+      creditValues: [optionOne],
       cardError: '',
       isProcessing: false,
       selectedCardId: '',

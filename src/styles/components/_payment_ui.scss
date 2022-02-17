@@ -6,9 +6,19 @@
     width: 100%;
     grid-template-columns: 1fr 1fr;
 
+    @include breakpoint(small only) {
+      grid-template-columns: 1fr;
+      height: 50vh;
+    }
+
     > div {
       display: flex;
       flex-basis: 45%;
+
+      @include breakpoint(small only) {
+        height: 22vh;
+        margin: 10px auto;
+      }
     }
 
     > div {
@@ -24,6 +34,7 @@
         &:checked {
           + label {
             background-color: $color-ellen-brand;
+            border: solid $color-ellen-brand-dark 2px;
           }
         }
       }
@@ -40,6 +51,14 @@
 
     &.hide {
       display: none;
+    }
+  }
+
+  .blurb {
+    max-width: 280px;
+
+    @include breakpoint(small only) {
+      margin: 0;
     }
   }
 }
@@ -69,11 +88,17 @@
     }
 
     @include breakpoint(small only) {
-      height: 50px;
+      height: 100%;
     }
 
     &:hover {
       border: solid $color-ellen-dark 2px;
+    }
+  }
+
+  .credit-tap-area {
+    @include breakpoint(medium up) {
+      margin: 0 5px;
     }
   }
 }
@@ -83,7 +108,7 @@
 }
 
 .subscribe-blurb {
-  font-size: 11px;
+  font-size: 9px;
   line-height: 1;
   display: flex;
   padding: 10px;
@@ -92,6 +117,10 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
+
+  @include breakpoint(medium up) {
+    font-size: 11px;
+  }
 }
 
 .stripe-card-form {
@@ -103,6 +132,7 @@
   justify-content: center;
   display: flex;
   flex-direction: column;
+  margin-top: 10px;
 
   button {
     width: 100%;
@@ -110,6 +140,10 @@
     font-size: rem-calc(14px);
     padding: 10px 0;
     height: 50px;
+  }
+
+  @include breakpoint(small only) {
+    height: 30vh;
   }
 }
 
@@ -166,7 +200,7 @@
   }
 
   input:checked + label {
-    background-color: $color-ellen-dark;
+    background-color: $color-ellen-brand-dark;
     color: $color-ellen-brand-bright;
     border: solid 2px $color-ellen-dark;
   }
