@@ -9,7 +9,7 @@
     <p>Here is a quick intro to the platform from one of our founders</p>
     <div class="loom-style">
       <iframe
-        src="https://www.loom.com/embed/aaad8ac0e94d48a393cfaa753f36721e"
+        src="https://www.loom.com/embed/0db1480a1d894895be6f2cbd1c6af8d3"
         frameborder="0"
         webkitallowfullscreen
         mozallowfullscreen
