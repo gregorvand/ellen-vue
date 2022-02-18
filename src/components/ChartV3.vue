@@ -178,7 +178,7 @@ export default defineComponent({
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  height: 700px;
+  height: 800px;
 
   .chart-frame,
   .ellen-chart {
