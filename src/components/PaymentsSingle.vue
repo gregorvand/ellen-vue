@@ -146,9 +146,7 @@ export default {
       // handle the token
       // send it to your server
 
-      const amountToCharge =
-        this.chargeCredits.valueAmount.value *
-        this.chargeCredits.valueAmount.price
+      const amountToCharge = this.chargeCredits.value * this.chargeCredits.price
 
       const createIntent = await axios({
         method: 'post',
@@ -191,7 +189,7 @@ export default {
       } else {
         const notification = {
           type: 'success',
-          message: `${this.chargeCredits.valueAmount.value} credits added! 💰`,
+          message: `${this.chargeCredits.value} credits added! 💰`,
         }
         this.isProcessing = false
         this.$store.dispatch('notification/add', notification, {
@@ -199,8 +197,7 @@ export default {
         })
         let currentBalance = this.$store.getters['credits/currentCredits']
         currentBalance =
-          parseInt(currentBalance) +
-          parseInt(this.chargeCredits.valueAmount.value)
+          parseInt(currentBalance) + parseInt(this.chargeCredits.value)
         this.$store.dispatch('credits/setBalance', currentBalance)
 
         this.$store.dispatch('ui/togglePaymentModal', 'closed')
