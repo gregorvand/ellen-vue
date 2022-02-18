@@ -1,8 +1,7 @@
 <template>
   <div class="marketshare">
-    <!-- <h3>Market share demo</h3> -->
-
     <div class="chart-frame">
+      <h3>Market share demo</h3>
       <div class="watermark">
         <img
           src="@/assets/ellen_ms_logo.svg"
@@ -194,10 +193,11 @@ export default {
     justify-content: center;
     opacity: 0.3;
     pointer-events: none;
-    padding-bottom: 90px;
+    padding-bottom: 160px;
   }
 
   .chart-frame {
+    position: relative;
     min-height: 500px;
     p {
       font-size: 12px;
