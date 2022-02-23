@@ -1,19 +1,27 @@
 <template>
   <div class="inner-container max-width">
-    <div class="container row mobile-column">
+    <div class="container row mobile-column" :class="{ col: !loggedIn }">
       <div class="company-sheet-name">
         <h1 v-if="companyObject.data">
           {{ companyObject.data.nameIdentifier }}
         </h1>
         <h4 v-if="companyObject.data !== undefined">
           {{ companyDomain }} <br />
-          <span v-if="this.user.username == 'admin'">{{
+          <span v-if="this.user && this.user.username == 'admin'">{{
             companyObject.data.emailIdentifier
           }}</span>
         </h4>
+
         <h1 v-else><BaseLoadingSpinner /></h1>
       </div>
-      <div>
+      <div class="logged-out" v-if="!loggedIn">
+        <div>
+          Access ELLEN Insights for {{ companyObject.data.nameIdentifier }}
+          <br />
+          Register or Login below
+        </div>
+      </div>
+      <div v-if="loggedIn">
         <span class="key-line"></span>
         <!-- v if company is Edison -->
         <button
@@ -28,10 +36,10 @@
       </div>
     </div>
     <LineChart
-      v-if="companyObject.data !== undefined"
+      v-if="companyObject.data !== undefined && loggedIn"
       :companyObject="companyObject"
     />
-    <section class="additional-metrics">
+    <section class="additional-metrics" v-if="loggedIn">
       <div class="inner-container">
         <h4>Additional metrics</h4>
         <AdditionalMetrics
@@ -41,11 +49,15 @@
       </div>
       <div class="inner-container">
         <h4>Trending Companies</h4>
-        <TrendingCompanies />
+        <TrendingCompanies v-if="loggedIn" />
       </div>
     </section>
     <div class="trending-companies-"></div>
-    <MarketShare />
+    <MarketShare v-if="loggedIn" />
+
+    <div v-if="!loggedIn">
+      <RegisterUser />
+    </div>
   </div>
 </template>
 
@@ -55,8 +67,10 @@ import TrendingCompanies from '@/components/TrendingCompanies'
 import AdditionalMetrics from '@/components/AdditionalMetrics'
 import ChartDataService from '../services/ChartDataService'
 import MarketShare from '@/components/MarketShare'
+import RegisterUser from '@/views/RegisterUser.vue'
 import { mapState } from 'vuex'
 import axios from 'axios'
+import { authComputed } from '@/store/helpers.js'
 
 export default {
   name: 'CompanyView',
@@ -65,6 +79,7 @@ export default {
     TrendingCompanies,
     AdditionalMetrics,
     MarketShare,
+    RegisterUser,
   },
   data: function () {
     return {
@@ -109,6 +124,7 @@ export default {
     },
     ...mapState('followedCompanies', ['followedCompanies']),
     ...mapState('user', ['user']),
+    ...authComputed,
   },
   methods: {
     followUnfollow() {
@@ -196,6 +212,20 @@ export default {
 
   .trending-companies {
     margin: 0;
+  }
+}
+
+.logged-out {
+  text-align: center;
+  width: 100%;
+}
+
+.container.col {
+  flex-direction: column;
+
+  .company-sheet-name {
+    text-align: center;
+    justify-content: center;
   }
 }
 </style>

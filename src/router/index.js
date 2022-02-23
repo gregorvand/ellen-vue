@@ -93,7 +93,6 @@ const routes = [
     path: '/company/:id',
     name: 'company',
     component: CompanySheet,
-    meta: { requiresAuth: true },
   },
   {
     path: '/earnings',
