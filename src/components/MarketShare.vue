@@ -194,6 +194,10 @@ export default {
     opacity: 0.3;
     pointer-events: none;
     padding-bottom: 160px;
+
+    @include breakpoint(small only) {
+      display: none;
+    }
   }
 
   .chart-frame {

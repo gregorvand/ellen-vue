@@ -1,6 +1,5 @@
 <template>
   <div class="trending-companies">
-    <h3>Trending Companies</h3>
     <ul class="trending-companies list">
       <li v-for="company in trendingCompanies" :key="company.id">
         <CompanySelector :company="company" />
@@ -93,6 +92,12 @@ export default {
         align-items: center;
         display: flex;
       }
+    }
+  }
+
+  .company & {
+    @include breakpoint(small only) {
+      display: none;
     }
   }
 }
