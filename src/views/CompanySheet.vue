@@ -15,7 +15,7 @@
         <h1 v-else><BaseLoadingSpinner /></h1>
       </div>
       <div class="logged-out" v-if="!loggedIn">
-        <div>
+        <div v-if="companyObject.data">
           Access ELLEN Insights for {{ companyObject.data.nameIdentifier }}
           <br />
           Register or Login below
