@@ -1,5 +1,6 @@
 <template>
   <div class="register-form-wrapper">
+    <h1>Register</h1>
     <form @submit.prevent="register">
       <!-- <label for="email"> Email </label> -->
 
@@ -129,9 +130,11 @@ export default {
 }
 
 .register-form-wrapper {
-  max-width: 700px;
+  margin-top: 20px;
   background-color: $color-ellen-brand-bright;
   padding: 30px;
+  width: 100%;
+  max-width: 1024px;
 
   .flex-wrapper {
     width: 100%;
