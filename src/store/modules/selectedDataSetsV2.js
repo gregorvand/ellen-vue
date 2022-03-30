@@ -1,7 +1,7 @@
 export const namespaced = true // ie user/[action]
 export const state = () => ({
   currentActiveDataSet: [],
-  currentYear: '2021',
+  currentYear: '2022',
 })
 
 export const getters = {
