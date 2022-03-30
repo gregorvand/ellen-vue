@@ -167,7 +167,7 @@ export default {
     this.getAvailableDates()
   },
   methods: {
-    async getAvailableDates(year = dayjs('1/1/2021').year(), refresh = false) {
+    async getAvailableDates(year = dayjs('1/1/2022').year(), refresh = false) {
       this.$store.dispatch('selectedDataSets/clearDatasetCart')
       const currentCompanyId =
         this.$route.params.id || this.$store.getters['company/getCompanyId']

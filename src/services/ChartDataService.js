@@ -1,6 +1,6 @@
 import axios from 'axios'
 export default {
-  async getChartData(component, companyId, identifier, selectedYear = '2021') {
+  async getChartData(component, companyId, identifier, selectedYear = '2022') {
     if (companyId !== '' && selectedYear) {
       let initialChartData = await axios({
         method: 'get',
